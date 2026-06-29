@@ -3,6 +3,7 @@
 /**
  * AdminController
  * Handles admin dashboard
+ * Location: app/Controllers/AdminController.php
  */
 class AdminController extends BaseController
 {

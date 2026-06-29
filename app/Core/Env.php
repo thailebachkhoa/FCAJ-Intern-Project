@@ -1,4 +1,5 @@
 <?php
+// Location: app/Core/Env.php
 class Env {
     public static function load($filePath) {
         if (!file_exists($filePath)) return;

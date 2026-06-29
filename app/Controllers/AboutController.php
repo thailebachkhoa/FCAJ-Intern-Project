@@ -3,6 +3,7 @@
 /**
  * AboutController
  * Xử lý trang Giới thiệu.
+ * Location: app/Controllers/AboutController.php
  */
 class AboutController extends BaseController
 {

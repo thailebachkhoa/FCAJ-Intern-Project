@@ -1,4 +1,5 @@
 <?php
+// Location: app/Controllers/FaqController.php
 class FaqController extends BaseController
 {
     private $db;

@@ -3,6 +3,7 @@
 /**
  * File: footer.php
  * Chuc nang: Tao phan cuoi trang dung chung cho website.
+ * Location: app/Views/partials/footer.php
  */
 
 // Đặt giá trị mặc định cho toàn bộ thông tin footer

@@ -3,6 +3,7 @@
 /**
  * Home Controller
  * Handle homepage and public pages
+ * Location: app/Controllers/HomeController.php
  */
 class HomeController extends BaseController
 {

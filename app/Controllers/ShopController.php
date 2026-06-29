@@ -2,6 +2,7 @@
 
 /**
  * Shop Controller (Phiên bản MVC Chuẩn với Model)
+ * Location: app/Controllers/ShopController.php
  */
 class ShopController extends BaseController
 {

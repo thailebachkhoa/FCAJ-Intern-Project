@@ -1,4 +1,5 @@
 <?php
+// Location: app/Models/User.php
 class User
 {
     private $db;

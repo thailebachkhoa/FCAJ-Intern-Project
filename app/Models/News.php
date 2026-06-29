@@ -2,6 +2,7 @@
 /**
  * News Model
  * Handles all database operations for news/articles (Part #4)
+ * Location: app/Models/News.php
  */
 class News
 {

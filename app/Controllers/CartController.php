@@ -3,6 +3,7 @@
 /**
  * Cart Controller
  * Quản lý giỏ hàng và liên kết dữ liệu với bảng `products` trong DB
+ * Location: app/Controllers/CartController.php
  */
 class CartController extends BaseController
 {

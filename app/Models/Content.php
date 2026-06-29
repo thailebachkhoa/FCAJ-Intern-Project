@@ -1,4 +1,5 @@
 <?php
+// Location: app/Models/Content.php
 class Content
 {
     private $db;

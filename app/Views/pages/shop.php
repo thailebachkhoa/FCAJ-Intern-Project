@@ -1,5 +1,5 @@
 <?php require BASE_PATH . '/app/Views/partials/header.php'; ?>
-
+<!-- location: app/Views/pages/shop.php -->
 <?php
 // Lấy các tham số từ URL để duy trì trạng thái lọc
 $currentCategory = $_GET['category'] ?? 'all';

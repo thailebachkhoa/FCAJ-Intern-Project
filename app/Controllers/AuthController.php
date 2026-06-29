@@ -1,4 +1,5 @@
 <?php
+// Location: app/Controllers/AuthController.php
 class AuthController extends BaseController
 {
     public function index()

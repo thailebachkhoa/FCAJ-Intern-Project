@@ -11,7 +11,7 @@
  * 4. Gọi controller và method tương ứng
  */
 
-
+// lOcation: public/index.php
 
 session_start();
 

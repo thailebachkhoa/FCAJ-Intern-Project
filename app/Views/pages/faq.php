@@ -3,6 +3,7 @@
 /**
  * File: app/Views/pages/faq.php
  * Tất cả văn bản tĩnh đọc từ site_content qua content_value()
+ * Location: app/Views/pages/faq.php
  */
 
 $pageTitle       = content_value('faq.meta_title',       'FAQ | Câu hỏi thường gặp về cây cảnh và decor xanh');

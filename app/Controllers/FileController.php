@@ -1,4 +1,5 @@
 <?php
+// Location: app/Controllers/FileController.php
 class FileController extends BaseController
 {
     // URL truy cập sẽ là: BASE_URL/file/view?path=uploads/pages/tenanh.jpg

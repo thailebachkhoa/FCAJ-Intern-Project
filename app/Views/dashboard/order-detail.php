@@ -1,5 +1,5 @@
 <?php require BASE_PATH . '/app/Views/partials/header.php'; ?>
-
+<!-- Location: app/Views/dashboard/order-detail.php -->
 <main class="site-main page-main bg-soft" style="margin-top: 100px; min-height: 80vh;">
     <div class="container py-5">
         <div class="mb-4">

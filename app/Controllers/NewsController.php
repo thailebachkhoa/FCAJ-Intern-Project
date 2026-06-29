@@ -3,6 +3,7 @@
 /**
  * NewsController
  * Handles frontend news listing, detail page, and comment submission (Part #4)
+ * Location: app/Controllers/NewsController.php
  */
 class NewsController extends BaseController
 {

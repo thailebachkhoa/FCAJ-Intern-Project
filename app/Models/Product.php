@@ -1,5 +1,5 @@
 <?php
-
+// Location: app/Models/Product.php
 class Product
 {
     private $db;

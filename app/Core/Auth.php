@@ -3,6 +3,7 @@
 /**
  * Auth Middleware Class
  * Handles session verification and role-based access control
+ * Location: app/Core/Auth.php
  */
 class Auth
 {

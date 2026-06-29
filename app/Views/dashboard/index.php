@@ -1,7 +1,7 @@
 <?php
 $pageTitle = 'Dashboard Thành Viên | Plantify Co';
 require BASE_PATH . '/app/Views/partials/header.php';
-
+// Location: app/Views/dashboard/index.php
 // Xác định avatar (Nếu chưa có thì dùng ảnh mặc định)
 $avatar = !empty($user['avatar'])
     ? BASE_URL . '/file/render?path=' . $user['avatar']

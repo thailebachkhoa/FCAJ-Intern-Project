@@ -1,5 +1,5 @@
 <?php
-
+// Location: app/Controllers/ContactController.php
 class ContactController extends BaseController
 {
     public function index()

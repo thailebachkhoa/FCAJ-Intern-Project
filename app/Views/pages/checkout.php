@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
-
+<!-- Location: app/Views/pages/checkout.php -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

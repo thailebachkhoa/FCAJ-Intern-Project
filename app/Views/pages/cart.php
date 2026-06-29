@@ -3,6 +3,7 @@
 /**
  * File: app/Views/pages/cart.php
  * Chức năng: Giao diện giỏ hàng đồng bộ UI với style.css
+ * Location: app/Views/pages/cart.php
  */
 $pageTitle = 'Giỏ Hàng | Plantify Co';
 require BASE_PATH . '/app/Views/partials/header.php';

@@ -3,6 +3,7 @@
 /**
  * File: about.php
  * View: Trang giới thiệu Plantify Co
+ * Location: app/Views/pages/about.php
  */
 $aboutImage = empty($page['image']) || preg_match('/^https?:\/\//', $page['image'])
     ? 'assets/images/aboutimg_1.jpg'

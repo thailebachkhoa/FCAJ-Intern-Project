@@ -2,6 +2,7 @@
 /**
  * Comment Model
  * Handles all database operations for comments (Part #4)
+ * Location: app/Models/Comment.php
  */
 class Comment
 {

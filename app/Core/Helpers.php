@@ -1,5 +1,5 @@
 <?php
-
+// Location: app/Core/Helpers.php
 /**
  * Chuc nang: Chua cac ham dung chung cho toan bo website.
  * Cach hoat dong: Moi trang include file nay de escape du lieu, gan active menu

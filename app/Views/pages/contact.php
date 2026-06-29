@@ -3,6 +3,7 @@
 /**
  * File: app/Views/pages/contact.php
  * Tất cả văn bản tĩnh đọc từ site_content qua content_value()
+ * Location: app/Views/pages/contact.php
  */
 $pageTitle       = content_value('contact.meta_title',       'Liên hệ | Plantify Co');
 $pageDescription = content_value('contact.meta_description', 'Liên hệ Plantify Co để được tư vấn về cây xanh nội thất, thiết kế decor và dịch vụ chăm sóc định kỳ.');

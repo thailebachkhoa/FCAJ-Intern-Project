@@ -1,4 +1,5 @@
 <?php
+// Location: app/Core/BaseController.php
 class BaseController {
     public function view($view, $data = []) {
         extract($data);

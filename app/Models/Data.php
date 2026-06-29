@@ -4,6 +4,7 @@
  * File: includes/data.php
  * Chuc nang: Nap du lieu hien thi tu MySQL, kem fallback de website van chay
  * duoc khi database chua san sang.
+ * Location: app/Models/Data.php
  */
 
 class Data

@@ -3,6 +3,7 @@
 /**
  * File: header.php
  * Chuc nang: Tao phan dau trang dung chung cho website.
+ * Location: app/Views/partials/header.php
  */
 
 

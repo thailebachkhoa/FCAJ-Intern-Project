@@ -1,4 +1,5 @@
 <?php
+// Location: app/Core/Database.php
 class Database
 {
     private static $instance = null;

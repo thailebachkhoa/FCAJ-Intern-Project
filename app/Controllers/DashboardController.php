@@ -3,6 +3,7 @@
 /**
  * Dashboard Controller
  * Handle member area, profile management and role routing
+ * Location: app/Controllers/DashboardController.php
  */
 class DashboardController extends BaseController
 {
