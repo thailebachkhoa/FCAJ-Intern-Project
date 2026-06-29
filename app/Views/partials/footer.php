@@ -19,15 +19,19 @@ $c_address = content_value('company.address', '268, Lý Thường Kiệt, Phư�
     <div class="container">
         <div class="row g-3 g-lg-4">
 
+            <!-- Logo & Mô tả công ty -->
             <div class="col-12 col-lg-3 text-center text-lg-start mb-4 mb-lg-0">
+                <!-- Logo -->
                 <a class="navbar-brand d-inline-flex align-items-center gap-2 mb-3 text-decoration-none"
                     href="<?= BASE_URL ?>">
                     <span class="brand-mark bg-white text-success"><i class="fa-solid fa-leaf"></i></span>
-                    <span class="brand-text text-white"><?php echo e($companyName); ?></span>
+                    <span class="brand-text text-white"><?php echo e($companyName); ?></span> 
                 </a>
+                <!-- Mô tả công ty -->
                 <p class="footer-text opacity-75 mb-3" style="font-size: 0.95rem;">
                     <?php echo e(content_value('footer.description', 'Chúng tôi mang cây xanh vào không gian sống và làm việc bằng giải pháp tinh gọn, bền vững.')); ?>
                 </p>
+                <!-- Liên kết mạng xã hội -->
                 <div class="social-links d-flex gap-3 justify-content-center justify-content-lg-start">
                     <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
                     <a href="#"><i class="fa-brands fa-instagram"></i></a>
@@ -35,7 +39,7 @@ $c_address = content_value('company.address', '268, Lý Thường Kiệt, Phư�
                 </div>
             </div>
 
-
+            <!-- Điều hướng -->
             <div class="col-6 col-md-4 col-lg-3">
                 <h5 class="footer-title text-success mb-3 fs-6 fw-bold text-uppercase">
                     <?php echo e(content_value('footer.nav_title', 'Điều hướng')); ?></h5>
@@ -49,7 +53,7 @@ $c_address = content_value('company.address', '268, Lý Thường Kiệt, Phư�
                 </ul>
             </div>
 
-
+            <!-- Thông tin liên hệ -->
             <div class="col-6 col-md-4 col-lg-3">
                 <h5 class="footer-title text-success mb-3 fs-6 fw-bold text-uppercase">
                     <?php echo e(content_value('footer.info_title', 'Thông tin')); ?></h5>
@@ -62,6 +66,8 @@ $c_address = content_value('company.address', '268, Lý Thường Kiệt, Phư�
                         <?php echo e(content_value('company.email', 'info@plantify.com')); ?></li>
                 </ul>
             </div>
+
+            <!-- Giờ mở cửa -->
             <div class="col-12 col-md-4 col-lg-3">
                 <h5 class="footer-title text-success mb-3 fs-6 fw-bold text-uppercase">Giờ mở cửa</h5>
                 <p class="small text-white opacity-75 mb-0"><i
@@ -70,22 +76,11 @@ $c_address = content_value('company.address', '268, Lý Thường Kiệt, Phư�
             </div>
 
         </div>
-
-        <!-- Footer Bottom -->
-        <div class="footer-bottom border-secondary my-4">
-            <div class="row align-items-center">
-                <p class="col-md-6 text-center text-md-start mb-2 mb-md-0">© <?= date('Y') ?>
-                    <?php echo e($companyName); ?>. Đã đăng ký bản quyền.</p>
-                <div class="col-md-6 text-right text-md-end">
-                    <div class="d-flex gap-3 justify-content-right justify-content-md-end small">
-                        <a href="#" class="text-white text-decoration-none">Chính sách bảo mật</a>
-                        <a href="#" class="text-white text-decoration-none">Điều khoản sử dụng</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </footer>
+
+
+<!-- // Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>

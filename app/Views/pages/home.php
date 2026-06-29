@@ -238,6 +238,66 @@
         </div>
     </section>
 
+    
+    <!-- About Process -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="row g-5 align-items-start">
+                <div class="col-lg-5" data-aos="fade-right">
+                    <span class="section-kicker"><?php echo e(content_value('about.process_kicker', 'Quy trình')); ?></span>
+                    <h2 class="section-title"><?php echo e(content_value('about.process_title', 'Rõ từng bước để khách hàng dễ theo dõi')); ?></h2>
+                    <p class="text-muted"><?php echo e(content_value('about.process_text', 'Từ ảnh không gian ban đầu đến chăm sóc định kỳ, mỗi giai đoạn đều có đầu ra cụ thể để bạn duyệt nhanh và kiểm soát ngân sách.')); ?></p>
+                </div>
+                <div class="col-lg-7" data-aos="fade-left">
+                    <div class="timeline-list">
+                        <?php foreach ($steps as $step): ?>
+                            <article>
+                                <span><?php echo e($step['number']); ?></span>
+                                <div>
+                                    <h3><?php echo e(content_value($step['title'], $step['default_title'])); ?></h3>
+                                    <p><?php echo e(content_value($step['text'], $step['default_text'])); ?></p>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Map Section -->
+    <section class="section-padding map-section" id="plantifyMap">
+        <div class="container">
+            <div class="map-layout-row">
+                <div class="map-copy-panel" data-aos="fade-right">
+                    <div>
+                        <span class="section-kicker"><?php echo e(content_value('about.map_kicker', 'Vị trí')); ?></span>
+                        <h2 class="section-title"><?php echo e(content_value('about.map_title', 'Ghé Plantify để chọn cây và chậu trực tiếp')); ?></h2>
+                        <p class="text-muted"><?php echo e(content_value('company.address', '')); ?></p>
+                    </div>
+                    <div class="map-contact-list">
+                        <span><i class="fa-solid fa-phone"></i><?php echo e(content_value('company.phone', '')); ?></span>
+                        <span><i class="fa-solid fa-clock"></i><?php echo e(content_value('company.hours', '')); ?></span>
+                    </div>
+                </div>
+                <div class="map-embed-wrap" data-aos="fade-left" style="width:100%; max-width:100%; min-height:720px;">
+                    <iframe
+                        title="<?php echo e(content_value('about.map_iframe_title', 'Bản đồ Plantify Co')); ?>"
+                        src="https://www.google.com/maps?q=<?php echo rawurlencode(content_value('company.address', '')); ?>&output=embed"
+                        width="100%"
+                        height="720"
+                        style="width:100%; height:720px; min-height:72vh; display:block; border:0;"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
     <!-- ===== CTA SECTION ===== -->
     <section class="cta-section">
         <div class="container position-relative">
