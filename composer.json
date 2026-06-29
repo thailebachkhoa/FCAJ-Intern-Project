@@ -1,0 +1,11 @@
+{
+  "name": "btl/plantify",
+  "description": "Landscape and decorative plants for your home and garden",
+  "type": "project",
+  "require": {},
+  "autoload": {
+    "files": [
+      "app/Core/bootstrap.php"
+    ]
+  }
+}

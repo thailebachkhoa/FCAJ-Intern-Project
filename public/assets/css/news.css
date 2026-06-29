@@ -1,0 +1,277 @@
+/* ==========================================================================
+   CSS DÀNH RIÊNG CHO TRANG TIN TỨC
+   ========================================================================== */
+
+/* ---- Banner Tin tức (News Hero) ---- */
+.news-hero {
+  /* Đổi sang tone màu green-900 và green-700 của style.css */
+  background: linear-gradient(
+    135deg,
+    var(--green-900) 0%,
+    var(--green-600) 100%
+  );
+  color: var(--white);
+  padding: 8rem 2rem 5rem; /* Tăng padding top để không bị header che mất */
+  text-align: center;
+}
+
+.news-hero h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.5px;
+}
+
+.news-hero p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 0;
+}
+
+/* ---- Thanh tìm kiếm (Search bar) ---- */
+.news-search-bar {
+  max-width: 650px;
+  margin: -35px auto 2rem; /* Đẩy thanh search lêm đè một nửa vào banner */
+  position: relative;
+  z-index: 10;
+}
+
+.news-search-bar form {
+  display: flex;
+  background: var(--white);
+  border-radius: 50px;
+  padding: 6px; /* Tạo khoảng trống padding để nút bấm nằm lọt thỏm bên trong */
+  box-shadow: 0 10px 30px rgba(18, 56, 42, 0.12);
+  border: 1px solid var(--stone-200);
+}
+
+.news-search-bar input {
+  flex: 1;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: var(--stone-900);
+  outline: none;
+  background: transparent;
+}
+
+.news-search-bar input::placeholder {
+  color: var(--stone-700);
+}
+
+.news-search-bar button {
+  background: var(--green-600);
+  color: var(--white);
+  border: none;
+  border-radius: 40px; /* Bo tròn hoàn toàn nút bấm */
+  padding: 0 1.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.news-search-bar button:hover {
+  background: var(--green-800);
+  transform: translateY(-1px);
+}
+
+/* ---- Lưới Tin Tức (News Grid & Cards) ---- */
+.news-card {
+  background: var(--white);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(18, 56, 42, 0.05);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  border: 1px solid var(--stone-200);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.news-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow);
+}
+
+.news-card-img {
+  height: 200px;
+  background: var(--mint-50);
+  overflow: hidden;
+  position: relative;
+}
+
+.news-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.news-card:hover .news-card-img img {
+  transform: scale(1.05);
+}
+
+.news-card-body {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.news-card-body .date {
+  font-size: 0.85rem;
+  color: var(--stone-700);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.news-card-body h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.news-card-body h3 a {
+  color: var(--stone-900);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.news-card-body h3 a:hover {
+  color: var(--green-600);
+}
+
+.news-card-body p {
+  color: var(--stone-700);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.news-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--stone-200);
+  padding: 1rem 1.5rem; /* Tăng padding để không bị dính sát vào cạnh card */
+  background-color: var(
+    --mint-50
+  ); /* Thêm nền nhẹ để tách biệt phần nội dung */
+  margin-top: auto;
+}
+
+.news-card-body {
+  padding: 1.5rem 1.5rem 1rem; /* Điều chỉnh lại padding của body */
+  flex: 1;
+}
+
+.news-card-footer .author {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--stone-700);
+  display: flex;
+  align-items: center;
+}
+
+.news-card-footer .read-more {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--green-600);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.news-card-footer .read-more:hover {
+  color: var(--green-900);
+}
+
+/* ---- Phân trang (Pagination) ---- */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 3rem;
+}
+
+.pagination a,
+.pagination span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--stone-200);
+  color: var(--stone-900);
+  background: var(--white);
+  transition: all 0.2s ease;
+}
+
+.pagination a:hover {
+  border-color: var(--green-600);
+  color: var(--green-600);
+}
+
+.pagination span.active {
+  background: var(--green-600);
+  color: var(--white);
+  border-color: var(--green-600);
+}
+
+.pagination span.disabled {
+  color: var(--stone-200);
+  border-color: var(--stone-200);
+  cursor: not-allowed;
+}
+
+/* ---- Thông báo Alert (Comment/Auth) ---- */
+.alert-success,
+.alert-error {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.alert-success {
+  background: var(--green-100);
+  color: var(--green-900);
+  border: 1px solid var(--green-600);
+}
+.alert-error {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+/* ---- Fallback Placeholder (Khi bài viết không có ảnh) ---- */
+.news-img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--green-100); /* Màu nền xanh mint nhạt đồng bộ theme */
+  color: var(--green-600); /* Màu icon xanh lá đậm */
+  font-size: 3.5rem; /* Kích thước icon to rõ ràng */
+  transition: all 0.5s ease;
+}
+
+/* Hiệu ứng zoom và đổi màu icon khi di chuột vào bài viết */
+.news-card:hover .news-img-placeholder {
+  transform: scale(1.05);
+  background: var(--stone-200);
+  color: var(--green-800);
+}
