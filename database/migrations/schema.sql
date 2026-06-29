@@ -29,15 +29,6 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- CREATE TABLE IF NOT EXISTS products (
---     id INT AUTO_INCREMENT PRIMARY KEY,
---     title VARCHAR(255) NOT NULL,
---     description TEXT,
---     price DECIMAL(15, 2) NOT NULL,
---     image VARCHAR(255) DEFAULT NULL,
---     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
--- );
-
 CREATE TABLE IF NOT EXISTS products (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(150) NOT NULL,
@@ -88,7 +79,6 @@ CREATE TABLE IF NOT EXISTS news (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-
 CREATE TABLE IF NOT EXISTS comments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -100,8 +90,6 @@ CREATE TABLE IF NOT EXISTS comments (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
-
--- Phuc
 
 CREATE TABLE IF NOT EXISTS services (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -175,6 +163,7 @@ INSERT INTO faqs (question, answer, sort_order) VALUES
 ('Plantify có dịch vụ cho thuê cây xanh văn phòng không?', 'Có. Với gói thuê cây, doanh nghiệp không cần lo chi phí đầu tư ban đầu hay rủi ro cây héo úa. Plantify sẽ đến chăm sóc hàng tuần và luân phiên đổi cây mới để duy trì hình ảnh chuyên nghiệp cho văn phòng.', 9),
 ('Tôi có thể chọn loại chậu khác không, hay phải lấy chậu như mẫu?', 'Bạn hoàn toàn có quyền thay đổi! Chúng tôi có kho chậu đa dạng chất liệu (đá mài, gốm sứ, composite...). Nhân viên sẽ hỗ trợ bạn phối cây vào chậu sao cho hợp với tone màu nội thất nhất.', 10),
 ('Phí giao hàng và lắp đặt tận nơi được tính như thế nào?', 'Plantify miễn phí vận chuyển và setup tận nơi cho đơn hàng từ 1.500.000đ trong nội thành TP.HCM. Với các khu vực ngoại thành hoặc đơn hàng nhỏ hơn, phí ship sẽ được tính sát giá thực tế của dịch vụ giao hàng an toàn.', 11);
+
 INSERT INTO pages (slug, title, content, image) VALUES
 ('about', 'Giới thiệu Plantify Co', 'Plantify Co là công ty chuyên thiết kế và cung cấp giải pháp cây xanh cho không gian doanh nghiệp. Chúng tôi kết hợp thẩm mỹ, khoa học và dịch vụ để mang thiên nhiên vào văn phòng, showroom và căn hộ cao cấp.', 'assets/uploads/pages/about-20260514-063927-1ffd56a6.jpeg')
 ON DUPLICATE KEY UPDATE title = VALUES(title), content = VALUES(content), image = VALUES(image);
@@ -206,13 +195,13 @@ INSERT INTO site_content (content_key, content_group, label, input_type, content
 ('product.trust_badge_1', 'Trang chi tiết SP', 'Cam kết 1', 'text', 'Giao hàng nhanh 2H'),
 ('product.trust_badge_2', 'Trang chi tiết SP', 'Cam kết 2', 'text', 'Thanh toán an toàn'),
 ('product.trust_badge_3', 'Trang chi tiết SP', 'Cam kết 3', 'text', '1 đổi 1 trong 3 ngày'),
-('product.related_title', 'Trang chi tiết SP', 'Tiêu đề SP liên quan', 'text', 'Có thể bạn cũng thích')
+('product.related_title', 'Trang chi tiết SP', 'Tiêu đề SP liên quan', 'text', 'Có thể bạn cũng thích'),
 ('shop.hero_title', 'Trang cửa hàng', 'Tiêu đề Hero', 'text', 'Cửa Hàng Xanh'),
 ('shop.hero_description', 'Trang cửa hàng', 'Mô tả Hero', 'textarea', 'Khám phá bộ sưu tập cây xanh được tuyển chọn để làm mới không gian sống của bạn.'),
 ('shop.search_placeholder', 'Trang cửa hàng', 'Gợi ý tìm kiếm', 'text', 'Tìm kiếm cây bạn yêu thích...'),
 ('shop.sort_label', 'Trang cửa hàng', 'Nhãn sắp xếp', 'text', 'Sắp xếp:'),
 ('shop.empty_title', 'Trang cửa hàng', 'Tiêu đề khi không có hàng', 'text', 'Không tìm thấy cây nào phù hợp'),
-('shop.empty_text', 'Trang cửa hàng', 'Mô tả khi không có hàng', 'text', 'Vui lòng thử từ khóa khác hoặc xóa bộ lọc.')
+('shop.empty_text', 'Trang cửa hàng', 'Mô tả khi không có hàng', 'text', 'Vui lòng thử từ khóa khác hoặc xóa bộ lọc.'),
 ('about.meta_title', 'Trang giới thiệu', 'Meta title', 'text', 'Giới thiệu | Plantify Co'),
 ('about.meta_description', 'Trang giới thiệu', 'Meta description', 'textarea', 'Tìm hiểu Plantify Co, công ty thiết kế decor cây xanh.'),
 ('about.hero_video_label', 'Trang giới thiệu', 'Nhãn truy cập video hero', 'text', 'Video nền giới thiệu Plantify Co'),
@@ -288,10 +277,10 @@ CREATE TABLE IF NOT EXISTS contacts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
+    subject VARCHAR(200) DEFAULT NULL,
     message TEXT NOT NULL,
     is_read BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    subject VARCHAR(200) DEFAULT NULL AFTER email
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS settings (
@@ -362,3 +351,4 @@ INSERT IGNORE INTO news (title, slug, short_description, content, thumbnail, tag
     'Admin',
     'published'
 );
+-- fix bug
