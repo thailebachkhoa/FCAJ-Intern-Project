@@ -5,6 +5,14 @@
  * View: Trang chủ Plantify Co
  * Tất cả văn bản đọc từ site_content qua content_value()
  */
+
+$steps = [
+    ['number' => '01', 'title' => 'about.process_1_title', 'text' => 'about.process_1_text', 'default_title' => 'Tiếp nhận nhu cầu', 'default_text' => 'Nhận ảnh, mặt bằng, phong cách mong muốn và mức ngân sách dự kiến.'],
+    ['number' => '02', 'title' => 'about.process_2_title', 'text' => 'about.process_2_text', 'default_title' => 'Khảo sát điều kiện', 'default_text' => 'Đánh giá ánh sáng, gió, ổ cắm, lối đi, vị trí tưới và rủi ro bẩn sàn.'],
+    ['number' => '03', 'title' => 'about.process_3_title', 'text' => 'about.process_3_text', 'default_title' => 'Đề xuất phương án', 'default_text' => 'Gợi ý cây, chậu, bố cục, tần suất chăm sóc và phương án thay thế khi cần.'],
+    ['number' => '04', 'title' => 'about.process_4_title', 'text' => 'about.process_4_text', 'default_title' => 'Bàn giao và duy trì', 'default_text' => 'Lắp đặt gọn, hướng dẫn chăm sóc, theo dõi cây sau bàn giao và bảo dưỡng định kỳ.'],
+];
+
 ?>
 <?php require BASE_PATH . '/app/Views/partials/header.php'; ?>
 
@@ -276,6 +284,7 @@
                         <span class="section-kicker"><?php echo e(content_value('about.map_kicker', 'Vị trí')); ?></span>
                         <h2 class="section-title"><?php echo e(content_value('about.map_title', 'Ghé Plantify để chọn cây và chậu trực tiếp')); ?></h2>
                         <p class="text-muted"><?php echo e(content_value('company.address', '')); ?></p>
+                        <p class="text-muted"><a href="https://maps.app.goo.gl/8ynWGgQHBHb7Ez1E8" target="_blank" rel="noopener noreferrer">Xem bản đồ</a></p>
                     </div>
                     <div class="map-contact-list">
                         <span><i class="fa-solid fa-phone"></i><?php echo e(content_value('company.phone', '')); ?></span>
