@@ -320,4 +320,6 @@
 
 </main>
 
+<?php require BASE_PATH . '/app/Views/partials/zalo-float.php'; ?>
+
 <?php require BASE_PATH . '/app/Views/partials/footer.php'; ?>

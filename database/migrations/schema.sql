@@ -171,8 +171,8 @@ ON DUPLICATE KEY UPDATE title = VALUES(title), content = VALUES(content), image 
 INSERT INTO site_content (content_key, content_group, label, input_type, content_value) VALUES
 ('company.name', 'Công ty', 'Tên thương hiệu', 'text', 'Plantify Co'),
 ('company.tagline', 'Công ty', 'Khẩu hiệu', 'text', 'Cây xanh tinh tế cho không gian sống và làm việc'),
-('company.phone', 'Công ty', 'Số điện thoại', 'text', '0908 246 136'),
-('company.email', 'Công ty', 'Email', 'text', 'info@plantifyco.com'),
+('company.phone', 'Công ty', 'Số điện thoại', 'text', '0787 309 225'),
+('company.email', 'Công ty', 'Email', 'text', 'thai.lebachkhoa@hcmut.edu.vn'),
 ('company.address', 'Công ty', 'Địa chỉ', 'text', '268, Lý Thường Kiệt, Phường 14, Quận 10, TP. Hồ Chí Minh'),
 ('company.hours', 'Công ty', 'Giờ làm việc', 'text', 'Thứ 2 - Thứ 7: 08:00 - 18:00'),
 ('site.default_description', 'SEO', 'Mô tả mặc định', 'textarea', 'Website giới thiệu công ty cây cảnh, cây xanh và decor thiên nhiên cho văn phòng, showroom.'),

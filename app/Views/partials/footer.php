@@ -46,10 +46,7 @@ $c_address = content_value('company.address', '268, Lý Thường Kiệt, Phư�
                 <ul class="footer-links list-unstyled d-flex flex-column gap-2 mb-0" style="font-size: 0.9rem;">
                     <li><a href="<?= BASE_URL ?>/shop">Cửa hàng</a></li>
                     <li><a href="<?= BASE_URL ?>/news">Tin tức</a></li>
-                    <li><a href="<?= BASE_URL ?>/about"><?php echo e(content_value('nav.about', 'Giới thiệu')); ?></a>
-                    </li>
                     <li><a href="<?= BASE_URL ?>/faq"><?php echo e(content_value('nav.faq', 'FAQ')); ?></a></li>
-                    <li><a href="<?= BASE_URL ?>/contact">Liên hệ</a></li>
                 </ul>
             </div>
 

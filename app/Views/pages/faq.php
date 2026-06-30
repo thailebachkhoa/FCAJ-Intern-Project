@@ -202,37 +202,4 @@ require_once BASE_PATH . '/app/Views/partials/header.php';
     </div>
 </section>
 
-<!-- ===== CHATBOT WIDGET ===== -->
-<div class="faq-chat-widget">
-    <button id="faqChatToggle" class="faq-chat-button" aria-label="Mở trợ lý AI">
-        <i class="fa-solid fa-robot"></i>
-        <span>Trợ lý</span>
-    </button>
-
-    <div class="faq-chat-panel" id="faqChatPanel" hidden>
-        <div class="faq-chat-header">
-            <div>
-                <strong><?= e(content_value('faq.chatbot_title', 'Trợ lý AI Plantify')) ?></strong>
-                <p><?= e(content_value('faq.chatbot_subtitle', 'Hỏi về cây xanh, dịch vụ và FAQ')) ?></p>
-            </div>
-            <button id="faqChatClose" class="faq-chat-close" aria-label="Đóng chat">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-
-        <div class="faq-chat-body" id="faqChatMessages">
-            <div class="faq-chat-message bot-message">
-                <span><?= e(content_value('faq.chatbot_greeting', 'Xin chào! Tôi có thể giúp gì cho bạn về dịch vụ cây xanh hôm nay?')) ?></span>
-            </div>
-        </div>
-
-        <form id="faqChatForm" class="faq-chat-form">
-            <input id="faqChatInput" type="text"
-                placeholder="<?= e(content_value('faq.chatbot_placeholder', 'Nhập câu hỏi...')) ?>" autocomplete="off"
-                required>
-            <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
-        </form>
-    </div>
-</div>
-
 <?php require_once BASE_PATH . '/app/Views/partials/footer.php'; ?>

@@ -148,10 +148,6 @@ $avatar = !empty($user['avatar'])
                                 Tức</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link <?php echo is_active_page('contact'); ?>"
-                                href="<?= BASE_URL ?>/contact">Liên Hệ</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link <?php echo is_active_page('faq'); ?>"
                                 href="<?= BASE_URL ?>/faq"><?php echo e(content_value('nav.faq', 'FAQ')); ?></a>
                         </li>
