@@ -11,7 +11,9 @@ if (!function_exists('admin_render_header')) {
 ?>
 <div class="header-area bg-white py-3 shadow-sm sticky-top" style="z-index:100;">
     <div class="container-fluid px-0">
+        <!-- Header Content -->
         <div class="row align-items-center m-0 justify-content-between">
+            <!-- Logo and Title -->
             <div class="col-8 col-md-6 d-flex align-items-center gap-3">
                 <div class="nav-btn mb-0 mt-0">
                     <span></span>
@@ -23,7 +25,7 @@ if (!function_exists('admin_render_header')) {
                     <strong class="text-dark"><?php echo e($pageTitle); ?></strong>
                 </div>
             </div>
-
+            <!-- Notification Area -->
             <div class="col-4 col-md-6 d-flex justify-content-end align-items-center">
                 <ul class="notification-area d-flex align-items-center justify-content-end list-unstyled mb-0 gap-3"
                     style="padding: 0; margin: 0;">

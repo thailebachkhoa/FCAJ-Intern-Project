@@ -49,7 +49,7 @@ admin_layout_start([
     'subtitle' => 'Dữ liệu trực tiếp từ Database'
 ]);
 ?>
-
+<!-- Chart -->
 <div class="row g-4 mb-4 mt-2">
     <div class="col-xl-3 col-md-6">
         <div class="card shadow-sm border-0 rounded-4 h-100">
@@ -111,7 +111,7 @@ admin_layout_start([
         </div>
     </div>
 </div>
-
+<!-- Chart -->
 <div class="row g-4 mb-4">
     <div class="col-xl-8">
         <div class="card shadow-sm border-0 rounded-4 h-100">
@@ -158,7 +158,7 @@ admin_layout_start([
         </div>
     </div>
 </div>
-
+<!-- Recent Orders -->
 <div class="row g-4">
     <div class="col-12">
         <div class="card shadow-sm border-0 rounded-4 mb-5">
@@ -201,6 +201,7 @@ admin_layout_start([
     </div>
 </div>
 
+<!-- Chart Script -->
 <?php
 $extraScripts = '
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>

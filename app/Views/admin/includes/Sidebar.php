@@ -58,11 +58,9 @@ if (!function_exists('admin_render_sidebar')) {
                             <?php
                             $subItems = [
                                 ['page_home',      'ti-home',             'Trang chủ',       'page_home'],
-                                ['pages',          'ti-info-alt',         'Trang giới thiệu','pages'],
                                 ['shop_settings',  'ti-shopping-cart-full','Trang cửa hàng', 'shop-settings'],
                                 ['page_news',      'ti-agenda',           'Trang tin tức',   'page_news'],
                                 ['page_faq',       'ti-help-alt',         'Trang FAQ',       'page_faq'],
-                                ['page_contact',   'ti-email',            'Trang liên hệ',   'page_contact'],
                             ];
                             foreach ($subItems as [$route, $icon, $label, $match]):
                                 $active = strpos($currentUri, $match) !== false ? 'active' : '';
@@ -83,7 +81,6 @@ if (!function_exists('admin_render_sidebar')) {
                     <?php admin_sidebar_item('comments',    'ti-comments-smiley',  'Bình luận',              'comments'); ?>
                     <?php admin_sidebar_item('faqs',        'ti-help-alt',         'FAQ',                    'admin/faqs'); ?>
                     <?php admin_sidebar_item('users',       'ti-user',             'Thành viên',             'users'); ?>
-                    <?php admin_sidebar_item('rag',         'ti-comments',         'Dữ liệu bot',            'rag'); ?>
                     <?php admin_sidebar_item('products',    'ti-package',          'Quản lý Sản phẩm',       'products'); ?>
                     <?php admin_sidebar_item('orders',      'ti-shopping-cart',    'Quản lý Đơn hàng',       'orders'); ?>
 
