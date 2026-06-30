@@ -49,15 +49,21 @@ $avatar = !empty($user['avatar'])
 </head>
 
 <body>
+    <!-- Header -->
     <header class="site-header">
         <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-white shadow-sm">
             <div class="container">
+
+                <!-- Brand -->
                 <a class="navbar-brand d-flex align-items-center gap-2" href="<?= BASE_URL ?>"
                     aria-label="<?php echo e($companyName); ?>">
                     <span class="brand-mark"><i class="fa-solid fa-leaf"></i></span>
                     <span class="brand-text"><?php echo e($companyName); ?></span>
                 </a>
+
+                <!-- Navbar Toggler -->
                 <div class="d-flex align-items-center gap-3 ms-auto order-lg-3">
+                    <!-- Cart -->
                     <a href="<?= BASE_URL ?>/cart"
                         class="btn btn-light position-relative rounded-circle d-inline-flex align-items-center justify-content-center"
                         style="width: 40px; height: 40px; color: var(--green-900); overflow: visible !important;">
@@ -72,6 +78,7 @@ $avatar = !empty($user['avatar'])
                         <?php endif; ?>
                     </a>
 
+                    <!-- User Account -->
                     <?php if (!empty($user)): ?>
                     <div class="dropdown">
                         <a href="#" class="text-decoration-none text-dark fw-bold d-flex align-items-center gap-2"
@@ -103,6 +110,8 @@ $avatar = !empty($user['avatar'])
                                         class="fa-solid fa-right-from-bracket me-2"></i> Đăng xuất</a></li>
                         </ul>
                     </div>
+
+                    <!-- Auth Buttons -->
                     <?php else: ?>
                     <div class="d-none d-md-flex gap-2">
                         <a href="<?= BASE_URL ?>/auth" class="btn btn-outline-success fw-bold px-3"
@@ -110,16 +119,21 @@ $avatar = !empty($user['avatar'])
                         <a href="<?= BASE_URL ?>/auth/register" class="btn btn-success fw-bold px-3"
                             style="border-radius: 8px;">Đăng Ký</a>
                     </div>
+
+                    <!-- Auth Button (Mobile) -->
                     <a href="<?= BASE_URL ?>/auth" class="text-dark d-md-none text-decoration-none">
                         <i class="fa-solid fa-circle-user fs-4 text-success"></i>
                     </a>
                     <?php endif; ?>
                 </div>
+
+                <!-- Navbar Toggler -->
                 <button class="navbar-toggler ms-2 order-lg-4" type="button" data-bs-toggle="collapse"
                     data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Mở menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
+                <!-- Main Navigation -->
                 <div class="collapse navbar-collapse order-lg-2" id="mainNavbar">
                     <ul class="navbar-nav mx-auto align-items-lg-center">
                         <li class="nav-item">
@@ -134,10 +148,6 @@ $avatar = !empty($user['avatar'])
                                 Tức</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link <?php echo is_active_page('about'); ?>" href="<?= BASE_URL ?>/about">Về
-                                Chúng Tôi</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link <?php echo is_active_page('contact'); ?>"
                                 href="<?= BASE_URL ?>/contact">Liên Hệ</a>
                         </li>
@@ -150,6 +160,7 @@ $avatar = !empty($user['avatar'])
 
 
                 </div>
+
             </div>
         </nav>
     </header>
