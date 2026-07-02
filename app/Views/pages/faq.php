@@ -36,7 +36,7 @@ require_once BASE_PATH . '/app/Views/partials/header.php';
                 <div class="hero-insight-card">
                     <i class="fa-solid fa-headset"></i>
                     <strong><?= e(content_value('faq.hero_card_title', 'Cần câu trả lời riêng?')) ?></strong>
-                    <span><?= e(content_value('faq.hero_card_text', 'Mở trợ lý AI ở góc màn hình hoặc gửi ảnh không gian để được tư vấn theo điều kiện thực tế.')) ?></span>
+                    <span><?= e(content_value('faq.hero_card_text', 'Nhấn biểu tượng zalo để liên hệ đội ngũ chăm sóc khách hàng')) ?></span>
                 </div>
             </div>
 
@@ -78,27 +78,11 @@ require_once BASE_PATH . '/app/Views/partials/header.php';
                         </div>
                     </div>
 
-                    <a href="<?= BASE_URL ?>/about" class="btn btn-success info-cta">
-                        <?= e(content_value('faq.sidebar_cta', 'Về Plantify')) ?>
-                    </a>
+                    <button type="button" class="btn btn-success info-cta" data-bs-toggle="modal" data-bs-target="#comingSoonModal">
+                        <?= e(content_value('faq.sidebar_cta', 'Tìm hiểu thêm')) ?>
+                    </button>
                 </aside>
 
-                <!-- QUICK CHIPS -->
-                <div class="faq-quick-card" data-aos="fade-up" data-aos-delay="100">
-                    <strong>Câu hỏi nhanh cho AI</strong>
-                    <button type="button" class="faq-prompt-chip"
-                        data-question="<?= e(content_value('faq.chip_1', 'Plantify có khảo sát trực tiếp trước khi thiết kế không?')) ?>">
-                        <?= e(content_value('faq.chip_1_label', 'Có khảo sát không?')) ?>
-                    </button>
-                    <button type="button" class="faq-prompt-chip"
-                        data-question="<?= e(content_value('faq.chip_2', 'Tôi có thể gửi ảnh mặt bằng để được tư vấn online không?')) ?>">
-                        <?= e(content_value('faq.chip_2_label', 'Gửi ảnh tư vấn?')) ?>
-                    </button>
-                    <button type="button" class="faq-prompt-chip"
-                        data-question="<?= e(content_value('faq.chip_3', 'Cây được bảo hành sau bàn giao như thế nào?')) ?>">
-                        <?= e(content_value('faq.chip_3_label', 'Bảo hành cây?')) ?>
-                    </button>
-                </div>
             </div>
 
             <!-- ACCORDION FAQ -->
@@ -152,12 +136,29 @@ require_once BASE_PATH . '/app/Views/partials/header.php';
                 <div id="faqEmptyState" class="faq-empty-state" hidden>
                     <i class="fa-regular fa-circle-question"></i>
                     <strong>Chưa tìm thấy câu hỏi phù hợp</strong>
-                    <span>Thử từ khóa khác hoặc hỏi trực tiếp trợ lý AI ở góc màn hình.</span>
+                    <span>Thử từ khóa khác hoặc hỏi trực tiếp đội ngũ chăm sóc ở góc màn hình.</span>
                 </div>
             </div>
 
         </div>
     </div>
+
+        <!-- Modal: Đang cập nhật -->
+    <div class="modal fade" id="comingSoonModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; background:#ffffff;">
+                <div class="modal-body text-center p-5">
+                    <div class="mb-3 text-success" style="font-size: 3rem;">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Trang đang được cập nhật</h5>
+                    <p class="text-muted mb-4">Nội dung này sẽ sớm ra mắt. Cảm ơn bạn đã ghé thăm Plantify!</p>
+                    <button type="button" class="btn btn-success rounded-pill px-4" data-bs-dismiss="modal">Đã hiểu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </section>
 
 <!-- ===== 3 BƯỚC SAU FAQ ===== -->
@@ -202,4 +203,5 @@ require_once BASE_PATH . '/app/Views/partials/header.php';
     </div>
 </section>
 
+<?php require_once BASE_PATH . '/app/Views/partials/zalo-float.php'; ?>
 <?php require_once BASE_PATH . '/app/Views/partials/footer.php'; ?>

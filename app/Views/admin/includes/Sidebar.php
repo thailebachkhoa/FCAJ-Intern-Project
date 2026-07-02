@@ -76,7 +76,6 @@ if (!function_exists('admin_render_sidebar')) {
                     </li>
                     <!-- ===== END SIÊU MỤC ===== -->
 
-                    <?php admin_sidebar_item('contacts',    'ti-email',            'Liên hệ từ khách hàng', 'contacts'); ?>
                     <?php admin_sidebar_item('news',        'ti-agenda',           'Quản lý Tin tức',        'admin/news'); ?>
                     <?php admin_sidebar_item('comments',    'ti-comments-smiley',  'Bình luận',              'comments'); ?>
                     <?php admin_sidebar_item('faqs',        'ti-help-alt',         'FAQ',                    'admin/faqs'); ?>
