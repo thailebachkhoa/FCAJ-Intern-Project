@@ -740,7 +740,8 @@ class AdminController extends BaseController
                 $_SESSION['admin_success'] = "Đã cập nhật trạng thái đơn hàng!";
             }
 
-            $this->redirect('admin/orders/detail/' . $id);
+            // $this->redirect('admin/orders/detail/' . $id);
+            $this->redirect('admin/order_detail/' . $id);
         }
     }
 

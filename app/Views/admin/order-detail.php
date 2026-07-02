@@ -37,8 +37,7 @@ admin_layout_start(['pageTitle' => 'Chi tiết Đơn hàng #' . $order['id']]); 
                 <h5 class="mb-0">Trạng thái & Giao hàng</h5>
             </div>
             <div class="card-body">
-                <form action="<?= BASE_URL ?>/admin/orders/update_status/<?= $order['id'] ?>" method="POST">
-                    <label class="form-label small fw-bold">Cập nhật trạng thái</label>
+                <form action="<?= BASE_URL ?>/admin/order_update_status/<?= $order['id'] ?>" method="POST">                    <label class="form-label small fw-bold">Cập nhật trạng thái</label>
                     <select name="status" class="form-select mb-3 rounded-pill">
                         <option value="pending" <?= $order['status'] == 'pending' ? 'selected' : '' ?>>Chờ xử lý</option>
                         <option value="processing" <?= $order['status'] == 'processing' ? 'selected' : '' ?>>Đang đóng gói</option>
