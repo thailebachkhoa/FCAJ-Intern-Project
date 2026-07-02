@@ -84,12 +84,6 @@ if (!function_exists('admin_render_sidebar')) {
                     <?php admin_sidebar_item('products',    'ti-package',          'Quản lý Sản phẩm',       'products'); ?>
                     <?php admin_sidebar_item('orders',      'ti-shopping-cart',    'Quản lý Đơn hàng',       'orders'); ?>
 
-                    <li>
-                        <a href="<?= BASE_URL ?>">
-                            <i class="ti-home"></i><span>Xem website</span>
-                        </a>
-                    </li>
-
                 </ul>
             </nav>
         </div>

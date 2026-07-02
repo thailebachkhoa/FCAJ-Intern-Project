@@ -11,7 +11,7 @@ $pageTitle = 'Tổng quan hệ thống';
 $db = Database::getInstance();
 
 // 1. LẤY DỮ LIỆU THỰC TẾ
-$counts = ['users' => 0, 'products' => 0, 'orders' => 0, 'comments' => 0, 'contacts' => 0, 'pages' => 0];
+$counts = ['users' => 0, 'products' => 0, 'orders' => 0, 'comments' => 0, 'pages' => 0];
 
 try {
     $db->query("SELECT COUNT(*) as total FROM users");
@@ -26,9 +26,6 @@ try {
     $db->query("SELECT COUNT(*) as total FROM comments");
     $counts['comments'] = (int)($db->single()['total'] ?? 0);
 
-    $db->query("SELECT COUNT(*) as total FROM contacts WHERE is_read = 0");
-    $counts['contacts'] = (int)($db->single()['total'] ?? 0);
-
     $db->query("SELECT COUNT(*) as total FROM pages");
     $counts['pages'] = (int)($db->single()['total'] ?? 0);
 
@@ -39,8 +36,8 @@ try {
 }
 
 $chartData = json_encode([
-    'labels' => ['Người dùng', 'Sản phẩm', 'Đơn hàng', 'Bình luận', 'Liên hệ mới'],
-    'values' => [$counts['users'], $counts['products'], $counts['orders'], $counts['comments'], $counts['contacts']]
+    'labels' => ['Người dùng', 'Sản phẩm', 'Đơn hàng', 'Bình luận'],
+    'values' => [$counts['users'], $counts['products'], $counts['orders'], $counts['comments']]
 ]);
 
 admin_layout_start([
@@ -96,20 +93,6 @@ admin_layout_start([
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6">
-        <div class="card shadow-sm border-0 rounded-4 h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h6 class="text-muted mb-0 fw-bold">Liên hệ mới</h6>
-                    <div class="bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center"
-                        style="width: 45px; height: 45px;">
-                        <i class="fa-solid fa-envelope fs-5"></i>
-                    </div>
-                </div>
-                <h3 class="fw-bold mb-0 text-stone-900"><?= $counts['contacts'] ?></h3>
-            </div>
-        </div>
-    </div>
 </div>
 <!-- Chart -->
 <div class="row g-4 mb-4">

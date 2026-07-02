@@ -202,6 +202,7 @@ INSERT INTO site_content (content_key, content_group, label, input_type, content
 ('shop.sort_label', 'Trang cửa hàng', 'Nhãn sắp xếp', 'text', 'Sắp xếp:'),
 ('shop.empty_title', 'Trang cửa hàng', 'Tiêu đề khi không có hàng', 'text', 'Không tìm thấy cây nào phù hợp'),
 ('shop.empty_text', 'Trang cửa hàng', 'Mô tả khi không có hàng', 'text', 'Vui lòng thử từ khóa khác hoặc xóa bộ lọc.'),
+
 ('about.meta_title', 'Trang giới thiệu', 'Meta title', 'text', 'Giới thiệu | Plantify Co'),
 ('about.meta_description', 'Trang giới thiệu', 'Meta description', 'textarea', 'Tìm hiểu Plantify Co, công ty thiết kế decor cây xanh.'),
 ('about.hero_video_label', 'Trang giới thiệu', 'Nhãn truy cập video hero', 'text', 'Video nền giới thiệu Plantify Co'),
@@ -265,6 +266,7 @@ INSERT INTO site_content (content_key, content_group, label, input_type, content
 ('about.cta_title', 'Trang giới thiệu', 'Tiêu đề CTA', 'textarea', 'Muốn biết không gian của bạn hợp cây gì?'),
 ('about.cta_text', 'Trang giới thiệu', 'Mô tả CTA', 'textarea', 'Gửi ảnh hiện trạng, Plantify sẽ gợi ý nhóm cây, kích thước chậu và cách chăm sóc phù hợp.'),
 ('about.cta_button', 'Trang giới thiệu', 'Nút CTA', 'text', 'Xem FAQ')
+
 ON DUPLICATE KEY UPDATE
   content_group = VALUES(content_group),
   label = VALUES(label),
