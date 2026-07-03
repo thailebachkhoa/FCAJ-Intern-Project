@@ -36,7 +36,7 @@ require_once BASE_PATH . '/app/Views/partials/header.php';
                 <div class="hero-insight-card">
                     <i class="fa-solid fa-headset"></i>
                     <strong><?= e(content_value('faq.hero_card_title', 'Cần câu trả lời riêng?')) ?></strong>
-                    <span><?= e(content_value('faq.hero_card_text', 'Nhấn biểu tượng zalo để liên hệ đội ngũ chăm sóc khách hàng')) ?></span>
+                    <span>"Nhấn biểu tượng zalo để liên hệ đội ngũ tư vấn"</span>
                 </div>
             </div>
 

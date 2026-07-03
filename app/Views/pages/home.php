@@ -37,9 +37,9 @@ $steps = [
                             <i class="fa-solid fa-bag-shopping me-2"></i>
                             <?= e(content_value('home.hero_btn_primary', 'Mua Sắm Ngay')) ?>
                         </a>
-                        <a href="<?= BASE_URL ?>/about" class="btn btn-outline-light px-4">
-                            <?= e(content_value('home.hero_btn_secondary', 'Tìm Hiểu Thêm')) ?>
-                        </a>
+                    <a href="#" class="btn btn-outline-light px-4" data-bs-toggle="modal" data-bs-target="#comingSoonModal">
+                        <?= e(content_value('home.hero_btn_secondary', 'Tìm Hiểu Thêm')) ?>
+                    </a>
                     </div>
                 </div>
 
@@ -328,6 +328,21 @@ $steps = [
     </section>
 
 </main>
+
+<!-- Modal Đang cập nhật -->
+<div class="modal fade" id="comingSoonModal" tabindex="-1" aria-labelledby="comingSoonModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <i class="bi bi-info-circle fs-1 text-primary mb-3 d-block"></i>
+                <p class="mb-0 fs-5">Đang cập nhập thông tin</p>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php require BASE_PATH . '/app/Views/partials/zalo-float.php'; ?>
 

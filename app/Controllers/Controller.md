@@ -521,6 +521,7 @@ class AdminController extends BaseController
         ]);
     }
 
+
     public function product_edit($id)
     {
         $productModel = new Product();
@@ -823,7 +824,7 @@ class AdminController extends BaseController
             ['faq.hero_description',       'Trang FAQ', 'Mô tả hero',                          'textarea', 'Tra cứu nhanh các thông tin quan trọng trước khi khảo sát, chọn cây, nhận báo giá hoặc sử dụng gói chăm sóc sau bàn giao.'],
             ['faq.hero_search_placeholder','Trang FAQ', 'Gợi ý ô tìm kiếm FAQ',               'text',     'Tìm nhanh: bảo hành, khảo sát, gửi ảnh, chăm sóc...'],
             ['faq.hero_card_title',        'Trang FAQ', 'Tiêu đề thẻ hero',                    'text',     'Cần câu trả lời riêng?'],
-            ['faq.hero_card_text',         'Trang FAQ', 'Nội dung thẻ hero',                   'textarea', 'Mở trợ lý AI ở góc màn hình hoặc gửi ảnh không gian để được tư vấn theo điều kiện thực tế.'],
+            ['faq.hero_card_text',         'Trang FAQ', 'Nội dung thẻ hero',                   'textarea', 'Nhấn biểu tượng zalo để liên hệ đội ngũ tư vấn'],
             ['faq.sidebar_kicker',         'Trang FAQ', 'Nhãn sidebar',                        'text',     'Điểm cần biết'],
             ['faq.sidebar_title',          'Trang FAQ', 'Tiêu đề sidebar',                     'text',     'Chuẩn bị trước khi tư vấn'],
             ['faq.sidebar_description',    'Trang FAQ', 'Mô tả sidebar',                       'textarea', 'Thông tin càng rõ, phương án cây xanh càng sát nhu cầu và ngân sách.'],
@@ -832,12 +833,6 @@ class AdminController extends BaseController
             ['faq.sidebar_item_3',         'Trang FAQ', 'Gợi ý chuẩn bị 3',                   'text',     'Kích thước khu vực dự kiến'],
             ['faq.sidebar_item_4',         'Trang FAQ', 'Gợi ý chuẩn bị 4',                   'text',     'Ngân sách hoặc mức ưu tiên'],
             ['faq.sidebar_cta',            'Trang FAQ', 'Nút CTA sidebar',                     'text',     'Về Plantify'],
-            ['faq.chip_1',                 'Trang FAQ', 'Câu hỏi chip 1',                      'text',     'Plantify có khảo sát trực tiếp trước khi thiết kế không?'],
-            ['faq.chip_1_label',           'Trang FAQ', 'Nhãn chip 1',                         'text',     'Có khảo sát không?'],
-            ['faq.chip_2',                 'Trang FAQ', 'Câu hỏi chip 2',                      'text',     'Tôi có thể gửi ảnh mặt bằng để được tư vấn online không?'],
-            ['faq.chip_2_label',           'Trang FAQ', 'Nhãn chip 2',                         'text',     'Gửi ảnh tư vấn?'],
-            ['faq.chip_3',                 'Trang FAQ', 'Câu hỏi chip 3',                      'text',     'Cây được bảo hành sau bàn giao như thế nào?'],
-            ['faq.chip_3_label',           'Trang FAQ', 'Nhãn chip 3',                         'text',     'Bảo hành cây?'],
             ['faq.steps_kicker',           'Trang FAQ', 'Nhãn section các bước',               'text',     'Sau khi có câu trả lời'],
             ['faq.steps_title',            'Trang FAQ', 'Tiêu đề section các bước',            'text',     'Quy trình tiếp theo rất gọn'],
             ['faq.step_1_title',           'Trang FAQ', 'Tiêu đề bước 1',                      'text',     'Gửi ảnh và nhu cầu'],
@@ -846,19 +841,13 @@ class AdminController extends BaseController
             ['faq.step_2_text',            'Trang FAQ', 'Nội dung bước 2',                     'textarea', 'Plantify đề xuất nhóm cây, kích thước chậu và mức chăm sóc phù hợp.'],
             ['faq.step_3_title',           'Trang FAQ', 'Tiêu đề bước 3',                      'text',     'Chốt lịch khảo sát'],
             ['faq.step_3_text',            'Trang FAQ', 'Nội dung bước 3',                     'textarea', 'Đội ngũ kiểm tra thực tế trước khi báo giá và triển khai chính thức.'],
-            ['faq.chatbot_title',          'Trang FAQ', 'Tiêu đề chatbot widget',              'text',     'Trợ lý AI Plantify'],
-            ['faq.chatbot_subtitle',       'Trang FAQ', 'Mô tả chatbot widget',                'text',     'Hỏi về cây xanh, dịch vụ và FAQ'],
-            ['faq.chatbot_greeting',       'Trang FAQ', 'Lời chào mở đầu chatbot',             'textarea', 'Xin chào! Tôi có thể giúp gì cho bạn về dịch vụ cây xanh hôm nay?'],
-            ['faq.chatbot_placeholder',    'Trang FAQ', 'Placeholder ô nhập chatbot',          'text',     'Nhập câu hỏi...'],
         ];
  
         $sections = [
             ['title' => 'SEO',                            'desc' => 'Meta title và description.',                                              'keys' => ['faq.meta_title','faq.meta_description']],
             ['title' => 'Hero đầu trang',                 'desc' => 'Tiêu đề, mô tả, ô tìm kiếm và thẻ thông tin bên phải.',               'keys' => ['faq.hero_kicker','faq.hero_title','faq.hero_description','faq.hero_search_placeholder','faq.hero_card_title','faq.hero_card_text']],
             ['title' => 'Sidebar chuẩn bị tư vấn',       'desc' => 'Tiêu đề và danh sách gợi ý chuẩn bị trước khi liên hệ.',              'keys' => ['faq.sidebar_kicker','faq.sidebar_title','faq.sidebar_description','faq.sidebar_item_1','faq.sidebar_item_2','faq.sidebar_item_3','faq.sidebar_item_4','faq.sidebar_cta']],
-            ['title' => 'Câu hỏi nhanh (chip buttons)',   'desc' => 'Nội dung câu hỏi và nhãn hiển thị của 3 chip.',                       'keys' => ['faq.chip_1_label','faq.chip_1','faq.chip_2_label','faq.chip_2','faq.chip_3_label','faq.chip_3']],
             ['title' => 'Quy trình 3 bước',               'desc' => 'Section phía dưới accordion FAQ.',                                    'keys' => ['faq.steps_kicker','faq.steps_title','faq.step_1_title','faq.step_1_text','faq.step_2_title','faq.step_2_text','faq.step_3_title','faq.step_3_text']],
-            ['title' => 'Chatbot widget',                  'desc' => 'Tiêu đề, lời chào và placeholder của widget trợ lý AI.',              'keys' => ['faq.chatbot_title','faq.chatbot_subtitle','faq.chatbot_greeting','faq.chatbot_placeholder']],
         ];
  
         $result = $this->_pageEditorHandle($defaults, 'Trang FAQ');
@@ -872,9 +861,882 @@ class AdminController extends BaseController
             'sections'  => $sections,
         ]);
     }
+ 
+
 }
 
+<?php
+// Location: app/Controllers/AuthController.php
+class AuthController extends BaseController
+{
+    public function index()
+    {
+        // If user is already logged in, redirect to dashboard
+        if (Auth::check()) {
+            $this->redirect('dashboard');
+        }
+        $this->view('auth/login');
+    }
+
+    public function login()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $username = trim($_POST['username'] ?? '');
+            $password = $_POST['password'] ?? '';
+
+            if (empty($username) || empty($password)) {
+                $this->view('auth/login', ['error' => 'Vui lòng nhập đầy đủ thông tin!']);
+                return;
+            }
+
+            $userModel = new User();
+            // Support login by username or email
+            $user = $userModel->findByUsernameOrEmail($username);
+
+            // Verify password using secure hash
+            if ($user && password_verify($password, $user['password'])) {
+                if ($user['status'] == 'locked') {
+                    $this->view('auth/login', ['error' => 'Tài khoản của bạn đã bị khoá. Vui lòng liên hệ quản trị viên!']);
+                    return;
+                }
+
+                // Do not save password in session
+                unset($user['password']);
+
+                // Set user session
+                Auth::setUser($user);
+
+                // Redirect based on role
+                if ($user['role'] == 'admin') {
+                    $this->redirect('admin');
+                } else {
+                    $this->redirect('');
+                }
+            } else {
+                $this->view('auth/login', ['error' => 'Tên đăng nhập, email hoặc mật khẩu không chính xác!']);
+            }
+        } else {
+            $this->redirect('auth');
+        }
+    }
+
+    public function register()
+    {
+        // If already logged in, redirect to dashboard
+        if (Auth::check()) {
+            $this->redirect('dashboard');
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = [
+                'fullname' => trim($_POST['fullname'] ?? ''),
+                'username' => trim($_POST['username'] ?? ''),
+                'email' => trim($_POST['email'] ?? ''),
+                'password' => $_POST['password'] ?? '',
+            ];
+
+            // PHP Server-side Validation
+            if (empty($data['fullname']) || empty($data['username']) || empty($data['email']) || empty($data['password'])) {
+                $this->view('auth/register', ['error' => 'Vui lòng điền đầy đủ dữ liệu!', 'data' => $data]);
+                return;
+            }
+
+            // Validate fullname length
+            if (strlen($data['fullname']) < 3) {
+                $this->view('auth/register', ['error' => 'Họ và tên phải có ít nhất 3 ký tự!', 'data' => $data]);
+                return;
+            }
+
+            // Validate username format
+            if (!preg_match('/^[a-zA-Z0-9_-]+$/', $data['username'])) {
+                $this->view('auth/register', ['error' => 'Tên đăng nhập chỉ được chứa chữ cái, số, gạch dưới và gạch ngang!', 'data' => $data]);
+                return;
+            }
+
+            // Validate username length
+            if (strlen($data['username']) < 3) {
+                $this->view('auth/register', ['error' => 'Tên đăng nhập phải có ít nhất 3 ký tự!', 'data' => $data]);
+                return;
+            }
+
+            // Validate email format
+            if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $this->view('auth/register', ['error' => 'Email không hợp lệ!', 'data' => $data]);
+                return;
+            }
+
+            // Validate password length
+            if (strlen($data['password']) < 6) {
+                $this->view('auth/register', ['error' => 'Mật khẩu phải có ít nhất 6 ký tự!', 'data' => $data]);
+                return;
+            }
+
+            $userModel = new User();
+
+            // Check if username already exists
+            if ($userModel->findByUsername($data['username'])) {
+                $this->view('auth/register', ['error' => 'Tên đăng nhập đã tồn tại!', 'data' => $data]);
+                return;
+            }
+
+            // Check if email already exists
+            if ($userModel->findByEmail($data['email'])) {
+                $this->view('auth/register', ['error' => 'Email đã tồn tại!', 'data' => $data]);
+                return;
+            }
+
+            // Hash password using PASSWORD_DEFAULT (PHP's secure default)
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+
+            // Register user
+            if ($userModel->register($data)) {
+                $this->view('auth/login', ['success' => 'Đăng ký thành công! Hãy đăng nhập với tài khoản vừa tạo.']);
+            } else {
+                $this->view('auth/register', ['error' => 'Có lỗi xảy ra trong quá trình đăng ký. Vui lòng thử lại!', 'data' => $data]);
+            }
+        } else {
+            $this->view('auth/register');
+        }
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        $this->redirect('auth');
+    }
+}
+<?php
+
+/**
+ * Cart Controller
+ * Quản lý giỏ hàng và liên kết dữ liệu với bảng `products` trong DB
+ * Location: app/Controllers/CartController.php
+ */
+class CartController extends BaseController
+{
+    public function index()
+    {
+        require_once BASE_PATH . '/app/Models/Product.php';
+        $productModel = new Product();
+
+        $user = Auth::check() ? Auth::user() : null;
+        $cartSession = $_SESSION['cart'] ?? [];
+        $cartItems = [];
+        $totalPrice = 0;
+
+        foreach ($cartSession as $id => $item) {
+            // Dùng luôn Model đã có, đừng viết lại SQL ở đây
+            $product = $productModel->findById($id);
+
+            if ($product) {
+                $product['quantity'] = $item['quantity'];
+                $product['subtotal'] = $product['price'] * $item['quantity'];
+
+                $cartItems[$id] = $product;
+                $totalPrice += $product['subtotal'];
+            } else {
+                // Nếu sản phẩm không tồn tại trong DB, xóa khỏi session
+                unset($_SESSION['cart'][$id]);
+            }
+        }
+
+        $this->view('pages/cart', [
+            'user' => $user,
+            'cartItems' => $cartItems,
+            'totalPrice' => $totalPrice
+        ]);
+    }
+
+    public function add()
+    {
+        if (!Auth::check()) {
+            $_SESSION['error'] = "Vui lòng đăng nhập để mua hàng.";
+            $this->redirect('auth');
+            return;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $productId = (int)($_POST['product_id'] ?? 0);
+            $quantity = (int)($_POST['quantity'] ?? 1);
+
+            if ($productId > 0 && $quantity > 0) {
+                if (!isset($_SESSION['cart'])) {
+                    $_SESSION['cart'] = [];
+                }
+
+                if (isset($_SESSION['cart'][$productId])) {
+                    $_SESSION['cart'][$productId]['quantity'] += $quantity;
+                } else {
+                    $_SESSION['cart'][$productId] = [
+                        'id' => $productId,
+                        'quantity' => $quantity
+                    ];
+                }
+                $_SESSION['success'] = "Đã thêm sản phẩm vào giỏ hàng!";
+            }
+            $this->redirect('cart');
+            return;
+        }
+        $this->redirect('shop');
+    }
+
+    public function update()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $productId = (int)($_POST['product_id'] ?? 0);
+            $action = $_POST['action'] ?? '';
+
+            if (isset($_SESSION['cart'][$productId])) {
+                if ($action === 'increase') {
+                    $_SESSION['cart'][$productId]['quantity']++;
+                } elseif ($action === 'decrease') {
+                    $_SESSION['cart'][$productId]['quantity']--;
+
+                    if ($_SESSION['cart'][$productId]['quantity'] <= 0) {
+                        unset($_SESSION['cart'][$productId]);
+                    }
+                }
+            }
+        }
+        $this->redirect('cart');
+    }
+
+    public function remove($id = null)
+    {
+        $id = (int)$id;
+        if ($id > 0 && isset($_SESSION['cart'][$id])) {
+            unset($_SESSION['cart'][$id]);
+            $_SESSION['success'] = "Đã xóa sản phẩm khỏi giỏ hàng.";
+        }
+        $this->redirect('cart');
+    }
+}
+<?php
+
+/**
+ * Dashboard Controller
+ * Handle member area, profile management and role routing
+ * Location: app/Controllers/DashboardController.php
+ */
+class DashboardController extends BaseController
+{
+
+    public function __construct()
+    {
+        // Require user to be logged in
+        if (!Auth::check()) {
+            $this->redirect('auth');
+            exit;
+        }
+
+        // Check if user is locked
+        if (!Auth::isActive()) {
+            session_destroy();
+            header('Location: ' . BASE_URL . '/auth');
+            echo 'Tài khoản của bạn đã bị khoá.';
+            exit;
+        }
+    }
+
+    /**
+     * Dashboard Home / Profile Page
+     */
+    public function index()
+    {
+        // Redirect admin to admin panel
+        if (Auth::isAdmin()) {
+            $this->redirect('admin');
+            return;
+        }
 
 
-//
+        if (Auth::isMember()) {
+            require_once BASE_PATH . '/app/Models/User.php';
+            $userModel = new User();
 
+            $currentUser = $userModel->findById(Auth::user()['id']);
+
+            $this->view('dashboard/index', [
+                'user' => Auth::user(),
+                'pageTitle' => 'Bảng điều khiển'
+            ]);
+            return;
+        }
+
+        // Unknown role
+        echo "Lỗi: Vai trò không xác định.";
+        exit;
+    }
+
+    /**
+     * Handle Profile Update (Update Name & Avatar)
+     */
+    public function updateProfile()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->redirect('dashboard');
+            return;
+        }
+
+        require_once BASE_PATH . '/app/Models/User.php';
+        $userModel = new User();
+        $userId = Auth::user()['id'];
+        $fullname = trim($_POST['fullname'] ?? '');
+
+        // Lấy lại user hiện tại để giữ lại avatar cũ nếu không upload mới
+        $currentUser = $userModel->findById($userId);
+        $avatarPath = $currentUser['avatar'];
+
+        // Validate
+        if (empty($fullname)) {
+            $_SESSION['error'] = "Họ và tên không được để trống!";
+            $this->redirect('dashboard/index');
+            return;
+        }
+
+        // XỬ LÝ UPLOAD ẢNH
+        if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+            $ext = strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
+            if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp']) && $_FILES['avatar']['size'] < 5000000) {
+                $newFileName = 'avatar_' . $userId . '_' . time() . '.' . $ext;
+                // Lưu vào STORAGE_PATH thay vì public/assets
+                $uploadDir = STORAGE_PATH . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'avatars' . DIRECTORY_SEPARATOR;
+
+                if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+
+                if (move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadDir . $newFileName)) {
+                    if ($avatarPath && file_exists(STORAGE_PATH . DIRECTORY_SEPARATOR . $avatarPath)) {
+                        @unlink(STORAGE_PATH . DIRECTORY_SEPARATOR . $avatarPath);
+                    }
+                    $avatarPath = 'uploads/avatars/' . $newFileName;
+                }
+            } else {
+                $_SESSION['error'] = "Định dạng ảnh không hợp lệ hoặc quá lớn (Max 5MB)!";
+                $this->redirect('dashboard/index');
+                return;
+            }
+        }
+
+        // Update vào DB
+        if ($userModel->updateProfile($userId, $fullname, $avatarPath)) {
+            $_SESSION['user']['fullname'] = $fullname;
+            $_SESSION['user']['avatar'] = $avatarPath; // Đường dẫn mới vào session
+
+            $_SESSION['success'] = "Cập nhật hồ sơ thành công!";
+        } else {
+            $_SESSION['error'] = "Có lỗi xảy ra, vui lòng thử lại.";
+        }
+
+        $this->redirect('dashboard/index');
+    }
+
+    public function updatePassword()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->redirect('dashboard');
+            return;
+        }
+
+        require_once BASE_PATH . '/app/Models/User.php';
+        $userModel = new User();
+        $userId = Auth::user()['id'];
+
+        $currentPass = $_POST['current_password'] ?? '';
+        $newPass = $_POST['new_password'] ?? '';
+        $confirmPass = $_POST['confirm_password'] ?? '';
+
+        $user = $userModel->findById($userId);
+
+        if (!password_verify($currentPass, $user['password'])) {
+            $_SESSION['error'] = "Mật khẩu hiện tại không đúng!";
+        } elseif ($newPass !== $confirmPass) {
+            $_SESSION['error'] = "Mật khẩu mới không khớp!";
+        } elseif (strlen($newPass) < 6) {
+            $_SESSION['error'] = "Mật khẩu mới phải từ 6 ký tự trở lên!";
+        } else {
+            $userModel->updatePassword($userId, password_hash($newPass, PASSWORD_DEFAULT));
+            $_SESSION['success'] = "Đổi mật khẩu thành công!";
+        }
+
+        $this->redirect('dashboard');
+    }
+
+    public function checkout()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Auth::check()) {
+                $this->redirect('auth');
+                exit;
+            }
+
+            $cartSession = $_SESSION['cart'] ?? [];
+            if (empty($cartSession)) {
+                $this->redirect('cart');
+                exit;
+            }
+
+            $db = Database::getInstance();
+            $cartItems = [];
+            $totalPrice = 0;
+
+            // XỬ LÝ GIỎ HÀNG & LẤY GIÁ GỐC TỪ DATABASE (BẢO MẬT HƠN)
+            foreach ($cartSession as $key => $value) {
+                $productId = 0;
+                $quantity = 0;
+
+                // Tự động nhận diện cấu trúc Session của bạn (dù là mảng hay key=>value)
+                if (is_array($value)) {
+                    $productId = $value['product_id'] ?? $value['id'] ?? 0;
+                    $quantity = $value['quantity'] ?? $value['qty'] ?? 1;
+                } else {
+                    $productId = $key;
+                    $quantity = $value;
+                }
+
+                if ($productId) {
+                    // Truy vấn DB để lấy giá chính xác nhất của sản phẩm
+                    $db->query("SELECT id, price FROM products WHERE id = :id");
+                    $db->bind(':id', $productId);
+                    $product = $db->single();
+
+                    if ($product) {
+                        // Tạo mảng chuẩn bị cho OrderModel
+                        $cartItems[] = [
+                            'product_id' => $product['id'],
+                            'quantity'   => $quantity,
+                            'price'      => $product['price']
+                        ];
+                        // Tính tổng tiền dựa trên giá DB
+                        $totalPrice += ($product['price'] * $quantity);
+                    }
+                }
+            }
+
+            // Nếu không có sản phẩm nào hợp lệ
+            if (empty($cartItems)) {
+                $_SESSION['error'] = "Dữ liệu giỏ hàng không hợp lệ.";
+                $this->redirect('cart');
+                exit;
+            }
+
+            require_once BASE_PATH . '/app/Models/Order.php';
+            $orderModel = new Order();
+
+            $orderData = [
+                'user_id'     => Auth::id(),
+                'fullname'    => $_POST['fullname'] ?? '',
+                'phone'       => $_POST['phone'] ?? '',
+                'address'     => $_POST['address'] ?? '',
+                'note'        => $_POST['note'] ?? '',
+                'total_price' => $totalPrice
+            ];
+
+            // Gửi mảng $cartItems đã chuẩn hóa vào Order
+            $result = $orderModel->create($orderData, $cartItems);
+
+            if ($result) {
+                unset($_SESSION['cart']);
+                $_SESSION['success'] = "Đặt hàng thành công! Chúng tôi sẽ sớm liên hệ với bạn.";
+                $this->redirect('dashboard/orders');
+            } else {
+                $_SESSION['error'] = "Có lỗi xảy ra trong quá trình lưu đơn hàng. Vui lòng thử lại.";
+                $this->redirect('cart');
+            }
+        }
+    }
+
+    /**
+     * Hàm hiển thị danh sách đơn hàng của User
+     * URL: /dashboard/orders
+     */
+    public function orders()
+    {
+        if (!Auth::check()) {
+            $this->redirect('auth');
+            exit;
+        }
+
+        require_once BASE_PATH . '/app/Models/Order.php';
+        $orderModel = new Order();
+
+        $myOrders = $orderModel->getOrdersByUserId(Auth::id());
+
+        $this->view('dashboard/orders', [
+            'user'      => Auth::user(),
+            'myOrders'  => $myOrders,
+            'pageTitle' => 'Lịch sử đơn hàng'
+        ]);
+    }
+    public function order_detail($id = null)
+    {
+        if (!Auth::check() || !$id) {
+            $this->redirect('auth');
+            exit;
+        }
+
+        require_once BASE_PATH . '/app/Models/Order.php';
+        $orderModel = new Order();
+
+        // Tái sử dụng hàm getOrderDetail đã tạo ở phần Admin
+        $order = $orderModel->getOrderDetail($id);
+
+        if (!$order || $order['user_id'] != Auth::id()) {
+            $_SESSION['error'] = "Bạn không có quyền xem đơn hàng này.";
+            $this->redirect('dashboard/orders');
+            exit;
+        }
+
+
+        $this->view('dashboard/order-detail', [
+            'user'      => Auth::user(),
+            'order'     => $order,
+            'pageTitle' => 'Chi tiết đơn hàng #' . $id
+        ]);
+    }
+}
+<?php
+// Location: app/Controllers/FaqController.php
+class FaqController extends BaseController
+{
+    private $db;
+    private $dataModel;
+
+    public function __construct()
+    {
+        $this->db = Database::getInstance();
+        $this->dataModel = new Data();
+    }
+    public function index()
+    {
+
+        $faqs = $this->dataModel->get_faqs();
+
+
+        if (!$faqs) {
+            $faqs = [];
+        }
+
+        $user = Auth::check() ? Auth::user() : null;
+
+        // Truyền $faqs sang View
+        $this->view('pages/faq', [
+            'user' => $user,
+            'faqs' => $faqs
+        ]);
+    }
+}
+<?php
+// Location: app/Controllers/FileController.php
+class FileController extends BaseController
+{
+    // URL truy cập sẽ là: BASE_URL/file/view?path=uploads/pages/tenanh.jpg
+    public function render()
+    {
+        $path = $_GET['path'] ?? '';
+        $filePath = STORAGE_PATH . DIRECTORY_SEPARATOR . $path;
+
+        if (file_exists($filePath) && strpos($filePath, STORAGE_PATH) === 0) {
+            $mime = mime_content_type($filePath);
+            header('Content-Type: ' . $mime);
+            header('Content-Length: ' . filesize($filePath));
+            readfile($filePath);
+            exit;
+        }
+        http_response_code(404);
+        echo "File không tồn tại.";
+    }
+}
+<?php
+
+/**
+ * Home Controller
+ * Handle homepage and public pages
+ * Location: app/Controllers/HomeController.php
+ */
+class HomeController extends BaseController
+{
+
+    /**
+     * Homepage - visible to all (guest & members)
+     */
+    public function index()
+    {
+        $user = Auth::check() ? Auth::user() : null;
+        require_once BASE_PATH . '/app/Models/Product.php';
+        $productModel = new Product();
+        $featuredProducts = $productModel->getFeatured();
+        $this->view('pages/home', ['user' => $user, 'featuredProducts' => $featuredProducts]);
+    }
+}
+<?php
+
+/**
+ * NewsController
+ * Handles frontend news listing, detail page, and comment submission (Part #4)
+ * Location: app/Controllers/NewsController.php
+ */
+class NewsController extends BaseController
+{
+    private $newsModel;
+    private $commentModel;
+
+    public function __construct()
+    {
+        $this->newsModel    = new News();
+        $this->commentModel = new Comment();
+    }
+
+    /**
+     * GET /news  — news listing with search + pagination
+     */
+    public function index()
+    {
+        $user   = Auth::check() ? Auth::user() : null;
+        $search = trim($_GET['search'] ?? '');
+        $page   = max(1, (int)($_GET['page'] ?? 1));
+
+        $total      = $this->newsModel->countPublished($search);
+        $newsList   = $this->newsModel->getPublished($page, $search);
+        $perPage    = $this->newsModel->getPerPage();
+        $totalPages = $total > 0 ? (int)ceil($total / $perPage) : 1;
+        $dataModel = new Data();
+        $company = $dataModel->site_content_all();
+
+        $this->view('news/index', [
+            'user'        => $user,
+            'newsList'    => $newsList,
+            'search'      => $search,
+            'currentPage' => $page,
+            'company'     => $company,
+            'totalPages'  => $totalPages,
+            'total'       => $total,
+            'extraCss' => [
+                'assets/css/news.css'
+            ]
+        ]);
+    }
+
+    /**
+     * GET /news/detail/{slug}  — single news detail + comments
+     */
+    public function detail($slug = null)
+    {
+        if (!$slug) {
+            $this->redirect('news');
+            return;
+        }
+
+        $user = Auth::check() ? Auth::user() : null;
+        $news = $this->newsModel->getBySlug($slug);
+        $dataModel = new Data();
+        $company = $dataModel->site_content_all();
+
+        if (!$news) {
+            // Article not found — show listing with error message
+            $this->view('news/index', [
+                'user'        => $user,
+                'newsList'    => [],
+                'search'      => '',
+                'currentPage' => 1,
+                'totalPages'  => 1,
+                'total'       => 0,
+                'pageError'   => 'Bài viết không tồn tại hoặc đã bị gỡ xuống!',
+            ]);
+            return;
+        }
+
+        $related      = $this->newsModel->getRelated($news['id'], $news['tags'] ?? '');
+        $comments     = $this->commentModel->getByNewsId($news['id']);
+        $commentCount = $this->commentModel->countByNewsId($news['id']);
+
+        // Flash messages from session (set after redirect)
+        $commentError   = $_SESSION['comment_error']   ?? null;
+        $commentSuccess = $_SESSION['comment_success'] ?? null;
+        unset($_SESSION['comment_error'], $_SESSION['comment_success']);
+
+        $this->view('news/detail', [
+            'user'           => $user,
+            'news'           => $news,
+            'related'        => $related,
+            'comments'       => $comments,
+            'commentCount'   => $commentCount,
+            'company'        => $company,
+            'commentError'   => $commentError,
+            'commentSuccess' => $commentSuccess,
+            'extraCss' => [
+                'assets/css/news.css'
+            ]
+        ]);
+    }
+
+    /**
+     * POST /news/comment_post  — submit a comment (requires login)
+     */
+    public function comment_post()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->redirect('news');
+            return;
+        }
+
+        $slug   = trim($_POST['slug']    ?? '');
+        $newsId = (int)($_POST['news_id'] ?? 0);
+
+        // Must be logged in
+        if (!Auth::check()) {
+            $_SESSION['comment_error'] = 'Bạn cần đăng nhập để bình luận!';
+            $this->redirect('news/detail/' . $slug . '#comments');
+            return;
+        }
+
+        $content = trim($_POST['content'] ?? '');
+
+        // Server-side validation
+        if (empty($content)) {
+            $_SESSION['comment_error'] = 'Nội dung bình luận không được để trống!';
+            $this->redirect('news/detail/' . $slug . '#comments');
+            return;
+        }
+        if (mb_strlen($content) < 5) {
+            $_SESSION['comment_error'] = 'Bình luận phải có ít nhất 5 ký tự!';
+            $this->redirect('news/detail/' . $slug . '#comments');
+            return;
+        }
+        if (mb_strlen($content) > 1000) {
+            $_SESSION['comment_error'] = 'Bình luận không được vượt quá 1000 ký tự!';
+            $this->redirect('news/detail/' . $slug . '#comments');
+            return;
+        }
+
+        // XSS protection — strip any HTML tags, encode special chars
+        $content = htmlspecialchars(strip_tags($content), ENT_QUOTES, 'UTF-8');
+
+        $ok = $this->commentModel->create([
+            'user_id'   => Auth::id(),
+            'target_id' => $newsId,
+            'content'   => $content,
+        ]);
+
+        if ($ok) {
+            $_SESSION['comment_success'] = 'Bình luận của bạn đã được gửi và đang chờ duyệt. Cảm ơn bạn!';
+        } else {
+            $_SESSION['comment_error'] = 'Có lỗi xảy ra, vui lòng thử lại!';
+        }
+
+        $this->redirect('news/detail/' . $slug . '#comments');
+    }
+}
+<?php
+
+/**
+ * Shop Controller (Phiên bản MVC Chuẩn với Model)
+ * Location: app/Controllers/ShopController.php
+ */
+class ShopController extends BaseController
+{
+    public function index()
+    {
+        $productModel = new Product();
+        $user = Auth::check() ? Auth::user() : null;
+        $category = isset($_GET['category']) ? trim($_GET['category']) : 'all';
+        $sort     = isset($_GET['sort']) ? trim($_GET['sort']) : 'newest';
+        $search   = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $page     = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        if ($page < 1) $page = 1;
+
+
+        $limit = 8;
+        $offset = ($page - 1) * $limit;
+
+        // 3. Gọi Model để lấy dữ liệu
+        $products   = $productModel->getFilteredProducts($limit, $offset, $category, $sort, $search);
+        $totalItems = $productModel->countFilteredProducts($category, $search);
+        $totalPages = ceil($totalItems / $limit);
+
+        // 4. Đẩy dữ liệu ra View
+        // Đảm bảo đường dẫn 'shop/index' khớp với thư mục view của bạn
+        $this->view('pages/shop', [
+            'products'      => $products,
+            'totalPages'    => $totalPages,
+            'currentPage'   => $page,
+            'currentCategory' => $category,
+            'currentSort'     => $sort,
+            'searchKeyword'   => $search,
+            'user'          => $user
+        ]);
+    }
+
+    public function detail($id = null)
+    {
+        if (!$id) {
+            $this->redirect('shop');
+            return;
+        }
+
+        require_once BASE_PATH . '/app/Models/Product.php';
+        $productModel = new Product();
+        $user = Auth::check() ? Auth::user() : null;
+
+        // Gọi Model để tìm sản phẩm
+        $product = $productModel->findById($id);
+
+        if (empty($product)) {
+            $this->redirect('shop');
+            return;
+        }
+
+        // Gọi Model để lấy sản phẩm liên quan
+        $relatedProducts = $productModel->getRelated($id, 4);
+        if (!is_array($relatedProducts)) $relatedProducts = [];
+
+        $this->view('pages/product-detail', [
+            'user' => $user,
+            'product' => $product,
+            'relatedProducts' => $relatedProducts
+        ]);
+    }
+
+    /**
+     * Thêm vào giỏ hàng (Action trung gian)
+     * Thường dùng để nhận POST từ trang Product Detail
+     */
+    public function addToCart()
+    {
+        // 1. Kiểm tra đăng nhập
+        if (!Auth::check()) {
+            $_SESSION['error'] = "Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.";
+            $this->redirect('auth');
+            return;
+        }
+
+        // 2. Xử lý dữ liệu
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $productId = (int)($_POST['product_id'] ?? 0);
+            $quantity = (int)($_POST['quantity'] ?? 1);
+
+            if ($productId > 0 && $quantity > 0) {
+                if (!isset($_SESSION['cart'])) {
+                    $_SESSION['cart'] = [];
+                }
+
+                // Nếu đã có thì tăng số lượng
+                if (isset($_SESSION['cart'][$productId])) {
+                    $_SESSION['cart'][$productId]['quantity'] += $quantity;
+                } else {
+                    // Nếu chưa có thì thêm mới
+                    $_SESSION['cart'][$productId] = [
+                        'id' => $productId,
+                        'quantity' => $quantity
+                    ];
+                }
+                $_SESSION['success'] = "Đã thêm sản phẩm vào giỏ hàng!";
+            }
+
+            // Trở về trang chi tiết sản phẩm
+            $this->redirect('shop/detail/' . $productId);
+            return;
+        }
+
+        $this->redirect('shop');
+    }
+}

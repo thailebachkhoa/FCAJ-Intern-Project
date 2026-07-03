@@ -521,6 +521,7 @@ class AdminController extends BaseController
         ]);
     }
 
+
     public function product_edit($id)
     {
         $productModel = new Product();
@@ -823,7 +824,7 @@ class AdminController extends BaseController
             ['faq.hero_description',       'Trang FAQ', 'Mô tả hero',                          'textarea', 'Tra cứu nhanh các thông tin quan trọng trước khi khảo sát, chọn cây, nhận báo giá hoặc sử dụng gói chăm sóc sau bàn giao.'],
             ['faq.hero_search_placeholder','Trang FAQ', 'Gợi ý ô tìm kiếm FAQ',               'text',     'Tìm nhanh: bảo hành, khảo sát, gửi ảnh, chăm sóc...'],
             ['faq.hero_card_title',        'Trang FAQ', 'Tiêu đề thẻ hero',                    'text',     'Cần câu trả lời riêng?'],
-            ['faq.hero_card_text',         'Trang FAQ', 'Nội dung thẻ hero',                   'textarea', 'Mở trợ lý AI ở góc màn hình hoặc gửi ảnh không gian để được tư vấn theo điều kiện thực tế.'],
+            ['faq.hero_card_text',         'Trang FAQ', 'Nội dung thẻ hero',                   'textarea', 'Nhấn biểu tượng zalo để liên hệ đội ngũ tư vấn'],
             ['faq.sidebar_kicker',         'Trang FAQ', 'Nhãn sidebar',                        'text',     'Điểm cần biết'],
             ['faq.sidebar_title',          'Trang FAQ', 'Tiêu đề sidebar',                     'text',     'Chuẩn bị trước khi tư vấn'],
             ['faq.sidebar_description',    'Trang FAQ', 'Mô tả sidebar',                       'textarea', 'Thông tin càng rõ, phương án cây xanh càng sát nhu cầu và ngân sách.'],
@@ -832,12 +833,6 @@ class AdminController extends BaseController
             ['faq.sidebar_item_3',         'Trang FAQ', 'Gợi ý chuẩn bị 3',                   'text',     'Kích thước khu vực dự kiến'],
             ['faq.sidebar_item_4',         'Trang FAQ', 'Gợi ý chuẩn bị 4',                   'text',     'Ngân sách hoặc mức ưu tiên'],
             ['faq.sidebar_cta',            'Trang FAQ', 'Nút CTA sidebar',                     'text',     'Về Plantify'],
-            ['faq.chip_1',                 'Trang FAQ', 'Câu hỏi chip 1',                      'text',     'Plantify có khảo sát trực tiếp trước khi thiết kế không?'],
-            ['faq.chip_1_label',           'Trang FAQ', 'Nhãn chip 1',                         'text',     'Có khảo sát không?'],
-            ['faq.chip_2',                 'Trang FAQ', 'Câu hỏi chip 2',                      'text',     'Tôi có thể gửi ảnh mặt bằng để được tư vấn online không?'],
-            ['faq.chip_2_label',           'Trang FAQ', 'Nhãn chip 2',                         'text',     'Gửi ảnh tư vấn?'],
-            ['faq.chip_3',                 'Trang FAQ', 'Câu hỏi chip 3',                      'text',     'Cây được bảo hành sau bàn giao như thế nào?'],
-            ['faq.chip_3_label',           'Trang FAQ', 'Nhãn chip 3',                         'text',     'Bảo hành cây?'],
             ['faq.steps_kicker',           'Trang FAQ', 'Nhãn section các bước',               'text',     'Sau khi có câu trả lời'],
             ['faq.steps_title',            'Trang FAQ', 'Tiêu đề section các bước',            'text',     'Quy trình tiếp theo rất gọn'],
             ['faq.step_1_title',           'Trang FAQ', 'Tiêu đề bước 1',                      'text',     'Gửi ảnh và nhu cầu'],
@@ -846,19 +841,13 @@ class AdminController extends BaseController
             ['faq.step_2_text',            'Trang FAQ', 'Nội dung bước 2',                     'textarea', 'Plantify đề xuất nhóm cây, kích thước chậu và mức chăm sóc phù hợp.'],
             ['faq.step_3_title',           'Trang FAQ', 'Tiêu đề bước 3',                      'text',     'Chốt lịch khảo sát'],
             ['faq.step_3_text',            'Trang FAQ', 'Nội dung bước 3',                     'textarea', 'Đội ngũ kiểm tra thực tế trước khi báo giá và triển khai chính thức.'],
-            ['faq.chatbot_title',          'Trang FAQ', 'Tiêu đề chatbot widget',              'text',     'Trợ lý AI Plantify'],
-            ['faq.chatbot_subtitle',       'Trang FAQ', 'Mô tả chatbot widget',                'text',     'Hỏi về cây xanh, dịch vụ và FAQ'],
-            ['faq.chatbot_greeting',       'Trang FAQ', 'Lời chào mở đầu chatbot',             'textarea', 'Xin chào! Tôi có thể giúp gì cho bạn về dịch vụ cây xanh hôm nay?'],
-            ['faq.chatbot_placeholder',    'Trang FAQ', 'Placeholder ô nhập chatbot',          'text',     'Nhập câu hỏi...'],
         ];
  
         $sections = [
             ['title' => 'SEO',                            'desc' => 'Meta title và description.',                                              'keys' => ['faq.meta_title','faq.meta_description']],
             ['title' => 'Hero đầu trang',                 'desc' => 'Tiêu đề, mô tả, ô tìm kiếm và thẻ thông tin bên phải.',               'keys' => ['faq.hero_kicker','faq.hero_title','faq.hero_description','faq.hero_search_placeholder','faq.hero_card_title','faq.hero_card_text']],
             ['title' => 'Sidebar chuẩn bị tư vấn',       'desc' => 'Tiêu đề và danh sách gợi ý chuẩn bị trước khi liên hệ.',              'keys' => ['faq.sidebar_kicker','faq.sidebar_title','faq.sidebar_description','faq.sidebar_item_1','faq.sidebar_item_2','faq.sidebar_item_3','faq.sidebar_item_4','faq.sidebar_cta']],
-            ['title' => 'Câu hỏi nhanh (chip buttons)',   'desc' => 'Nội dung câu hỏi và nhãn hiển thị của 3 chip.',                       'keys' => ['faq.chip_1_label','faq.chip_1','faq.chip_2_label','faq.chip_2','faq.chip_3_label','faq.chip_3']],
             ['title' => 'Quy trình 3 bước',               'desc' => 'Section phía dưới accordion FAQ.',                                    'keys' => ['faq.steps_kicker','faq.steps_title','faq.step_1_title','faq.step_1_text','faq.step_2_title','faq.step_2_text','faq.step_3_title','faq.step_3_text']],
-            ['title' => 'Chatbot widget',                  'desc' => 'Tiêu đề, lời chào và placeholder của widget trợ lý AI.',              'keys' => ['faq.chatbot_title','faq.chatbot_subtitle','faq.chatbot_greeting','faq.chatbot_placeholder']],
         ];
  
         $result = $this->_pageEditorHandle($defaults, 'Trang FAQ');
