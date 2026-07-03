@@ -465,12 +465,7 @@ class AdminController extends BaseController
         ]);
     }
 
-    public function rag()
-    {
-        $this->view('admin/rag', [
-            'user' => Auth::user()
-        ]);
-    }
+
 
     /* =============================================
    PRODUCT MANAGEMENT
@@ -630,76 +625,8 @@ class AdminController extends BaseController
         $this->redirect('admin/products');
     }
 
-     /** GET /admin/contacts — danh sách liên hệ */
-    public function contacts()
-    {
-        $db      = Database::getInstance();
-        $search  = trim($_GET['search'] ?? '');
-        $statusF = $_GET['status'] ?? '';
-        $page    = max(1, (int)($_GET['page'] ?? 1));
-        $perPage = 10;
-        $offset  = ($page - 1) * $perPage;
-
-        $where = '1=1';
-        if ($search) $where .= ' AND (name LIKE :s1 OR email LIKE :s2 OR message LIKE :s3)';
-        if ($statusF === 'unread') $where .= ' AND is_read = 0';
-        if ($statusF === 'read')   $where .= ' AND is_read = 1';
-
-        $db->query("SELECT COUNT(*) as total FROM contacts WHERE $where");
-        if ($search) {
-            $db->bind(':s1', '%' . $search . '%');
-            $db->bind(':s2', '%' . $search . '%');
-            $db->bind(':s3', '%' . $search . '%');
-        }
-        $total = (int)($db->single()['total'] ?? 0);
-
-        $db->query("SELECT * FROM contacts WHERE $where ORDER BY is_read ASC, created_at DESC LIMIT :lim OFFSET :off");
-        if ($search) {
-            $db->bind(':s1', '%' . $search . '%');
-            $db->bind(':s2', '%' . $search . '%');
-            $db->bind(':s3', '%' . $search . '%');
-        }
-        $db->bind(':lim', $perPage);
-        $db->bind(':off', $offset);
-        $contacts = $db->resultSet();
-
-        $success = $_SESSION['admin_success'] ?? null;
-        unset($_SESSION['admin_success']);
-
-        $this->view('admin/contacts', [
-            'user'         => Auth::user(),
-            'contacts'     => $contacts,
-            'search'       => $search,
-            'statusFilter' => $statusF,
-            'currentPage'  => $page,
-            'totalPages'   => $total > 0 ? (int)ceil($total / $perPage) : 1,
-            'total'        => $total,
-            'success'      => $success,
-        ]);
-    }
-
-    /** GET /admin/contact_read/{id} — đánh dấu đã đọc */
-    public function contact_read($id = null)
-    {
-        $db = Database::getInstance();
-        $db->query("UPDATE contacts SET is_read = 1 WHERE id = :id");
-        $db->bind(':id', (int)$id);
-        $db->execute();
-        $_SESSION['admin_success'] = 'Đã đánh dấu đã đọc!';
-        $this->redirect('admin/contacts');
-    }
-
-    /** GET /admin/contact_delete/{id} — xóa liên hệ */
-    public function contact_delete($id = null)
-    {
-        $db = Database::getInstance();
-        $db->query("DELETE FROM contacts WHERE id = :id");
-        $db->bind(':id', (int)$id);
-        $db->execute();
-        $_SESSION['admin_success'] = 'Đã xóa liên hệ!';
-        $this->redirect('admin/contacts');
-    }
-
+  
+   
     public function orders()
     {
         require_once BASE_PATH . '/app/Models/Order.php';
@@ -946,56 +873,5 @@ class AdminController extends BaseController
         ]);
     }
  
-    /**
-     * GET/POST /admin/page_contact — nội dung trang liên hệ
-     */
-    public function page_contact()
-    {
-        $defaults = [
-            ['contact.meta_title',           'Trang liên hệ', 'Meta title',                          'text',     'Liên hệ | Plantify Co'],
-            ['contact.meta_description',     'Trang liên hệ', 'Meta description',                    'textarea', 'Liên hệ Plantify Co để được tư vấn về cây xanh nội thất, thiết kế decor và dịch vụ chăm sóc định kỳ.'],
-            ['contact.hero_kicker',          'Trang liên hệ', 'Nhãn hero',                           'text',     'Kết nối với Plantify'],
-            ['contact.hero_title',           'Trang liên hệ', 'Tiêu đề hero',                        'text',     'Luôn sẵn sàng hỗ trợ bạn'],
-            ['contact.hero_description',     'Trang liên hệ', 'Mô tả hero',                          'textarea', 'Dù bạn cần tư vấn chọn cây cho văn phòng, hỏi đáp về cách chăm sóc, hay phản hồi dịch vụ, chúng tôi luôn ở đây để lắng nghe.'],
-            ['contact.hero_card_title',      'Trang liên hệ', 'Tiêu đề thẻ hero',                   'text',     'Phản hồi nhanh'],
-            ['contact.hero_card_text',       'Trang liên hệ', 'Nội dung thẻ hero',                   'textarea', 'Đội ngũ CSKH cam kết trả lời các yêu cầu trực tuyến trong vòng 24 giờ làm việc.'],
-            ['contact.form_title',           'Trang liên hệ', 'Tiêu đề form liên hệ',               'text',     'Gửi tin nhắn cho chúng tôi'],
-            ['contact.form_subtitle',        'Trang liên hệ', 'Mô tả dưới tiêu đề form',            'textarea', 'Để lại thông tin bên dưới, chuyên viên của Plantify sẽ liên hệ lại với bạn ngay.'],
-            ['contact.label_name',           'Trang liên hệ', 'Nhãn trường Họ và tên',              'text',     'Họ và tên'],
-            ['contact.placeholder_name',     'Trang liên hệ', 'Gợi ý trường Họ và tên',             'text',     'Ví dụ: Nguyễn Văn A'],
-            ['contact.label_email',          'Trang liên hệ', 'Nhãn trường Email',                  'text',     'Email'],
-            ['contact.placeholder_email',    'Trang liên hệ', 'Gợi ý trường Email',                 'text',     'example@email.com'],
-            ['contact.label_subject',        'Trang liên hệ', 'Nhãn trường Chủ đề',                 'text',     'Chủ đề'],
-            ['contact.subject_default',      'Trang liên hệ', 'Tùy chọn mặc định Chủ đề',          'text',     '-- Chọn chủ đề cần tư vấn --'],
-            ['contact.subject_1',            'Trang liên hệ', 'Chủ đề 1',                           'text',     'Mua sắm cây xanh'],
-            ['contact.subject_2',            'Trang liên hệ', 'Chủ đề 2',                           'text',     'Dịch vụ decor/setup văn phòng'],
-            ['contact.subject_3',            'Trang liên hệ', 'Chủ đề 3',                           'text',     'Hỏi đáp cách chăm sóc cây'],
-            ['contact.subject_4',            'Trang liên hệ', 'Chủ đề 4',                           'text',     'Khác'],
-            ['contact.label_message',        'Trang liên hệ', 'Nhãn trường Nội dung',               'text',     'Nội dung'],
-            ['contact.placeholder_message',  'Trang liên hệ', 'Gợi ý trường Nội dung',              'textarea', 'Nhập tin nhắn của bạn...'],
-            ['contact.btn_submit',           'Trang liên hệ', 'Nhãn nút gửi form',                  'text',     'Gửi liên hệ'],
-            ['contact.success_message',      'Trang liên hệ', 'Thông báo gửi thành công',           'textarea', 'Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong vòng 24 giờ.'],
-            ['contact.sidebar_title',        'Trang liên hệ', 'Tiêu đề sidebar thông tin',          'text',     'Bạn cần hỗ trợ gấp?'],
-            ['contact.sidebar_description',  'Trang liên hệ', 'Mô tả sidebar',                      'textarea', 'Đừng ngại gọi cho hotline hoặc ghé trực tiếp showroom của chúng tôi để được giải đáp tức thời.'],
-        ];
- 
-        $sections = [
-            ['title' => 'SEO',               'desc' => 'Tên tab trình duyệt và mô tả tìm kiếm.',                                                     'keys' => ['contact.meta_title','contact.meta_description']],
-            ['title' => 'Hero đầu trang',    'desc' => 'Tiêu đề, mô tả và thẻ thông tin bên phải.',                                                  'keys' => ['contact.hero_kicker','contact.hero_title','contact.hero_description','contact.hero_card_title','contact.hero_card_text']],
-            ['title' => 'Form liên hệ',      'desc' => 'Tiêu đề form, nhãn các trường và nút gửi.',                                                  'keys' => ['contact.form_title','contact.form_subtitle','contact.label_name','contact.placeholder_name','contact.label_email','contact.placeholder_email','contact.label_subject','contact.subject_default','contact.subject_1','contact.subject_2','contact.subject_3','contact.subject_4','contact.label_message','contact.placeholder_message','contact.btn_submit']],
-            ['title' => 'Thông báo',         'desc' => 'Thông báo hiển thị sau khi gửi form thành công.',                                            'keys' => ['contact.success_message']],
-            ['title' => 'Sidebar thông tin', 'desc' => 'Tiêu đề và mô tả cột bên phải (SĐT, địa chỉ lấy từ nhóm Công ty).',                        'keys' => ['contact.sidebar_title','contact.sidebar_description']],
-        ];
- 
-        $result = $this->_pageEditorHandle($defaults, 'Trang liên hệ');
- 
-        $this->view('admin/page_contact', [
-            'user'      => Auth::user(),
-            'pageTitle' => 'Nội dung Trang liên hệ',
-            'message'   => $result['message'],
-            'error'     => $result['error'],
-            'byKey'     => $result['byKey'],
-            'sections'  => $sections,
-        ]);
-    }
+
 }
