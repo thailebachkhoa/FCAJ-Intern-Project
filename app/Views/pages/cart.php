@@ -71,6 +71,7 @@ $isCartEmpty = empty($cartItems);
                                 <div class="col-6 col-md-3 mt-3 mt-md-0">
                                     <!-- FORM TĂNG GIẢM SỐ LƯỢNG -->
                                     <form action="<?= BASE_URL ?>/cart/update" method="POST" class="d-flex align-items-center border rounded p-1" style="max-width: 120px;">
+                                        <?= csrf_field() ?>
                                         <input type="hidden" name="product_id" value="<?= $productId ?>">
 
                                         <button type="submit" name="action" value="decrease" class="btn btn-sm btn-light border-0"><i class="fa-solid fa-minus"></i></button>
@@ -85,7 +86,10 @@ $isCartEmpty = empty($cartItems);
                                 </div>
                                 <div class="col-2 col-md-1 text-end mt-3 mt-md-0">
                                     <!-- NÚT XÓA -->
-                                    <a href="<?= BASE_URL ?>/cart/remove/<?= $productId ?>" class="btn btn-sm btn-outline-danger" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ?');"><i class="fa-solid fa-trash-can"></i></a>
+                                    <form action="<?= BASE_URL ?>/cart/remove/<?= $productId ?>" method="POST" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ?');"><i class="fa-solid fa-trash-can"></i></button>
+                                    </form>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -141,6 +145,7 @@ $isCartEmpty = empty($cartItems);
                 <button type="button" class="btn-close" data-bs-close="modal" aria-label="Close"></button>
             </div>
             <form action="<?= BASE_URL ?>/dashboard/checkout" method="POST">
+                <?= csrf_field() ?>
                 <div class="modal-body p-4">
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Họ và tên người nhận</label>

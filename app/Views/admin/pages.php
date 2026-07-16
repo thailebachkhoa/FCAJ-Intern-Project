@@ -426,6 +426,7 @@ admin_layout_start([
 <div class="admin-card video-upload-card mb-4">
     <h4>Cấu hình video hero trang giới thiệu</h4>
     <form id="heroVideoUploadForm" class="video-upload-grid" method="post" action="<?php echo e(BASE_URL); ?>/api/upload-video.php" enctype="multipart/form-data">
+        <?= csrf_field() ?>
         <label class="video-drop-zone" for="heroVideoFile">
             <input type="file" id="heroVideoFile" name="video" accept="video/mp4,video/quicktime,video/webm" required>
             <span class="video-drop-icon"><i class="fa-solid fa-cloud-arrow-up"></i></span>

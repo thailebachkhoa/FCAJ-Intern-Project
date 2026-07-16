@@ -76,6 +76,7 @@ require BASE_PATH . '/app/Views/partials/header.php';
                         <div class="comment-form-box p-4 bg-light rounded-4 border mb-5">
                             <h5 class="fw-bold mb-3"><i class="fa-solid fa-pen me-2"></i>Viết bình luận của bạn</h5>
                             <form action="<?= BASE_URL ?>/news/comment_post" method="POST" id="commentForm" novalidate>
+                                <?= csrf_field() ?>
                                 <input type="hidden" name="news_id" value="<?= (int)$news['id'] ?>">
                                 <input type="hidden" name="slug" value="<?= e($news['slug']) ?>">
 

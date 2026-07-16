@@ -42,9 +42,8 @@ class Order
             return $orderId;
         } catch (Exception $e) {
             $this->db->rollBack();
-            // TẠM THỜI IN LỖI RA MÀN HÌNH ĐỂ DEBUG:
-            die("Lỗi đặt hàng: " . $e->getMessage());
-            // return false;
+            error_log('Order creation failed: ' . $e->getMessage());
+            return false;
         }
     }
 

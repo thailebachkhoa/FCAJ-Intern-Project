@@ -7,6 +7,12 @@
  */
 class CartController extends BaseController
 {
+    public function __construct()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::verify();
+        }
+    }
     public function index()
     {
         require_once BASE_PATH . '/app/Models/Product.php';
@@ -96,6 +102,8 @@ class CartController extends BaseController
 
     public function remove($id = null)
     {
+        $this->requirePost(); // Chỉ cho xóa qua form POST, không cho gọi bằng link GET
+
         $id = (int)$id;
         if ($id > 0 && isset($_SESSION['cart'][$id])) {
             unset($_SESSION['cart'][$id]);

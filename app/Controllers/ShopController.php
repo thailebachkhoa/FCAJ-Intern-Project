@@ -6,6 +6,12 @@
  */
 class ShopController extends BaseController
 {
+    public function __construct()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::verify();
+        }
+    }
     public function index()
     {
         $productModel = new Product();

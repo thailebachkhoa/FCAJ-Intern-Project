@@ -71,7 +71,7 @@ $avatar = !empty($user['avatar'])
 
                     <!-- Chú ý thêm enctype="multipart/form-data" để upload được ảnh -->
                     <form action="<?= BASE_URL ?>/dashboard/updateProfile" method="POST" enctype="multipart/form-data">
-
+                        <?= csrf_field() ?>
                         <!-- Upload Avatar UI -->
                         <div class="d-flex align-items-center gap-4 mb-4 p-3 bg-light rounded border">
                             <img src="<?= $avatar ?>" id="avatarPreviewForm" class="rounded-circle object-fit-cover" style="width: 80px; height: 80px;">
@@ -115,6 +115,7 @@ $avatar = !empty($user['avatar'])
             <div class="bg-white p-4 p-md-5 shadow-sm" style="border: 1px solid var(--stone-200); border-radius: 16px;">
                 <h4 class="mb-4 fw-bold text-success">Bảo mật tài khoản</h4>
                 <form action="<?= BASE_URL ?>/dashboard/updatePassword" method="POST">
+                    <?= csrf_field() ?>
                     <div class="row g-3">
                         <div class="col-12"><label class="form-label text-muted">Mật khẩu hiện tại</label><input type="password" name="current_password" class="form-control bg-light" required></div>
                         <div class="col-md-6"><label class="form-label text-muted">Mật khẩu mới</label><input type="password" name="new_password" class="form-control bg-light" required></div>

@@ -64,7 +64,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         'message' => 'Phương thức không hợp lệ.',
     ]);
 }
-
+// Kiểm tra CSRF token — tự trả JSON thay vì dùng Csrf::verify() để giữ đúng
+// định dạng phản hồi mà JS phía client (admin/pages.php) đang mong đợi.
+$sentCsrfToken = $_POST['csrf_token'] ?? '';
+$realCsrfToken = $_SESSION['csrf_token'] ?? '';
+if ($realCsrfToken === '' || !hash_equals($realCsrfToken, $sentCsrfToken)) {
+    video_json_response(403, [
+        'success' => false,
+        'message' => 'Phiên làm việc đã hết hạn hoặc yêu cầu không hợp lệ. Vui lòng tải lại trang và thử lại.',
+    ]);
+}
 if (empty($_FILES['video']) || ($_FILES['video']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
     video_json_response(400, [
         'success' => false,

@@ -23,6 +23,11 @@ class DashboardController extends BaseController
             echo 'Tài khoản của bạn đã bị khoá.';
             exit;
         }
+
+        // Thêm dòng này
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::verify();
+        }
     }
 
     /**

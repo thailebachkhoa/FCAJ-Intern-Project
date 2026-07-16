@@ -14,6 +14,11 @@ class NewsController extends BaseController
     {
         $this->newsModel    = new News();
         $this->commentModel = new Comment();
+
+        // Thêm dòng này
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::verify();
+        }
     }
 
     /**

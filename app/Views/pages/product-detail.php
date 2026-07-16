@@ -47,6 +47,7 @@
                 <!-- Form Thêm vào giỏ hàng -->
                 <?php if ($user): ?>
                     <form action="<?= BASE_URL ?>/shop/addToCart" method="POST" class="d-flex align-items-center gap-3">
+                        <?= csrf_field() ?>
                         <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
                         <div class="d-flex align-items-center border rounded p-1" style="border-color: var(--stone-200);">
                             <label for="qty" class="me-2 ms-2 text-muted fw-bold">SL:</label>
