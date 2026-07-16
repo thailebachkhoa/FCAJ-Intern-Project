@@ -241,6 +241,7 @@ if (!function_exists('admin_render_header')) {
 <?php endif; ?>
 
 <form method="POST" id="pageEditorForm">
+    <?= csrf_field() ?>
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
         <div>
             <h4 class="mb-1"><?= htmlspecialchars($heading ?? '') ?></h4>
@@ -449,9 +450,7 @@ if (!function_exists('admin_render_sidebar')) {
         </div>
     </div>
 </div>
-<?php
-    }
-}
+
 <?php
 $pageTitle  = 'Quản lý Bình luận';
 $breadcrumb = 'Bình luận';
@@ -463,6 +462,7 @@ admin_layout_start([
 ]);
 ?>
 
+<!-- location:app/Views/admin/comment-list.php -->
 <!-- ===== FLASH MESSAGE ===== -->
 <?php if (!empty($success)): ?>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -575,26 +575,34 @@ admin_layout_start([
                                     <?php endif; ?>
                                 </td>
                                 <td class="small text-muted"><?= date('d/m/Y H:i', strtotime($c['created_at'])) ?></td>
+                                <!-- Hành động -->
                                 <td class="text-center">
                                     <?php if ($c['status'] === 'approved'): ?>
-                                        <a href="<?= BASE_URL ?>/admin/comment_toggle/<?= $c['id'] ?>"
-                                            class="btn btn-warning btn-sm text-white" title="Ẩn bình luận"
-                                            onclick="return confirm('Ẩn bình luận này?')">
-                                            <i class="fa-solid fa-eye-slash"></i>
-                                        </a>
+                                        <form action="<?= BASE_URL ?>/admin/comment_toggle/<?= $c['id'] ?>" method="POST" class="d-inline">
+                                            <?= csrf_field() ?>
+                                            <button type="submit" class="btn btn-warning btn-sm text-white" title="Ẩn bình luận"
+                                                onclick="return confirm('Ẩn bình luận này?')">
+                                                <i class="fa-solid fa-eye-slash"></i>
+                                            </button>
+                                        </form>
                                     <?php else: ?>
-                                        <a href="<?= BASE_URL ?>/admin/comment_toggle/<?= $c['id'] ?>"
-                                            class="btn btn-success btn-sm" title="Duyệt bình luận"
-                                            onclick="return confirm('Duyệt và hiển thị bình luận này?')">
-                                            <i class="fa-solid fa-check"></i>
-                                        </a>
+                                        <form action="<?= BASE_URL ?>/admin/comment_toggle/<?= $c['id'] ?>" method="POST" class="d-inline">
+                                            <?= csrf_field() ?>
+                                            <button type="submit" class="btn btn-success btn-sm" title="Duyệt bình luận"
+                                                onclick="return confirm('Duyệt và hiển thị bình luận này?')">
+                                                <i class="fa-solid fa-check"></i>
+                                            </button>
+                                        </form>
                                     <?php endif; ?>
-                                    <a href="<?= BASE_URL ?>/admin/comment_delete/<?= $c['id'] ?>" class="btn btn-danger btn-sm"
-                                        title="Xóa"
-                                        onclick="return confirm('Xóa bình luận này? Hành động không thể hoàn tác!')">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </a>
+                                    <form action="<?= BASE_URL ?>/admin/comment_delete/<?= $c['id'] ?>" method="POST" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Xóa"
+                                            onclick="return confirm('Xóa bình luận này? Hành động không thể hoàn tác!')">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </td>
+                                <!-- Hành động -->
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -631,6 +639,7 @@ admin_layout_start([
 <?php
 admin_layout_end();
 ?>
+
 <?php
 
 /**
@@ -750,6 +759,7 @@ admin_layout_start([
                             data-faq='<?= htmlspecialchars(json_encode($faq, JSON_UNESCAPED_UNICODE)) ?>'
                             onclick="editFaq(this)">Sửa</button>
                         <form method="post" class="d-inline">
+                            <?= csrf_field() ?>
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="id" value="<?= e($faq['id']) ?>">
                             <button type="submit" class="btn btn-sm btn-outline-danger"
@@ -770,6 +780,7 @@ admin_layout_start([
 <div class="modal fade" id="addModal" tabindex="-1">
     <div class="modal-dialog">
         <form method="post" class="modal-content">
+            <?= csrf_field() ?>
             <input type="hidden" name="action" value="add">
             <div class="modal-header">
                 <h5 class="modal-title">Thêm FAQ</h5><button type="button" class="btn-close"
@@ -790,6 +801,7 @@ admin_layout_start([
 <div class="modal fade" id="editModal" tabindex="-1">
     <div class="modal-dialog">
         <form method="post" class="modal-content">
+            <?= csrf_field() ?>
             <input type="hidden" name="action" value="edit">
             <input type="hidden" name="id" id="editId">
             <input type="hidden" name="sort_order" id="editSortOrder">
@@ -846,6 +858,7 @@ function saveFaqOrder() {
         const form = new FormData();
         form.append("action", "reorder");
         form.append("ordered_ids", JSON.stringify(orderedIds));
+        form.append("csrf_token", "' . Csrf::token() . '");
         faqSortState.hidden = false;
 
         fetch("' . BASE_URL . '/admin/faqs", {
@@ -1130,6 +1143,7 @@ $extraScripts = '
 ';
 admin_layout_end($extraScripts);
 ?>
+
 <?php
 $isEdit     = ($mode === 'edit');
 $pageTitle  = $isEdit ? 'Sửa bài viết' : 'Thêm bài viết mới';
@@ -1176,7 +1190,8 @@ $fThumb     = $f['thumbnail']         ?? '';
     enctype="multipart/form-data"
     id="newsForm"
     novalidate>
-
+    <?= csrf_field() ?>
+    
     <div class="row g-4">
 
         <!-- LEFT COLUMN: main fields -->
@@ -1612,11 +1627,13 @@ admin_layout_start([
                                         class="btn btn-warning btn-sm text-white" title="Sửa">
                                         <i class="fa-solid fa-pen"></i>
                                     </a>
-                                    <a href="<?= BASE_URL ?>/admin/news_delete/<?= $n['id'] ?>"
-                                        class="btn btn-danger btn-sm" title="Xóa"
-                                        onclick="return confirm('Xóa bài viết \'<?= addslashes(htmlspecialchars($n['title'])) ?>\'?\nHành động này không thể hoàn tác!')">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </a>
+                                    <form action="<?= BASE_URL ?>/admin/news_delete/<?= $n['id'] ?>" method="POST" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Xóa"
+                                            onclick="return confirm('Xóa bài viết \'<?= addslashes(htmlspecialchars($n['title'])) ?>\'?\nHành động này không thể hoàn tác!')">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -1649,6 +1666,7 @@ admin_layout_start([
 <?php
 admin_layout_end();
 ?>
+
 <?php require_once __DIR__ . '/includes/AdminLayout.php';
 admin_layout_start(['pageTitle' => 'Chi tiết Đơn hàng #' . $order['id']]); ?>
 
@@ -1688,7 +1706,7 @@ admin_layout_start(['pageTitle' => 'Chi tiết Đơn hàng #' . $order['id']]); 
                 <h5 class="mb-0">Trạng thái & Giao hàng</h5>
             </div>
             <div class="card-body">
-                <form action="<?= BASE_URL ?>/admin/order_update_status/<?= $order['id'] ?>" method="POST">                    <label class="form-label small fw-bold">Cập nhật trạng thái</label>
+                <form action="<?= BASE_URL ?>/admin/order_update_status/<?= $order['id'] ?>" method="POST"> <?= csrf_field() ?> <label class="form-label small fw-bold">Cập nhật trạng thái</label>
                     <select name="status" class="form-select mb-3 rounded-pill">
                         <option value="pending" <?= $order['status'] == 'pending' ? 'selected' : '' ?>>Chờ xử lý</option>
                         <option value="processing" <?= $order['status'] == 'processing' ? 'selected' : '' ?>>Đang đóng gói</option>
@@ -1708,6 +1726,7 @@ admin_layout_start(['pageTitle' => 'Chi tiết Đơn hàng #' . $order['id']]); 
 </div>
 
 <?php admin_layout_end(); ?>
+
 <?php require_once __DIR__ . '/includes/AdminLayout.php';
 admin_layout_start(['pageTitle' => 'Quản lý Đơn hàng']); ?>
 
@@ -1761,6 +1780,7 @@ admin_layout_start(['pageTitle' => 'Quản lý Đơn hàng']); ?>
 </div>
 
 <?php admin_layout_end(); ?>
+
 <?php
 require_once __DIR__ . '/includes/AdminLayout.php';
 admin_layout_start([
@@ -1776,6 +1796,7 @@ $previewUrl = BASE_URL . '/faq';
 require __DIR__ . '/includes/page_editor_form.php';
  
 admin_layout_end();
+
 <?php
 // ============================================================
 // app/Views/admin/page_home.php
@@ -1796,6 +1817,7 @@ $previewUrl = BASE_URL . '/';
 require __DIR__ . '/includes/page_editor_form.php';
 
 admin_layout_end();
+
 <?php
 // ============================================================
 // app/Views/admin/page_news.php
@@ -1816,6 +1838,7 @@ $previewUrl = BASE_URL . '/news';
 require __DIR__ . '/includes/page_editor_form.php';
  
 admin_layout_end();
+
 <?php
 
 /**
@@ -2156,6 +2179,7 @@ admin_layout_start([
 <?php if ($error): ?><div class="alert alert-danger"><?php echo e($error); ?></div><?php endif; ?>
 
 <form method="post" class="admin-card mb-4">
+    <?= csrf_field() ?>
     <input type="hidden" name="action" value="save_content">
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 about-editor-toolbar">
         <div>
@@ -2274,6 +2298,7 @@ admin_layout_start([
 <div class="admin-card mb-4">
     <h4 class="mb-4">Hình ảnh trang giới thiệu</h4>
     <form method="post" enctype="multipart/form-data">
+        <?= csrf_field() ?>
         <input type="hidden" name="action" value="save_about_image">
         <div class="row align-items-end">
             <div class="col-lg-8 mb-3">
@@ -2369,6 +2394,7 @@ if (heroVideoUploadForm) {
 </script>';
 admin_layout_end($extraScripts);
 ?>
+
 <?php
 require_once __DIR__ . '/includes/AdminLayout.php';
 admin_layout_start([
@@ -2382,6 +2408,7 @@ $p = $product ?? [];
     <div class="card-body p-4">
 
         <form action="" method="POST" enctype="multipart/form-data">
+            <?= csrf_field() ?>
             <div class="row">
                 <div class="col-md-8">
                     <div class="mb-3">
@@ -2436,6 +2463,7 @@ $p = $product ?? [];
 </div>
 
 <?php admin_layout_end(); ?>
+
 <?php
 require_once __DIR__ . '/includes/AdminLayout.php';
 $pageTitle = 'Quản lý Sản phẩm | Plantify Admin';
@@ -2492,9 +2520,12 @@ admin_layout_start([
                                         <a href="<?= BASE_URL ?>/admin/product_edit/<?= $p['id'] ?>" class="btn btn-outline-primary btn-sm mx-1">
                                             <i class="fa-solid fa-pen-to-square"></i> Sửa
                                         </a>
-                                        <a href="<?= BASE_URL ?>/admin/product_delete/<?= $p['id'] ?>" class="btn btn-outline-danger btn-sm mx-1" onclick="return confirm('Xóa sản phẩm này?')">
-                                            <i class="fa-solid fa-trash"></i> Xóa
-                                        </a>
+                                    <form action="<?= BASE_URL ?>/admin/product_delete/<?= $p['id'] ?>" method="POST" class="d-inline">
+                                            <?= csrf_field() ?>
+                                            <button type="submit" class="btn btn-outline-danger btn-sm mx-1" onclick="return confirm('Xóa sản phẩm này?')">
+                                                <i class="fa-solid fa-trash"></i> Xóa
+                                            </button>
+                                    </form>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -2551,6 +2582,7 @@ admin_layout_start([
         <?php endif; ?>
 
         <form action="" method="POST">
+            <?= csrf_field() ?>
             <?php foreach ($settingsByGroup as $groupName => $items): ?>
                 <div class="card shadow-sm border-0 rounded-4 mb-4">
                     <div class="card-header bg-white border-bottom py-3">
@@ -2587,6 +2619,7 @@ admin_layout_start([
 </div>
 
 <?php admin_layout_end(); ?>
+
 <?php
 require_once __DIR__ . '/includes/AdminLayout.php';
 admin_layout_start(['pageTitle' => $pageTitle, 'heading' => $pageTitle]);
@@ -2594,6 +2627,7 @@ admin_layout_start(['pageTitle' => $pageTitle, 'heading' => $pageTitle]);
 <div class="card shadow-sm border-0 rounded-4 mt-4">
     <div class="card-body p-4">
         <form action="" method="POST">
+            <?= csrf_field() ?>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label fw-bold">Tên đăng nhập</label>
@@ -2614,7 +2648,7 @@ admin_layout_start(['pageTitle' => $pageTitle, 'heading' => $pageTitle]);
                 <div class="col-md-6 mb-3">
                     <label class="form-label fw-bold">Chức vụ</label>
                     <select name="role" class="form-select">
-                        <option value="user">Thành viên (User)</option>
+                        <option value="member">Thành viên (Member)</option>
                         <option value="admin">Quản trị (Admin)</option>
                     </select>
                 </div>
@@ -2626,6 +2660,7 @@ admin_layout_start(['pageTitle' => $pageTitle, 'heading' => $pageTitle]);
     </div>
 </div>
 <?php admin_layout_end(); ?>
+
 <?php
 require_once __DIR__ . '/includes/AdminLayout.php';
 $pageTitle = 'Quản lý Người dùng | Plantify Admin';
@@ -2677,29 +2712,43 @@ admin_layout_start([
                                             <span class="badge bg-warning text-dark">Bị Khoá</span>
                                         <?php endif; ?>
                                     </td>
+                                    <!-- Hành động -->
                                     <td>
                                         <?php if ($u['role'] != 'admin'): ?>
-                                            <a href="<?= BASE_URL ?>/admin/reset_password/<?= $u['id'] ?>" class="btn btn-warning btn-sm mx-1 text-white" onclick="return confirm('Bạn có chắc muốn cấp lại mật khẩu mặc định (123456) cho tài khoản này không?')">
-                                                <i class="fa-solid fa-key"></i> Reset
-                                            </a>
+                                            <form action="<?= BASE_URL ?>/admin/reset_password/<?= $u['id'] ?>" method="POST" class="d-inline">
+                                                <?= csrf_field() ?>
+                                                <button type="submit" class="btn btn-warning btn-sm mx-1 text-white" onclick="return confirm('Bạn có chắc muốn cấp lại mật khẩu mặc định (123456) cho tài khoản này không?')">
+                                                    <i class="fa-solid fa-key"></i> Reset
+                                                </button>
+                                            </form>
 
                                             <?php if ($u['status'] == 'active'): ?>
-                                                <a href="<?= BASE_URL ?>/admin/toggle_status/<?= $u['id'] ?>" class="btn btn-danger btn-sm mx-1" onclick="return confirm('Bạn có muốn khoá quyền truy cập của người này?')">
-                                                    <i class="fa-solid fa-lock"></i> Khoá
-                                                </a>
+                                                <form action="<?= BASE_URL ?>/admin/toggle_status/<?= $u['id'] ?>" method="POST" class="d-inline">
+                                                    <?= csrf_field() ?>
+                                                    <button type="submit" class="btn btn-danger btn-sm mx-1" onclick="return confirm('Bạn có muốn khoá quyền truy cập của người này?')">
+                                                        <i class="fa-solid fa-lock"></i> Khoá
+                                                    </button>
+                                                </form>
                                             <?php else: ?>
-                                                <a href="<?= BASE_URL ?>/admin/toggle_status/<?= $u['id'] ?>" class="btn btn-success btn-sm mx-1">
-                                                    <i class="fa-solid fa-unlock"></i> Mở
-                                                </a>
+                                                <form action="<?= BASE_URL ?>/admin/toggle_status/<?= $u['id'] ?>" method="POST" class="d-inline">
+                                                    <?= csrf_field() ?>
+                                                    <button type="submit" class="btn btn-success btn-sm mx-1">
+                                                        <i class="fa-solid fa-unlock"></i> Mở
+                                                    </button>
+                                                </form>
                                             <?php endif; ?>
 
-                                            <a href="<?= BASE_URL ?>/admin/delete_user/<?= $u['id'] ?>" class="btn btn-danger btn-sm mx-1" onclick="return confirm('Xóa người dùng này? Hành động này không thể hoàn tác!')">
-                                                <i class="fa-solid fa-trash"></i> Xóa
-                                            </a>
+                                            <form action="<?= BASE_URL ?>/admin/delete_user/<?= $u['id'] ?>" method="POST" class="d-inline">
+                                                <?= csrf_field() ?>
+                                                <button type="submit" class="btn btn-danger btn-sm mx-1" onclick="return confirm('Xóa người dùng này? Hành động này không thể hoàn tác!')">
+                                                    <i class="fa-solid fa-trash"></i> Xóa
+                                                </button>
+                                            </form>
                                         <?php else: ?>
                                             <span class="text-muted"><i class="fa-solid fa-shield"></i> Không thể can thiệp</span>
                                         <?php endif; ?>
                                     </td>
+                                    <!-- Hành động -->
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -2725,3 +2774,7 @@ admin_layout_start([
 // Hàm này tự động đóng div nội dung và tự động nạp luôn bootstrap, scripts.js
 admin_layout_end();
 ?>
+
+
+
+

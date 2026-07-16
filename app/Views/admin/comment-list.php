@@ -9,6 +9,7 @@ admin_layout_start([
 ]);
 ?>
 
+<!-- location:app/Views/admin/comment-list.php -->
 <!-- ===== FLASH MESSAGE ===== -->
 <?php if (!empty($success)): ?>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -121,26 +122,34 @@ admin_layout_start([
                                     <?php endif; ?>
                                 </td>
                                 <td class="small text-muted"><?= date('d/m/Y H:i', strtotime($c['created_at'])) ?></td>
+                                <!-- Hành động -->
                                 <td class="text-center">
                                     <?php if ($c['status'] === 'approved'): ?>
-                                        <a href="<?= BASE_URL ?>/admin/comment_toggle/<?= $c['id'] ?>"
-                                            class="btn btn-warning btn-sm text-white" title="Ẩn bình luận"
-                                            onclick="return confirm('Ẩn bình luận này?')">
-                                            <i class="fa-solid fa-eye-slash"></i>
-                                        </a>
+                                        <form action="<?= BASE_URL ?>/admin/comment_toggle/<?= $c['id'] ?>" method="POST" class="d-inline">
+                                            <?= csrf_field() ?>
+                                            <button type="submit" class="btn btn-warning btn-sm text-white" title="Ẩn bình luận"
+                                                onclick="return confirm('Ẩn bình luận này?')">
+                                                <i class="fa-solid fa-eye-slash"></i>
+                                            </button>
+                                        </form>
                                     <?php else: ?>
-                                        <a href="<?= BASE_URL ?>/admin/comment_toggle/<?= $c['id'] ?>"
-                                            class="btn btn-success btn-sm" title="Duyệt bình luận"
-                                            onclick="return confirm('Duyệt và hiển thị bình luận này?')">
-                                            <i class="fa-solid fa-check"></i>
-                                        </a>
+                                        <form action="<?= BASE_URL ?>/admin/comment_toggle/<?= $c['id'] ?>" method="POST" class="d-inline">
+                                            <?= csrf_field() ?>
+                                            <button type="submit" class="btn btn-success btn-sm" title="Duyệt bình luận"
+                                                onclick="return confirm('Duyệt và hiển thị bình luận này?')">
+                                                <i class="fa-solid fa-check"></i>
+                                            </button>
+                                        </form>
                                     <?php endif; ?>
-                                    <a href="<?= BASE_URL ?>/admin/comment_delete/<?= $c['id'] ?>" class="btn btn-danger btn-sm"
-                                        title="Xóa"
-                                        onclick="return confirm('Xóa bình luận này? Hành động không thể hoàn tác!')">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </a>
+                                    <form action="<?= BASE_URL ?>/admin/comment_delete/<?= $c['id'] ?>" method="POST" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Xóa"
+                                            onclick="return confirm('Xóa bình luận này? Hành động không thể hoàn tác!')">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </td>
+                                <!-- Hành động -->
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>

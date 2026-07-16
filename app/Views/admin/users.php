@@ -49,29 +49,43 @@ admin_layout_start([
                                             <span class="badge bg-warning text-dark">Bị Khoá</span>
                                         <?php endif; ?>
                                     </td>
+                                    <!-- Hành động -->
                                     <td>
                                         <?php if ($u['role'] != 'admin'): ?>
-                                            <a href="<?= BASE_URL ?>/admin/reset_password/<?= $u['id'] ?>" class="btn btn-warning btn-sm mx-1 text-white" onclick="return confirm('Bạn có chắc muốn cấp lại mật khẩu mặc định (123456) cho tài khoản này không?')">
-                                                <i class="fa-solid fa-key"></i> Reset
-                                            </a>
+                                            <form action="<?= BASE_URL ?>/admin/reset_password/<?= $u['id'] ?>" method="POST" class="d-inline">
+                                                <?= csrf_field() ?>
+                                                <button type="submit" class="btn btn-warning btn-sm mx-1 text-white" onclick="return confirm('Bạn có chắc muốn cấp lại mật khẩu mặc định (123456) cho tài khoản này không?')">
+                                                    <i class="fa-solid fa-key"></i> Reset
+                                                </button>
+                                            </form>
 
                                             <?php if ($u['status'] == 'active'): ?>
-                                                <a href="<?= BASE_URL ?>/admin/toggle_status/<?= $u['id'] ?>" class="btn btn-danger btn-sm mx-1" onclick="return confirm('Bạn có muốn khoá quyền truy cập của người này?')">
-                                                    <i class="fa-solid fa-lock"></i> Khoá
-                                                </a>
+                                                <form action="<?= BASE_URL ?>/admin/toggle_status/<?= $u['id'] ?>" method="POST" class="d-inline">
+                                                    <?= csrf_field() ?>
+                                                    <button type="submit" class="btn btn-danger btn-sm mx-1" onclick="return confirm('Bạn có muốn khoá quyền truy cập của người này?')">
+                                                        <i class="fa-solid fa-lock"></i> Khoá
+                                                    </button>
+                                                </form>
                                             <?php else: ?>
-                                                <a href="<?= BASE_URL ?>/admin/toggle_status/<?= $u['id'] ?>" class="btn btn-success btn-sm mx-1">
-                                                    <i class="fa-solid fa-unlock"></i> Mở
-                                                </a>
+                                                <form action="<?= BASE_URL ?>/admin/toggle_status/<?= $u['id'] ?>" method="POST" class="d-inline">
+                                                    <?= csrf_field() ?>
+                                                    <button type="submit" class="btn btn-success btn-sm mx-1">
+                                                        <i class="fa-solid fa-unlock"></i> Mở
+                                                    </button>
+                                                </form>
                                             <?php endif; ?>
 
-                                            <a href="<?= BASE_URL ?>/admin/delete_user/<?= $u['id'] ?>" class="btn btn-danger btn-sm mx-1" onclick="return confirm('Xóa người dùng này? Hành động này không thể hoàn tác!')">
-                                                <i class="fa-solid fa-trash"></i> Xóa
-                                            </a>
+                                            <form action="<?= BASE_URL ?>/admin/delete_user/<?= $u['id'] ?>" method="POST" class="d-inline">
+                                                <?= csrf_field() ?>
+                                                <button type="submit" class="btn btn-danger btn-sm mx-1" onclick="return confirm('Xóa người dùng này? Hành động này không thể hoàn tác!')">
+                                                    <i class="fa-solid fa-trash"></i> Xóa
+                                                </button>
+                                            </form>
                                         <?php else: ?>
                                             <span class="text-muted"><i class="fa-solid fa-shield"></i> Không thể can thiệp</span>
                                         <?php endif; ?>
                                     </td>
+                                    <!-- Hành động -->
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

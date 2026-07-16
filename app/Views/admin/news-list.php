@@ -134,11 +134,13 @@ admin_layout_start([
                                         class="btn btn-warning btn-sm text-white" title="Sửa">
                                         <i class="fa-solid fa-pen"></i>
                                     </a>
-                                    <a href="<?= BASE_URL ?>/admin/news_delete/<?= $n['id'] ?>"
-                                        class="btn btn-danger btn-sm" title="Xóa"
-                                        onclick="return confirm('Xóa bài viết \'<?= addslashes(htmlspecialchars($n['title'])) ?>\'?\nHành động này không thể hoàn tác!')">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </a>
+                                    <form action="<?= BASE_URL ?>/admin/news_delete/<?= $n['id'] ?>" method="POST" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Xóa"
+                                            onclick="return confirm('Xóa bài viết \'<?= addslashes(htmlspecialchars($n['title'])) ?>\'?\nHành động này không thể hoàn tác!')">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

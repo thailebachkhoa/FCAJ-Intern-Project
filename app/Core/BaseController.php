@@ -11,8 +11,20 @@ class BaseController {
         }
     }
     
-    public function redirect($url) {
+public function redirect($url) {
         header("Location: " . BASE_URL . "/" . ltrim($url, '/'));
         exit();
+    }
+
+    /**
+     * Chặn truy cập nếu không phải request POST.
+     * Dùng cho các action chỉ nên gọi qua form (xóa, khóa, reset...),
+     * không cho phép gọi trực tiếp bằng cách gõ URL / click link GET.
+     */
+    protected function requirePost() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            die('Phương thức không được phép. Vui lòng thao tác qua giao diện.');
+        }
     }
 }

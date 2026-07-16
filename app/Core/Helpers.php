@@ -80,3 +80,10 @@ if (!function_exists('content_value')) {
         return $dataModel->content_value($key, $default);
     }
 }
+
+if (!function_exists('csrf_field')) {
+    function csrf_field()
+    {
+        return Csrf::field();
+    }
+}

@@ -23,6 +23,13 @@ class AdminController extends BaseController
             header('Location: ' . BASE_URL . '/auth');
             exit;
         }
+
+        // Chặn CSRF cho mọi request POST vào khu vực admin.
+        // Đặt ở đây để không phải nhắc lại ở từng method.
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::verify();
+        }
+    }
     }
 
     /* =============================================
@@ -86,6 +93,7 @@ class AdminController extends BaseController
     /** Toggle user status (lock/unlock) */
     public function toggle_status($id)
     {
+        $this->requirePost(); // Chặn truy cập nếu không phải POST
         $userModel  = new User();
         $targetUser = $userModel->findById($id);
         if ($targetUser && $targetUser['role'] !== 'admin' && $targetUser['id'] != Auth::id()) {
@@ -102,6 +110,7 @@ class AdminController extends BaseController
     /** Reset user password to default (123456) */
     public function reset_password($id)
     {
+        $this->requirePost(); // Chặn truy cập nếu không phải POST
         $userModel  = new User();
         $targetUser = $userModel->findById($id);
         if ($targetUser && $targetUser['role'] !== 'admin' && $targetUser['id'] != Auth::id()) {
@@ -117,6 +126,7 @@ class AdminController extends BaseController
     /** Delete a member account */
     public function delete_user($id)
     {
+        $this->requirePost(); // Chặn truy cập nếu không phải POST
         if ($id == Auth::id()) {
             $this->redirect('admin/users');
             return;
@@ -246,6 +256,7 @@ class AdminController extends BaseController
     /** GET /admin/news_delete/{id} — delete a news article */
     public function news_delete($id = null)
     {
+        $this->requirePost(); // Chặn truy cập nếu không phải POST
         $newsModel = new News();
         $news      = $newsModel->getById((int)$id);
 
@@ -303,6 +314,7 @@ class AdminController extends BaseController
     /** GET /admin/comment_toggle/{id} — toggle comment approved ↔ hidden */
     public function comment_toggle($id = null)
     {
+        $this->requirePost(); // Chặn truy cập nếu không phải POST
         $commentModel = new Comment();
         $commentModel->toggleStatus((int)$id);
         $_SESSION['admin_success'] = 'Trạng thái bình luận đã được cập nhật!';
@@ -317,6 +329,7 @@ class AdminController extends BaseController
     /** GET /admin/comment_delete/{id} — delete a comment */
     public function comment_delete($id = null)
     {
+        $this->requirePost(); // Chặn truy cập nếu không phải POST
         $commentModel = new Comment();
         $commentModel->delete((int)$id);
         $_SESSION['admin_success'] = 'Bình luận đã được xóa!';
@@ -612,6 +625,7 @@ class AdminController extends BaseController
 
     public function product_delete($id)
     {
+        $this->requirePost(); // Chặn truy cập nếu không phải POST
         $productModel = new Product();
         $product = $productModel->findById($id);
 
@@ -861,8 +875,6 @@ class AdminController extends BaseController
             'sections'  => $sections,
         ]);
     }
- 
-
 }
 
 <?php
@@ -900,12 +912,14 @@ class AuthController extends BaseController
                     return;
                 }
 
+                // Đổi session ID mới sau khi xác thực thành công -> chống session fixation
+                session_regenerate_id(true);
+
                 // Do not save password in session
                 unset($user['password']);
 
                 // Set user session
                 Auth::setUser($user);
-
                 // Redirect based on role
                 if ($user['role'] == 'admin') {
                     $this->redirect('admin');
@@ -1005,6 +1019,8 @@ class AuthController extends BaseController
         $this->redirect('auth');
     }
 }
+
+
 <?php
 
 /**

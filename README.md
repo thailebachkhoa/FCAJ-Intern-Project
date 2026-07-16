@@ -157,7 +157,8 @@ APP_URL=http://localhost/plantify/public
 
 **3. Import database**
 
-```bash
+```bash        form.append("csrf_token", "' . Csrf::token() . '");
+
 mysql -u root -p < database/schema.sql
 ```
 

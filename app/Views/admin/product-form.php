@@ -11,6 +11,7 @@ $p = $product ?? [];
     <div class="card-body p-4">
 
         <form action="" method="POST" enctype="multipart/form-data">
+            <?= csrf_field() ?>
             <div class="row">
                 <div class="col-md-8">
                     <div class="mb-3">

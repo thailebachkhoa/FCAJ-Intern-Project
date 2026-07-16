@@ -5,6 +5,7 @@ admin_layout_start(['pageTitle' => $pageTitle, 'heading' => $pageTitle]);
 <div class="card shadow-sm border-0 rounded-4 mt-4">
     <div class="card-body p-4">
         <form action="" method="POST">
+            <?= csrf_field() ?>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label fw-bold">Tên đăng nhập</label>
@@ -25,7 +26,7 @@ admin_layout_start(['pageTitle' => $pageTitle, 'heading' => $pageTitle]);
                 <div class="col-md-6 mb-3">
                     <label class="form-label fw-bold">Chức vụ</label>
                     <select name="role" class="form-select">
-                        <option value="user">Thành viên (User)</option>
+                        <option value="member">Thành viên (Member)</option>
                         <option value="admin">Quản trị (Admin)</option>
                     </select>
                 </div>

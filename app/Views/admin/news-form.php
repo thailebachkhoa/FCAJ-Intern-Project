@@ -44,7 +44,8 @@ $fThumb     = $f['thumbnail']         ?? '';
     enctype="multipart/form-data"
     id="newsForm"
     novalidate>
-
+    <?= csrf_field() ?>
+    
     <div class="row g-4">
 
         <!-- LEFT COLUMN: main fields -->

@@ -30,6 +30,7 @@
 <?php endif; ?>
 
 <form method="POST" id="pageEditorForm">
+    <?= csrf_field() ?>
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
         <div>
             <h4 class="mb-1"><?= htmlspecialchars($heading ?? '') ?></h4>

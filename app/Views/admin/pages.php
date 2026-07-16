@@ -338,6 +338,7 @@ admin_layout_start([
 <?php if ($error): ?><div class="alert alert-danger"><?php echo e($error); ?></div><?php endif; ?>
 
 <form method="post" class="admin-card mb-4">
+    <?= csrf_field() ?>
     <input type="hidden" name="action" value="save_content">
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 about-editor-toolbar">
         <div>
@@ -456,6 +457,7 @@ admin_layout_start([
 <div class="admin-card mb-4">
     <h4 class="mb-4">Hình ảnh trang giới thiệu</h4>
     <form method="post" enctype="multipart/form-data">
+        <?= csrf_field() ?>
         <input type="hidden" name="action" value="save_about_image">
         <div class="row align-items-end">
             <div class="col-lg-8 mb-3">

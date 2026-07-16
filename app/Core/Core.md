@@ -124,6 +124,9 @@ class Auth
         session_destroy();
     }
 }
+
+
+//////////////////
 <?php
 // Location: app/Core/BaseController.php
 class BaseController {
@@ -137,9 +140,21 @@ class BaseController {
         }
     }
     
-    public function redirect($url) {
+public function redirect($url) {
         header("Location: " . BASE_URL . "/" . ltrim($url, '/'));
         exit();
+    }
+
+    /**
+     * Chặn truy cập nếu không phải request POST.
+     * Dùng cho các action chỉ nên gọi qua form (xóa, khóa, reset...),
+     * không cho phép gọi trực tiếp bằng cách gõ URL / click link GET.
+     */
+    protected function requirePost() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            die('Phương thức không được phép. Vui lòng thao tác qua giao diện.');
+        }
     }
 }
 <?php
@@ -156,6 +171,48 @@ require_once BASE_PATH . '/app/Core/Helpers.php';
 require_once BASE_PATH . '/app/Core/BaseController.php';
 require_once BASE_PATH . '/app/Core/Database.php';
 require_once BASE_PATH . '/app/Models/Data.php';
+require_once BASE_PATH . '/app/Core/Csrf.php';   // <-- thêm dòng này
+
+<?php
+// Location: app/Core/Csrf.php
+
+class Csrf
+{
+    /**
+     * Lấy token hiện tại, tự sinh nếu chưa có.
+     */
+    public static function token()
+    {
+        if (empty($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+        return $_SESSION['csrf_token'];
+    }
+
+    /**
+     * In sẵn 1 input hidden để nhét vào form.
+     */
+    public static function field()
+    {
+        return '<input type="hidden" name="csrf_token" value="' . self::token() . '">';
+    }
+
+    /**
+     * Kiểm tra token gửi lên từ $_POST. Nếu sai -> chặn luôn (403).
+     * Gọi hàm này ở ĐẦU mọi action xử lý POST quan trọng.
+     */
+    public static function verify()
+    {
+        $sent = $_POST['csrf_token'] ?? '';
+        $real = $_SESSION['csrf_token'] ?? '';
+
+        if ($real === '' || !hash_equals($real, $sent)) {
+            http_response_code(403);
+            die('Yêu cầu không hợp lệ (CSRF token sai hoặc đã hết hạn). Vui lòng tải lại trang và thử lại.');
+        }
+    }
+}
+
 <?php
 // Location: app/Core/Database.php
 class Database
@@ -281,6 +338,7 @@ class Env {
         }
     }
 }
+
 <?php
 // Location: app/Core/Helpers.php
 /**
@@ -363,3 +421,11 @@ if (!function_exists('content_value')) {
         return $dataModel->content_value($key, $default);
     }
 }
+
+if (!function_exists('csrf_field')) {
+    function csrf_field()
+    {
+        return Csrf::field();
+    }
+}
+

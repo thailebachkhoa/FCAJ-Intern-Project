@@ -31,6 +31,7 @@ admin_layout_start([
         <?php endif; ?>
 
         <form action="" method="POST">
+            <?= csrf_field() ?>
             <?php foreach ($settingsByGroup as $groupName => $items): ?>
                 <div class="card shadow-sm border-0 rounded-4 mb-4">
                     <div class="card-header bg-white border-bottom py-3">

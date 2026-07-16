@@ -33,12 +33,14 @@ class AuthController extends BaseController
                     return;
                 }
 
+                // Đổi session ID mới sau khi xác thực thành công -> chống session fixation
+                session_regenerate_id(true);
+
                 // Do not save password in session
                 unset($user['password']);
 
                 // Set user session
                 Auth::setUser($user);
-
                 // Redirect based on role
                 if ($user['role'] == 'admin') {
                     $this->redirect('admin');

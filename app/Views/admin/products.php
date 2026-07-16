@@ -54,9 +54,12 @@ admin_layout_start([
                                         <a href="<?= BASE_URL ?>/admin/product_edit/<?= $p['id'] ?>" class="btn btn-outline-primary btn-sm mx-1">
                                             <i class="fa-solid fa-pen-to-square"></i> Sửa
                                         </a>
-                                        <a href="<?= BASE_URL ?>/admin/product_delete/<?= $p['id'] ?>" class="btn btn-outline-danger btn-sm mx-1" onclick="return confirm('Xóa sản phẩm này?')">
-                                            <i class="fa-solid fa-trash"></i> Xóa
-                                        </a>
+                                    <form action="<?= BASE_URL ?>/admin/product_delete/<?= $p['id'] ?>" method="POST" class="d-inline">
+                                            <?= csrf_field() ?>
+                                            <button type="submit" class="btn btn-outline-danger btn-sm mx-1" onclick="return confirm('Xóa sản phẩm này?')">
+                                                <i class="fa-solid fa-trash"></i> Xóa
+                                            </button>
+                                    </form>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

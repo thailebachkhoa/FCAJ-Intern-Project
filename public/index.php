@@ -13,8 +13,20 @@
 
 // lOcation: public/index.php
 
-session_start();
+// ========== CẤU HÌNH SESSION COOKIE AN TOÀN (phải đặt TRƯỚC session_start()) ==========
+$isHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+    || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
 
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path'     => '/',
+    'domain'   => '',
+    'secure'   => $isHttps,   // true khi chạy HTTPS, false khi dev localhost http
+    'httponly' => true,       // JS không đọc được cookie session -> chống XSS lấy session
+    'samesite' => 'Lax',      // trình duyệt không gửi cookie này khi request đến từ site khác
+]);
+
+session_start();
 // ========== LOAD ENVIRONMENT VARIABLES ==========
 // Require file Env.php để có sẵn các phương thức load biến môi trường
 require_once __DIR__ . '/../app/Core/Env.php';

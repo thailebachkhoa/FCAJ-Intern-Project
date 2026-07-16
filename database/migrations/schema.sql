@@ -200,8 +200,7 @@ INSERT INTO site_content (content_key, content_group, label, input_type, content
 ('shop.search_placeholder', 'Trang cửa hàng', 'Gợi ý tìm kiếm', 'text', 'Tìm kiếm cây bạn yêu thích...'),
 ('shop.sort_label', 'Trang cửa hàng', 'Nhãn sắp xếp', 'text', 'Sắp xếp:'),
 ('shop.empty_title', 'Trang cửa hàng', 'Tiêu đề khi không có hàng', 'text', 'Không tìm thấy cây nào phù hợp'),
-('shop.empty_text', 'Trang cửa hàng', 'Mô tả khi không có hàng', 'text', 'Vui lòng thử từ khóa khác hoặc xóa bộ lọc.'),
-
+('shop.empty_text', 'Trang cửa hàng', 'Mô tả khi không có hàng', 'text', 'Vui lòng thử từ khóa khác hoặc xóa bộ lọc.')
 ON DUPLICATE KEY UPDATE
   content_group = VALUES(content_group),
   label = VALUES(label),
@@ -288,4 +287,3 @@ INSERT IGNORE INTO news (title, slug, short_description, content, thumbnail, tag
     'Admin',
     'published'
 );
--- fix bug

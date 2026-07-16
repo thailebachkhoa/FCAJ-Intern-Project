@@ -117,6 +117,7 @@ admin_layout_start([
                             data-faq='<?= htmlspecialchars(json_encode($faq, JSON_UNESCAPED_UNICODE)) ?>'
                             onclick="editFaq(this)">Sửa</button>
                         <form method="post" class="d-inline">
+                            <?= csrf_field() ?>
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="id" value="<?= e($faq['id']) ?>">
                             <button type="submit" class="btn btn-sm btn-outline-danger"
@@ -137,6 +138,7 @@ admin_layout_start([
 <div class="modal fade" id="addModal" tabindex="-1">
     <div class="modal-dialog">
         <form method="post" class="modal-content">
+            <?= csrf_field() ?>
             <input type="hidden" name="action" value="add">
             <div class="modal-header">
                 <h5 class="modal-title">Thêm FAQ</h5><button type="button" class="btn-close"
@@ -157,6 +159,7 @@ admin_layout_start([
 <div class="modal fade" id="editModal" tabindex="-1">
     <div class="modal-dialog">
         <form method="post" class="modal-content">
+            <?= csrf_field() ?>
             <input type="hidden" name="action" value="edit">
             <input type="hidden" name="id" id="editId">
             <input type="hidden" name="sort_order" id="editSortOrder">
@@ -213,6 +216,7 @@ function saveFaqOrder() {
         const form = new FormData();
         form.append("action", "reorder");
         form.append("ordered_ids", JSON.stringify(orderedIds));
+        form.append("csrf_token", "' . Csrf::token() . '");
         faqSortState.hidden = false;
 
         fetch("' . BASE_URL . '/admin/faqs", {

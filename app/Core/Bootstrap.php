@@ -12,3 +12,4 @@ require_once BASE_PATH . '/app/Core/Helpers.php';
 require_once BASE_PATH . '/app/Core/BaseController.php';
 require_once BASE_PATH . '/app/Core/Database.php';
 require_once BASE_PATH . '/app/Models/Data.php';
+require_once BASE_PATH . '/app/Core/Csrf.php';   // <-- thêm dòng này
