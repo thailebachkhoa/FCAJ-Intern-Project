@@ -30,7 +30,7 @@ class AdminController extends BaseController
             Csrf::verify();
         }
     }
-    }
+    
 
     /* =============================================
        USER MANAGEMENT (existing)
