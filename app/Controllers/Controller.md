@@ -30,6 +30,7 @@ class AdminController extends BaseController
             Csrf::verify();
         }
     }
+    
 
     /* =============================================
        USER MANAGEMENT (existing)
@@ -875,7 +876,6 @@ class AdminController extends BaseController
         ]);
     }
 }
-
 <?php
 // Location: app/Controllers/AuthController.php
 class AuthController extends BaseController
@@ -1018,8 +1018,6 @@ class AuthController extends BaseController
         $this->redirect('auth');
     }
 }
-
-
 <?php
 
 /**
@@ -1029,6 +1027,12 @@ class AuthController extends BaseController
  */
 class CartController extends BaseController
 {
+    public function __construct()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::verify();
+        }
+    }
     public function index()
     {
         require_once BASE_PATH . '/app/Models/Product.php';
@@ -1118,6 +1122,8 @@ class CartController extends BaseController
 
     public function remove($id = null)
     {
+        $this->requirePost(); // Chỉ cho xóa qua form POST, không cho gọi bằng link GET
+
         $id = (int)$id;
         if ($id > 0 && isset($_SESSION['cart'][$id])) {
             unset($_SESSION['cart'][$id]);
@@ -1150,6 +1156,11 @@ class DashboardController extends BaseController
             header('Location: ' . BASE_URL . '/auth');
             echo 'Tài khoản của bạn đã bị khoá.';
             exit;
+        }
+
+        // Thêm dòng này
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::verify();
         }
     }
 
@@ -1499,6 +1510,11 @@ class NewsController extends BaseController
     {
         $this->newsModel    = new News();
         $this->commentModel = new Comment();
+
+        // Thêm dòng này
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::verify();
+        }
     }
 
     /**
@@ -1649,6 +1665,12 @@ class NewsController extends BaseController
  */
 class ShopController extends BaseController
 {
+    public function __construct()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::verify();
+        }
+    }
     public function index()
     {
         $productModel = new Product();

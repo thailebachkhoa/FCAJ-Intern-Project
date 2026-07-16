@@ -13,7 +13,6 @@ Website thương mại điện tử và giới thiệu dịch vụ cây xanh n�
 - [Cài đặt](#cài-đặt)
 - [Tài khoản mặc định](#tài-khoản-mặc-định)
 - [Luồng hoạt động](#luồng-hoạt-động)
-- [API Chatbot](#api-chatbot)
 
 ---
 
@@ -35,8 +34,6 @@ Plantify Co là website giới thiệu và bán cây cảnh nội thất, hỗ t
 | Giỏ hàng | Tăng/giảm số lượng, xóa sản phẩm, đặt hàng qua modal |
 | Tin tức | Danh sách bài viết, tìm kiếm, xem chi tiết, bình luận |
 | FAQ | Tìm kiếm, lọc theo nhóm, tích hợp chatbot AI |
-| Giới thiệu | Hero video HLS, timeline quy trình, bản đồ nhúng |
-| Liên hệ | Form gửi tin nhắn, validation client + server |
 
 ### Thành viên (Dashboard)
 
@@ -51,7 +48,6 @@ Plantify Co là website giới thiệu và bán cây cảnh nội thất, hỗ t
 - **Đơn hàng:** danh sách, chi tiết, cập nhật trạng thái
 - **Tin tức:** CRUD, auto-slug tiếng Việt, upload thumbnail
 - **Bình luận:** duyệt/ẩn/xóa, phân trang, tìm kiếm
-- **Liên hệ:** đánh dấu đã đọc, tìm kiếm, lọc theo trạng thái
 - **FAQ:** thêm/sửa/xóa, kéo thả sắp xếp (AJAX)
 - **Nội dung trang:** chỉnh văn bản tĩnh, upload ảnh giới thiệu, upload video HLS
 - **Cấu hình cửa hàng:** chỉnh nhãn, placeholder, tiêu đề theo nhóm
@@ -68,7 +64,6 @@ Plantify Co là website giới thiệu và bán cây cảnh nội thất, hỗ t
 | Video | HLS.js (phát `.m3u8`) |
 | Admin UI | SRTDash template, Chart.js, simple-datatables |
 | Database | MySQL / MariaDB |
-| Chatbot | Python RAG server tại `http://127.0.0.1:1884/chat` (tùy chọn) |
 
 ---
 
@@ -234,21 +229,6 @@ Giỏ hàng được lưu trong `$_SESSION['cart']`. Khi checkout, giá sản ph
 ### Bình luận
 
 Bình luận mới có trạng thái `pending` (chờ duyệt). Admin có thể duyệt (`approved`) hoặc ẩn (`hidden`). Chỉ bình luận `approved` hiển thị ngoài website.
-
----
-
-## API Chatbot
-
-Widget chatbot trên trang FAQ gửi POST request đến server RAG nội bộ:
-
-```
-POST http://127.0.0.1:1884/chat
-Content-Type: application/json
-
-{ "question": "Plantify có khảo sát trực tiếp không?" }
-```
-
-Nếu server không chạy, widget hiển thị thông báo lỗi kết nối — website vẫn hoạt động bình thường.
 
 ---
 

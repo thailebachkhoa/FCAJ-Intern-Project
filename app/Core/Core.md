@@ -124,9 +124,6 @@ class Auth
         session_destroy();
     }
 }
-
-
-//////////////////
 <?php
 // Location: app/Core/BaseController.php
 class BaseController {
@@ -238,9 +235,10 @@ class Database
 
         try {
             $this->pdo = new PDO($dsn, $username, $password, $options);
-        } catch (PDOException $e) {
-            die("<h3 style='color:red;'>Database Connection Error:</h3> " . $e->getMessage());
-        }
+            } catch (PDOException $e) {
+        error_log('DB Connection Error: ' . $e->getMessage());
+        die('Hệ thống đang bảo trì, vui lòng quay lại sau.');
+            }
     }
 
     public static function getInstance()
@@ -338,7 +336,6 @@ class Env {
         }
     }
 }
-
 <?php
 // Location: app/Core/Helpers.php
 /**
@@ -428,4 +425,3 @@ if (!function_exists('csrf_field')) {
         return Csrf::field();
     }
 }
-

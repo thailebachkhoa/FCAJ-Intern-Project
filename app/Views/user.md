@@ -180,7 +180,6 @@ require BASE_PATH . '/app/Views/partials/header.php';
 </script>
 
 <?php require BASE_PATH . '/app/Views/partials/footer.php'; ?>
-
 <?php
 
 /**
@@ -516,7 +515,7 @@ $avatar = !empty($user['avatar'])
 
                     <!-- Chú ý thêm enctype="multipart/form-data" để upload được ảnh -->
                     <form action="<?= BASE_URL ?>/dashboard/updateProfile" method="POST" enctype="multipart/form-data">
-
+                        <?= csrf_field() ?>
                         <!-- Upload Avatar UI -->
                         <div class="d-flex align-items-center gap-4 mb-4 p-3 bg-light rounded border">
                             <img src="<?= $avatar ?>" id="avatarPreviewForm" class="rounded-circle object-fit-cover" style="width: 80px; height: 80px;">
@@ -560,6 +559,7 @@ $avatar = !empty($user['avatar'])
             <div class="bg-white p-4 p-md-5 shadow-sm" style="border: 1px solid var(--stone-200); border-radius: 16px;">
                 <h4 class="mb-4 fw-bold text-success">Bảo mật tài khoản</h4>
                 <form action="<?= BASE_URL ?>/dashboard/updatePassword" method="POST">
+                    <?= csrf_field() ?>
                     <div class="row g-3">
                         <div class="col-12"><label class="form-label text-muted">Mật khẩu hiện tại</label><input type="password" name="current_password" class="form-control bg-light" required></div>
                         <div class="col-md-6"><label class="form-label text-muted">Mật khẩu mới</label><input type="password" name="new_password" class="form-control bg-light" required></div>
@@ -748,7 +748,6 @@ $avatar = !empty($user['avatar'])
     </div>
 </main>
 <?php require BASE_PATH . '/app/Views/partials/footer.php'; ?>
-
 <?php
 
 /**
@@ -827,6 +826,7 @@ require BASE_PATH . '/app/Views/partials/header.php';
                         <div class="comment-form-box p-4 bg-light rounded-4 border mb-5">
                             <h5 class="fw-bold mb-3"><i class="fa-solid fa-pen me-2"></i>Viết bình luận của bạn</h5>
                             <form action="<?= BASE_URL ?>/news/comment_post" method="POST" id="commentForm" novalidate>
+                                <?= csrf_field() ?>
                                 <input type="hidden" name="news_id" value="<?= (int)$news['id'] ?>">
                                 <input type="hidden" name="slug" value="<?= e($news['slug']) ?>">
 
@@ -1220,6 +1220,7 @@ $isCartEmpty = empty($cartItems);
                                 <div class="col-6 col-md-3 mt-3 mt-md-0">
                                     <!-- FORM TĂNG GIẢM SỐ LƯỢNG -->
                                     <form action="<?= BASE_URL ?>/cart/update" method="POST" class="d-flex align-items-center border rounded p-1" style="max-width: 120px;">
+                                        <?= csrf_field() ?>
                                         <input type="hidden" name="product_id" value="<?= $productId ?>">
 
                                         <button type="submit" name="action" value="decrease" class="btn btn-sm btn-light border-0"><i class="fa-solid fa-minus"></i></button>
@@ -1234,7 +1235,10 @@ $isCartEmpty = empty($cartItems);
                                 </div>
                                 <div class="col-2 col-md-1 text-end mt-3 mt-md-0">
                                     <!-- NÚT XÓA -->
-                                    <a href="<?= BASE_URL ?>/cart/remove/<?= $productId ?>" class="btn btn-sm btn-outline-danger" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ?');"><i class="fa-solid fa-trash-can"></i></a>
+                                    <form action="<?= BASE_URL ?>/cart/remove/<?= $productId ?>" method="POST" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ?');"><i class="fa-solid fa-trash-can"></i></button>
+                                    </form>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -1290,6 +1294,7 @@ $isCartEmpty = empty($cartItems);
                 <button type="button" class="btn-close" data-bs-close="modal" aria-label="Close"></button>
             </div>
             <form action="<?= BASE_URL ?>/dashboard/checkout" method="POST">
+                <?= csrf_field() ?>
                 <div class="modal-body p-4">
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Họ và tên người nhận</label>
@@ -2063,6 +2068,7 @@ $steps = [
                 <!-- Form Thêm vào giỏ hàng -->
                 <?php if ($user): ?>
                     <form action="<?= BASE_URL ?>/shop/addToCart" method="POST" class="d-flex align-items-center gap-3">
+                        <?= csrf_field() ?>
                         <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
                         <div class="d-flex align-items-center border rounded p-1" style="border-color: var(--stone-200);">
                             <label for="qty" class="me-2 ms-2 text-muted fw-bold">SL:</label>

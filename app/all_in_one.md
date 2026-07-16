@@ -30,6 +30,7 @@ class AdminController extends BaseController
             Csrf::verify();
         }
     }
+    
 
     /* =============================================
        USER MANAGEMENT (existing)
@@ -875,7 +876,6 @@ class AdminController extends BaseController
         ]);
     }
 }
-
 <?php
 // Location: app/Controllers/AuthController.php
 class AuthController extends BaseController
@@ -1018,8 +1018,6 @@ class AuthController extends BaseController
         $this->redirect('auth');
     }
 }
-
-
 <?php
 
 /**
@@ -1029,6 +1027,12 @@ class AuthController extends BaseController
  */
 class CartController extends BaseController
 {
+    public function __construct()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::verify();
+        }
+    }
     public function index()
     {
         require_once BASE_PATH . '/app/Models/Product.php';
@@ -1118,6 +1122,8 @@ class CartController extends BaseController
 
     public function remove($id = null)
     {
+        $this->requirePost(); // Chỉ cho xóa qua form POST, không cho gọi bằng link GET
+
         $id = (int)$id;
         if ($id > 0 && isset($_SESSION['cart'][$id])) {
             unset($_SESSION['cart'][$id]);
@@ -1150,6 +1156,11 @@ class DashboardController extends BaseController
             header('Location: ' . BASE_URL . '/auth');
             echo 'Tài khoản của bạn đã bị khoá.';
             exit;
+        }
+
+        // Thêm dòng này
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::verify();
         }
     }
 
@@ -1499,6 +1510,11 @@ class NewsController extends BaseController
     {
         $this->newsModel    = new News();
         $this->commentModel = new Comment();
+
+        // Thêm dòng này
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::verify();
+        }
     }
 
     /**
@@ -1649,6 +1665,12 @@ class NewsController extends BaseController
  */
 class ShopController extends BaseController
 {
+    public function __construct()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::verify();
+        }
+    }
     public function index()
     {
         $productModel = new Product();
@@ -1881,9 +1903,6 @@ class Auth
         session_destroy();
     }
 }
-
-
-//////////////////
 <?php
 // Location: app/Core/BaseController.php
 class BaseController {
@@ -1995,9 +2014,10 @@ class Database
 
         try {
             $this->pdo = new PDO($dsn, $username, $password, $options);
-        } catch (PDOException $e) {
-            die("<h3 style='color:red;'>Database Connection Error:</h3> " . $e->getMessage());
-        }
+            } catch (PDOException $e) {
+        error_log('DB Connection Error: ' . $e->getMessage());
+        die('Hệ thống đang bảo trì, vui lòng quay lại sau.');
+            }
     }
 
     public static function getInstance()
@@ -2095,7 +2115,6 @@ class Env {
         }
     }
 }
-
 <?php
 // Location: app/Core/Helpers.php
 /**
@@ -2185,7 +2204,6 @@ if (!function_exists('csrf_field')) {
         return Csrf::field();
     }
 }
-
 <?php
 /**
  * Comment Model
@@ -2345,6 +2363,107 @@ class Comment
     }
 }
 <?php
+// Location: app/Models/Content.php
+class Content
+{
+    private $db;
+    public function __construct()
+    {
+        $this->db = Database::getInstance();
+    }
+
+    public function getAllSiteContent()
+    {
+        $this->db->query("SELECT * FROM site_content ORDER BY content_group, id");
+
+        return $this->db->resultSet();
+    }
+
+    public function getAllPages()
+    {
+        $this->db->query("SELECT * FROM pages ORDER BY slug");
+        return $this->db->resultSet();
+    }
+
+    public function updateSiteContent($key, $value)
+    {
+        $this->db->query("UPDATE site_content SET content_value = :val WHERE content_key = :key");
+        $this->db->bind(':val', $value);
+        $this->db->bind(':key', $key);
+        return $this->db->execute();
+    }
+    public function updateMultipleSiteContent(array $data)
+    {
+        foreach ($data as $key => $value) {
+            $this->updateSiteContent($key, $value);
+        }
+        return true;
+    }
+
+    public function getSiteContentByGroups(array $groups)
+    {
+
+        $placeholders = implode(',', array_fill(0, count($groups), '?'));
+
+        $sql = "SELECT * FROM site_content 
+                WHERE content_group IN ($placeholders) 
+                ORDER BY FIELD(content_group, 'Trang cửa hàng', 'Trang chi tiết SP', 'Trang giỏ hàng'), id ASC";
+
+        $this->db->query($sql);
+
+        foreach ($groups as $index => $group) {
+            $this->db->bind($index + 1, $group);
+        }
+
+        return $this->db->resultSet();
+    }
+
+    public function seedDefaults(array $defaults): void
+    {
+        foreach ($defaults as $row) {
+            $this->db->query(
+                "INSERT INTO site_content (content_key, content_group, label, input_type, content_value)
+                 VALUES (:k, :g, :l, :t, :v)
+                 ON DUPLICATE KEY UPDATE
+                     content_group = VALUES(content_group),
+                     label         = VALUES(label),
+                     input_type    = VALUES(input_type)"
+            );
+            $this->db->bind(':k', $row[0]);
+            $this->db->bind(':g', $row[1]);
+            $this->db->bind(':l', $row[2]);
+            $this->db->bind(':t', $row[3]);
+            $this->db->bind(':v', $row[4]);
+            $this->db->execute();
+        }
+    }
+ 
+    public function getByGroup(string $group): array
+    {
+        $this->db->query(
+            "SELECT * FROM site_content WHERE content_group = :g ORDER BY id"
+        );
+        $this->db->bind(':g', $group);
+        $rows   = $this->db->resultSet();
+        $byKey  = [];
+        foreach ($rows as $r) {
+            $byKey[$r['content_key']] = $r;
+        }
+        return $byKey;
+    }
+ 
+    public function saveByPost(array $postContent): void
+    {
+        foreach ($postContent as $key => $value) {
+            $this->db->query(
+                "UPDATE site_content SET content_value = :v WHERE content_key = :k"
+            );
+            $this->db->bind(':v', trim((string) $value));
+            $this->db->bind(':k', (string) $key);
+            $this->db->execute();
+        }
+    }
+}<?php
 // Location: app/Models/Content.php
 class Content
 {
@@ -2918,9 +3037,8 @@ class Order
             return $orderId;
         } catch (Exception $e) {
             $this->db->rollBack();
-            // TẠM THỜI IN LỖI RA MÀN HÌNH ĐỂ DEBUG:
-            die("Lỗi đặt hàng: " . $e->getMessage());
-            // return false;
+            error_log('Order creation failed: ' . $e->getMessage());
+            return false;
         }
     }
 
@@ -3720,7 +3838,466 @@ if (!function_exists('admin_render_sidebar')) {
         </div>
     </div>
 </div>
+<?php
+    }
+}
 
+
+<?php
+
+/**
+ * File: admin/includes/AdminLayout.php
+ * Chuc nang: Layout shell SRTDash dung chung cho cac trang admin.
+ */
+
+require_once BASE_PATH . '/app/Core/Helpers.php';
+require_once __DIR__ . '/Sidebar.php';
+require_once __DIR__ . '/Header.php';
+require_once __DIR__ . '/ContentWrapper.php';
+
+if (!function_exists('admin_layout_start')) {
+    function admin_layout_start($config)
+    {
+        $pageTitle = $config['pageTitle'] ?? 'GreenNest Admin';
+        $heading = $config['heading'] ?? $pageTitle;
+        $subtitle = $config['subtitle'] ?? '';
+        $actionHtml = $config['actionHtml'] ?? '';
+        $extraHead = $config['extraHead'] ?? '';
+
+        // Đường dẫn chuẩn
+        $assetBase = BASE_URL . '/assets/vendor/srtdash';
+?>
+        <!doctype html>
+        <html lang="vi">
+
+        <head>
+            <meta charset="utf-8">
+            <title><?php echo e($pageTitle); ?></title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link
+                href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap"
+                rel="stylesheet">
+
+            <link rel="icon" type="image/png" href="<?= $assetBase ?>/images/icon/logo.png">
+
+            <link rel="stylesheet" href="<?= $assetBase ?>/css/bootstrap.min.css">
+            <link rel="stylesheet" href="<?= $assetBase ?>/css/fontawesome.min.css">
+            <link rel="stylesheet" href="<?= $assetBase ?>/css/themify-icons.css">
+            <link rel="stylesheet" href="<?= $assetBase ?>/css/metismenujs.min.css">
+            <link rel="stylesheet" href="<?= $assetBase ?>/css/typography.css">
+            <link rel="stylesheet" href="<?= $assetBase ?>/css/default-css.css">
+            <link rel="stylesheet" href="<?= $assetBase ?>/css/styles.css">
+            <link rel="stylesheet" href="<?= $assetBase ?>/css/responsive.css">
+            <link rel="stylesheet" href="<?= $assetBase ?>/css/swiper-bundle.min.css">
+
+            <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin-srtdash.css">
+
+            <?php echo $extraHead; ?>
+            <script src="<?= $assetBase ?>/js/vendor/modernizr-2.8.3.min.js"></script>
+            <style>
+                @media (max-width: 991px) {
+
+                    /* Ép Sidebar nổi lên lớp cao nhất tuyệt đối */
+                    .sidebar-menu {
+                        z-index: 99999 !important;
+                    }
+
+                    .sbar_collapsed .sidebar-menu {
+                        z-index: 99999 !important;
+                    }
+
+                    /* Hạ lớp của khối nội dung chính xuống */
+                    .main-content {
+                        position: relative !important;
+                        z-index: 1 !important;
+                    }
+                }
+            </style>
+        </head>
+
+        <body>
+            <a href="#main-content" class="skip-link">Skip to main content</a>
+            <div id="preloader">
+                <div class="loader"></div>
+            </div>
+            <div class="page-container">
+                <?php admin_render_sidebar(); ?>
+                <div class="main-content">
+                    <?php admin_render_header($heading); ?>
+                    <?php admin_render_content_start($heading, $subtitle, $actionHtml); ?>
+                <?php
+            }
+        }
+
+        if (!function_exists('admin_layout_end')) {
+            function admin_layout_end($extraScripts = '')
+            {
+                $assetBase = BASE_URL . '/assets/vendor/srtdash';
+                admin_render_content_end();
+                ?>
+                </div>
+                <footer>
+                    <div class="footer-area">
+                        <p>Plantify Co Admin - powered by SRTDash layout.</p>
+                    </div>
+                </footer>
+            </div>
+            <script src="<?= $assetBase ?>/js/vendor/jquery-2.2.4.min.js"></script>
+
+            <script src="<?= $assetBase ?>/js/bootstrap.bundle.min.js"></script>
+            <script src="<?= $assetBase ?>/js/swiper-bundle.min.js"></script>
+            <script src="<?= $assetBase ?>/js/metismenujs.min.js"></script>
+            <script src="<?= $assetBase ?>/js/jquery.slimscroll.min.js"></script>
+            <script src="<?= $assetBase ?>/js/jquery.slicknav.min.js"></script>
+
+            <?php echo $extraScripts; ?>
+
+            <script src="<?= $assetBase ?>/js/scripts.js"></script>
+        </body>
+
+        </html>
+<?php
+            }
+        }
+?>
+<?php
+
+/**
+ * File: admin/includes/ContentWrapper.php
+ * Chuc nang: Page title va content wrapper dung chung cho admin.
+ */
+
+if (!function_exists('admin_render_content_start')) {
+    function admin_render_content_start($title, $subtitle = '', $actionHtml = '')
+    {
+?>
+<div class="page-title-area">
+    <div class="row align-items-center">
+        <div class="col-sm-7">
+            <div class="breadcrumbs-area clearfix">
+                <h1 class="page-title float-start"><?php echo e($title); ?></h1>
+                <ul class="breadcrumbs float-start">
+                    <li><a href=".index">Admin</a></li>
+                    <li><span><?php echo e($title); ?></span></li>
+                </ul>
+            </div>
+            <?php if ($subtitle): ?>
+            <p class="admin-page-subtitle"><?php echo e($subtitle); ?></p>
+            <?php endif; ?>
+        </div>
+        <?php if ($actionHtml): ?>
+        <div class="col-sm-5 text-sm-end mt-3 mt-sm-0">
+            <?php echo $actionHtml; ?>
+        </div>
+        <?php endif; ?>
+    </div>
+</div>
+<div class="main-content-inner" id="main-content">
+    <?php
+    }
+}
+
+if (!function_exists('admin_render_content_end')) {
+    function admin_render_content_end()
+    {
+        echo '</div>';
+    }
+}
+<?php
+
+/**
+ * File: admin/includes/Header.php
+ * Chuc nang: Header/topbar admin theo SRTDash đã fix Responsive.
+ */
+
+if (!function_exists('admin_render_header')) {
+    function admin_render_header($pageTitle = 'Admin')
+    {
+?>
+<div class="header-area bg-white py-3 shadow-sm sticky-top" style="z-index:100;">
+    <div class="container-fluid px-0">
+        <!-- Header Content -->
+        <div class="row align-items-center m-0 justify-content-between">
+            <!-- Logo and Title -->
+            <div class="col-8 col-md-6 d-flex align-items-center gap-3">
+                <div class="nav-btn mb-0 mt-0">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="admin-header-title d-none d-sm-block text-truncate mb-0 mt-0" style="max-width: 80%;">
+                    <span class="d-none d-md-inline text-muted me-1">Plantify Admin /</span>
+                    <strong class="text-dark"><?php echo e($pageTitle); ?></strong>
+                </div>
+            </div>
+            <!-- Notification Area -->
+            <div class="col-4 col-md-6 d-flex justify-content-end align-items-center">
+                <ul class="notification-area d-flex align-items-center justify-content-end list-unstyled mb-0 gap-3"
+                    style="padding: 0; margin: 0;">
+                    <li id="full-view" class="d-none d-md-block"><i class="ti-fullscreen fs-5"></i></li>
+                    <li id="full-view-exit" class="d-none d-md-block"><i class="ti-zoom-out fs-5"></i></li>
+
+                    <li>
+                        <a href="<?= BASE_URL ?>" title="Xem website" aria-label="Xem website"
+                            class="text-dark text-decoration-none">
+                            <i class="ti-home" style="font-size: 24px;"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+    }
+}
+?>
+<?php
+
+/**
+ * File: app/Views/admin/includes/page_editor_form.php
+ * Partial dùng chung cho 4 page-editor views.
+ *
+ * Biến cần truyền vào (extract từ view cha):
+ *   $message  string
+ *   $error    string
+ *   $byKey    array   — kết quả Content::getByGroup()
+ *   $sections array   — cấu trúc editor sections
+ *   $previewUrl string — URL "Xem trang" (tuỳ chọn)
+ *   $heading  string  — tiêu đề trang
+ *   $subtitle string  — mô tả trang (tuỳ chọn)
+ */
+?>
+
+<?php if (!empty($message)): ?>
+<div class="alert alert-success alert-dismissible fade show">
+    <i class="fa-solid fa-circle-check me-2"></i><?= htmlspecialchars($message) ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+<?php endif; ?>
+
+<?php if (!empty($error)): ?>
+<div class="alert alert-danger alert-dismissible fade show">
+    <i class="fa-solid fa-triangle-exclamation me-2"></i><?= htmlspecialchars($error) ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+<?php endif; ?>
+
+<form method="POST" id="pageEditorForm">
+    <?= csrf_field() ?>
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="mb-1"><?= htmlspecialchars($heading ?? '') ?></h4>
+            <?php if (!empty($subtitle)): ?>
+            <p class="text-muted mb-0"><?= htmlspecialchars($subtitle) ?></p>
+            <?php endif; ?>
+        </div>
+        <div class="d-flex gap-2">
+            <?php if (!empty($previewUrl)): ?>
+            <a class="btn btn-outline-success" href="<?= htmlspecialchars($previewUrl) ?>" target="_blank">
+                <i class="fa-solid fa-eye me-2"></i>Xem trang
+            </a>
+            <?php endif; ?>
+            <button type="submit" class="btn btn-success px-4">
+                <i class="fa-solid fa-floppy-disk me-2"></i>Lưu thay đổi
+            </button>
+        </div>
+    </div>
+
+    <?php foreach ($sections as $i => $section): ?>
+    <details class="pe-editor-section" <?= $i === 0 ? 'open' : '' ?>>
+        <summary>
+            <div class="pe-section-title">
+                <div>
+                    <strong><?= htmlspecialchars($section['title']) ?></strong>
+                    <span class="d-block"><?= htmlspecialchars($section['desc'] ?? '') ?></span>
+                </div>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </summary>
+        <div class="pe-section-body">
+            <div class="row">
+                <?php foreach ($section['keys'] as $key):
+                        if (empty($byKey[$key])) continue;
+                        $row        = $byKey[$key];
+                        $isTextarea = $row['input_type'] === 'textarea';
+                        $colClass   = $isTextarea ? 'col-12' : 'col-lg-6';
+                    ?>
+                <div class="<?= $colClass ?> mb-3">
+                    <label class="form-label" for="field_<?= htmlspecialchars($key) ?>">
+                        <?= htmlspecialchars($row['label']) ?>
+                        <span class="d-block small text-muted"><?= htmlspecialchars($key) ?></span>
+                    </label>
+
+                    <?php if ($isTextarea): ?>
+                    <textarea id="field_<?= htmlspecialchars($key) ?>" class="form-control"
+                        name="content[<?= htmlspecialchars($key) ?>]"
+                        rows="3"><?= htmlspecialchars($row['content_value']) ?></textarea>
+                    <?php else: ?>
+                    <input id="field_<?= htmlspecialchars($key) ?>" class="form-control" type="text"
+                        name="content[<?= htmlspecialchars($key) ?>]"
+                        value="<?= htmlspecialchars($row['content_value']) ?>">
+                    <?php endif; ?>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </details>
+    <?php endforeach; ?>
+
+    <div class="text-end mt-3 mb-5">
+        <button type="submit" class="btn btn-success px-5">
+            <i class="fa-solid fa-floppy-disk me-2"></i>Lưu tất cả thay đổi
+        </button>
+    </div>
+</form>
+
+<style>
+.pe-editor-section {
+    border: 1px solid #e5ece6;
+    border-radius: 10px;
+    background: #fff;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.pe-editor-section summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 14px 18px;
+    background: #f7fbf7;
+}
+
+.pe-editor-section summary::-webkit-details-marker {
+    display: none;
+}
+
+.pe-section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.pe-section-title strong {
+    color: #1d5f35;
+    font-size: 15px;
+}
+
+.pe-section-title span {
+    color: #748075;
+    font-size: 13px;
+}
+
+.pe-section-title i {
+    color: #198754;
+    transition: transform .2s;
+}
+
+.pe-editor-section[open] .pe-section-title i {
+    transform: rotate(180deg);
+}
+
+.pe-section-body {
+    padding: 18px;
+    border-top: 1px solid #e5ece6;
+}
+</style>
+<?php
+
+/**
+ * File: admin/includes/Sidebar.php
+ * Đã cập nhật: Gộp các mục chỉnh sửa nội dung trang vào siêu mục "Sửa thông tin các trang"
+ */
+
+if (!function_exists('admin_sidebar_item')) {
+    function admin_sidebar_item($route, $icon, $label, $activeMatch)
+    {
+        $currentUri = $_SERVER['REQUEST_URI'] ?? '';
+        $active = (strpos($currentUri, $activeMatch) !== false) ? ' class="active"' : '';
+        echo '<li' . $active . '>';
+        echo '<a href="' . BASE_URL . '/admin/' . ltrim($route, '/') . '"><i class="' . $icon . '"></i><span>' . $label . '</span></a>';
+        echo '</li>';
+    }
+}
+
+if (!function_exists('admin_render_sidebar')) {
+    function admin_render_sidebar()
+    {
+        $currentUri = $_SERVER['REQUEST_URI'] ?? '';
+
+        // Các route thuộc nhóm "Sửa thông tin các trang"
+        $pageEditorRoutes = ['pages', 'page_home', 'page_news', 'page_faq', 'page_contact', 'shop-settings'];
+        $isPageEditorActive = false;
+        foreach ($pageEditorRoutes as $r) {
+            if (strpos($currentUri, $r) !== false) {
+                $isPageEditorActive = true;
+                break;
+            }
+        }
+?>
+<div class="sidebar-menu">
+    <div class="sidebar-header">
+        <div class="logo">
+            <a href="<?= BASE_URL ?>/admin">
+                <i class="fa-solid fa-leaf admin-brand-icon"></i>
+                <span>Plantify Admin</span>
+            </a>
+        </div>
+    </div>
+    <div class="main-menu">
+        <div class="menu-inner">
+            <nav>
+                <ul class="metismenu" id="menu">
+
+                    <?php admin_sidebar_item('', 'ti-dashboard', 'Dashboard', '/admin'); ?>
+
+                    <!-- ===== SIÊU MỤC: Sửa thông tin các trang ===== -->
+                    <li class="<?= $isPageEditorActive ? 'active' : '' ?>">
+                        <a href="#pageEditorMenu" aria-expanded="<?= $isPageEditorActive ? 'true' : 'false' ?>">
+                            <i class="ti-layout-media-center-alt"></i>
+                            <span>Sửa thông tin các trang</span>
+                            <i class="fa-solid fa-chevron-down ms-auto" style="font-size:10px;opacity:.6;"></i>
+                        </a>
+                        <ul class="collapse <?= $isPageEditorActive ? 'in' : '' ?>" id="pageEditorMenu">
+                            <?php
+                            $subItems = [
+                                ['page_home',      'ti-home',             'Trang chủ',       'page_home'],
+                                ['shop_settings',  'ti-shopping-cart-full','Trang cửa hàng', 'shop-settings'],
+                                ['page_news',      'ti-agenda',           'Trang tin tức',   'page_news'],
+                                ['page_faq',       'ti-help-alt',         'Trang FAQ',       'page_faq'],
+                            ];
+                            foreach ($subItems as [$route, $icon, $label, $match]):
+                                $active = strpos($currentUri, $match) !== false ? 'active' : '';
+                            ?>
+                            <li class="<?= $active ?>">
+                                <a href="<?= BASE_URL ?>/admin/<?= $route ?>">
+                                    <i class="<?= $icon ?>"></i>
+                                    <span><?= $label ?></span>
+                                </a>
+                            </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </li>
+                    <!-- ===== END SIÊU MỤC ===== -->
+
+                    <?php admin_sidebar_item('news',        'ti-agenda',           'Quản lý Tin tức',        'admin/news'); ?>
+                    <?php admin_sidebar_item('comments',    'ti-comments-smiley',  'Bình luận',              'comments'); ?>
+                    <?php admin_sidebar_item('faqs',        'ti-help-alt',         'FAQ',                    'admin/faqs'); ?>
+                    <?php admin_sidebar_item('users',       'ti-user',             'Thành viên',             'users'); ?>
+                    <?php admin_sidebar_item('products',    'ti-package',          'Quản lý Sản phẩm',       'products'); ?>
+                    <?php admin_sidebar_item('orders',      'ti-shopping-cart',    'Quản lý Đơn hàng',       'orders'); ?>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<?php
+    }
+}
 <?php
 $pageTitle  = 'Quản lý Bình luận';
 $breadcrumb = 'Bình luận';
@@ -3909,7 +4486,6 @@ admin_layout_start([
 <?php
 admin_layout_end();
 ?>
-
 <?php
 
 /**
@@ -4413,7 +4989,6 @@ $extraScripts = '
 ';
 admin_layout_end($extraScripts);
 ?>
-
 <?php
 $isEdit     = ($mode === 'edit');
 $pageTitle  = $isEdit ? 'Sửa bài viết' : 'Thêm bài viết mới';
@@ -4936,7 +5511,6 @@ admin_layout_start([
 <?php
 admin_layout_end();
 ?>
-
 <?php require_once __DIR__ . '/includes/AdminLayout.php';
 admin_layout_start(['pageTitle' => 'Chi tiết Đơn hàng #' . $order['id']]); ?>
 
@@ -4996,7 +5570,6 @@ admin_layout_start(['pageTitle' => 'Chi tiết Đơn hàng #' . $order['id']]); 
 </div>
 
 <?php admin_layout_end(); ?>
-
 <?php require_once __DIR__ . '/includes/AdminLayout.php';
 admin_layout_start(['pageTitle' => 'Quản lý Đơn hàng']); ?>
 
@@ -5050,7 +5623,6 @@ admin_layout_start(['pageTitle' => 'Quản lý Đơn hàng']); ?>
 </div>
 
 <?php admin_layout_end(); ?>
-
 <?php
 require_once __DIR__ . '/includes/AdminLayout.php';
 admin_layout_start([
@@ -5066,7 +5638,6 @@ $previewUrl = BASE_URL . '/faq';
 require __DIR__ . '/includes/page_editor_form.php';
  
 admin_layout_end();
-
 <?php
 // ============================================================
 // app/Views/admin/page_home.php
@@ -5087,7 +5658,6 @@ $previewUrl = BASE_URL . '/';
 require __DIR__ . '/includes/page_editor_form.php';
 
 admin_layout_end();
-
 <?php
 // ============================================================
 // app/Views/admin/page_news.php
@@ -5108,7 +5678,6 @@ $previewUrl = BASE_URL . '/news';
 require __DIR__ . '/includes/page_editor_form.php';
  
 admin_layout_end();
-
 <?php
 
 /**
@@ -5537,6 +6106,7 @@ admin_layout_start([
 <div class="admin-card video-upload-card mb-4">
     <h4>Cấu hình video hero trang giới thiệu</h4>
     <form id="heroVideoUploadForm" class="video-upload-grid" method="post" action="<?php echo e(BASE_URL); ?>/api/upload-video.php" enctype="multipart/form-data">
+        <?= csrf_field() ?>
         <label class="video-drop-zone" for="heroVideoFile">
             <input type="file" id="heroVideoFile" name="video" accept="video/mp4,video/quicktime,video/webm" required>
             <span class="video-drop-icon"><i class="fa-solid fa-cloud-arrow-up"></i></span>
@@ -5664,7 +6234,6 @@ if (heroVideoUploadForm) {
 </script>';
 admin_layout_end($extraScripts);
 ?>
-
 <?php
 require_once __DIR__ . '/includes/AdminLayout.php';
 admin_layout_start([
@@ -5733,7 +6302,6 @@ $p = $product ?? [];
 </div>
 
 <?php admin_layout_end(); ?>
-
 <?php
 require_once __DIR__ . '/includes/AdminLayout.php';
 $pageTitle = 'Quản lý Sản phẩm | Plantify Admin';
@@ -5889,7 +6457,6 @@ admin_layout_start([
 </div>
 
 <?php admin_layout_end(); ?>
-
 <?php
 require_once __DIR__ . '/includes/AdminLayout.php';
 admin_layout_start(['pageTitle' => $pageTitle, 'heading' => $pageTitle]);
@@ -5930,7 +6497,6 @@ admin_layout_start(['pageTitle' => $pageTitle, 'heading' => $pageTitle]);
     </div>
 </div>
 <?php admin_layout_end(); ?>
-
 <?php
 require_once __DIR__ . '/includes/AdminLayout.php';
 $pageTitle = 'Quản lý Người dùng | Plantify Admin';
@@ -6226,7 +6792,6 @@ require BASE_PATH . '/app/Views/partials/header.php';
 </script>
 
 <?php require BASE_PATH . '/app/Views/partials/footer.php'; ?>
-
 <?php
 
 /**
@@ -6562,7 +7127,7 @@ $avatar = !empty($user['avatar'])
 
                     <!-- Chú ý thêm enctype="multipart/form-data" để upload được ảnh -->
                     <form action="<?= BASE_URL ?>/dashboard/updateProfile" method="POST" enctype="multipart/form-data">
-
+                        <?= csrf_field() ?>
                         <!-- Upload Avatar UI -->
                         <div class="d-flex align-items-center gap-4 mb-4 p-3 bg-light rounded border">
                             <img src="<?= $avatar ?>" id="avatarPreviewForm" class="rounded-circle object-fit-cover" style="width: 80px; height: 80px;">
@@ -6606,6 +7171,7 @@ $avatar = !empty($user['avatar'])
             <div class="bg-white p-4 p-md-5 shadow-sm" style="border: 1px solid var(--stone-200); border-radius: 16px;">
                 <h4 class="mb-4 fw-bold text-success">Bảo mật tài khoản</h4>
                 <form action="<?= BASE_URL ?>/dashboard/updatePassword" method="POST">
+                    <?= csrf_field() ?>
                     <div class="row g-3">
                         <div class="col-12"><label class="form-label text-muted">Mật khẩu hiện tại</label><input type="password" name="current_password" class="form-control bg-light" required></div>
                         <div class="col-md-6"><label class="form-label text-muted">Mật khẩu mới</label><input type="password" name="new_password" class="form-control bg-light" required></div>
@@ -6794,7 +7360,6 @@ $avatar = !empty($user['avatar'])
     </div>
 </main>
 <?php require BASE_PATH . '/app/Views/partials/footer.php'; ?>
-
 <?php
 
 /**
@@ -6873,6 +7438,7 @@ require BASE_PATH . '/app/Views/partials/header.php';
                         <div class="comment-form-box p-4 bg-light rounded-4 border mb-5">
                             <h5 class="fw-bold mb-3"><i class="fa-solid fa-pen me-2"></i>Viết bình luận của bạn</h5>
                             <form action="<?= BASE_URL ?>/news/comment_post" method="POST" id="commentForm" novalidate>
+                                <?= csrf_field() ?>
                                 <input type="hidden" name="news_id" value="<?= (int)$news['id'] ?>">
                                 <input type="hidden" name="slug" value="<?= e($news['slug']) ?>">
 
@@ -7266,6 +7832,7 @@ $isCartEmpty = empty($cartItems);
                                 <div class="col-6 col-md-3 mt-3 mt-md-0">
                                     <!-- FORM TĂNG GIẢM SỐ LƯỢNG -->
                                     <form action="<?= BASE_URL ?>/cart/update" method="POST" class="d-flex align-items-center border rounded p-1" style="max-width: 120px;">
+                                        <?= csrf_field() ?>
                                         <input type="hidden" name="product_id" value="<?= $productId ?>">
 
                                         <button type="submit" name="action" value="decrease" class="btn btn-sm btn-light border-0"><i class="fa-solid fa-minus"></i></button>
@@ -7280,7 +7847,10 @@ $isCartEmpty = empty($cartItems);
                                 </div>
                                 <div class="col-2 col-md-1 text-end mt-3 mt-md-0">
                                     <!-- NÚT XÓA -->
-                                    <a href="<?= BASE_URL ?>/cart/remove/<?= $productId ?>" class="btn btn-sm btn-outline-danger" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ?');"><i class="fa-solid fa-trash-can"></i></a>
+                                    <form action="<?= BASE_URL ?>/cart/remove/<?= $productId ?>" method="POST" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ?');"><i class="fa-solid fa-trash-can"></i></button>
+                                    </form>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -7336,6 +7906,7 @@ $isCartEmpty = empty($cartItems);
                 <button type="button" class="btn-close" data-bs-close="modal" aria-label="Close"></button>
             </div>
             <form action="<?= BASE_URL ?>/dashboard/checkout" method="POST">
+                <?= csrf_field() ?>
                 <div class="modal-body p-4">
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Họ và tên người nhận</label>
@@ -8109,6 +8680,7 @@ $steps = [
                 <!-- Form Thêm vào giỏ hàng -->
                 <?php if ($user): ?>
                     <form action="<?= BASE_URL ?>/shop/addToCart" method="POST" class="d-flex align-items-center gap-3">
+                        <?= csrf_field() ?>
                         <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
                         <div class="d-flex align-items-center border rounded p-1" style="border-color: var(--stone-200);">
                             <label for="qty" class="me-2 ms-2 text-muted fw-bold">SL:</label>
@@ -8642,6 +9214,3 @@ $avatar = !empty($user['avatar'])
         </nav>
     </header>
     <main class="site-main">
-
-
-
