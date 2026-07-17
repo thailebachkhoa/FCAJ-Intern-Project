@@ -53,6 +53,7 @@ require BASE_PATH . '/app/Views/partials/header.php';
 
                                 <!-- Form Đăng Ký -->
                                 <form action="<?= BASE_URL ?>/auth/register" method="POST" id="regForm" novalidate>
+                                    <?= csrf_field() ?>
                                     <div class="row g-3">
 
                                         <!-- Họ và Tên -->

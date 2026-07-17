@@ -22,7 +22,6 @@ $avatar = !empty($user['avatar'])
     ? BASE_URL . '/file/render?path=' . $user['avatar']
     : 'https://ui-avatars.com/api/?name=' . urlencode($fullname);
 ?>
-?>
 <!doctype html>
 <html lang="vi">
 

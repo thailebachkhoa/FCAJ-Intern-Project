@@ -57,7 +57,8 @@ require BASE_PATH . '/app/Views/partials/header.php';
 
                                 <!-- Form Đăng Nhập -->
                                 <form action="<?= BASE_URL ?>/auth/login" method="POST" id="loginForm" novalidate>
-
+                                    <!-- CSRF Token -->
+                                    <?= csrf_field() ?>
                                     <!-- Nhập Username / Email -->
                                     <div class="mb-4">
                                         <label for="username" class="form-label fw-bold" style="color: var(--stone-700);">Tài khoản hoặc Email</label>

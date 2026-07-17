@@ -6,7 +6,7 @@ require BASE_PATH . '/app/Views/partials/header.php';
 $avatar = !empty($user['avatar'])
     ? BASE_URL . '/file/render?path=' . $user['avatar']
     : 'https://ui-avatars.com/api/?name=' . urlencode($user['fullname']);
-?>?>
+?>
 
 <main class="site-main bg-soft" style="min-height: calc(100vh - 76px); padding: 50px 0;">
     <div class="container">

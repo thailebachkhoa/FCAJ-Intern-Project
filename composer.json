@@ -5,7 +5,7 @@
   "require": {},
   "autoload": {
     "files": [
-      "app/Core/bootstrap.php"
+      "app/Core/Bootstrap.php"
     ]
   }
 }

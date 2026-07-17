@@ -880,6 +880,13 @@ class AdminController extends BaseController
 // Location: app/Controllers/AuthController.php
 class AuthController extends BaseController
 {
+    public function __construct()
+    {
+        // Chặn CSRF cho mọi request POST (đăng nhập, đăng ký)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::verify();
+        }
+    }
     public function index()
     {
         // If user is already logged in, redirect to dashboard
@@ -6669,7 +6676,7 @@ require BASE_PATH . '/app/Views/partials/header.php';
 
                                 <!-- Form Đăng Nhập -->
                                 <form action="<?= BASE_URL ?>/auth/login" method="POST" id="loginForm" novalidate>
-
+                                    <?= csrf_field() ?>
                                     <!-- Nhập Username / Email -->
                                     <div class="mb-4">
                                         <label for="username" class="form-label fw-bold" style="color: var(--stone-700);">Tài khoản hoặc Email</label>
@@ -6847,6 +6854,7 @@ require BASE_PATH . '/app/Views/partials/header.php';
 
                                 <!-- Form Đăng Ký -->
                                 <form action="<?= BASE_URL ?>/auth/register" method="POST" id="regForm" novalidate>
+                                <?= csrf_field() ?>
                                     <div class="row g-3">
 
                                         <!-- Họ và Tên -->
@@ -7062,7 +7070,7 @@ require BASE_PATH . '/app/Views/partials/header.php';
 $avatar = !empty($user['avatar'])
     ? BASE_URL . '/file/render?path=' . $user['avatar']
     : 'https://ui-avatars.com/api/?name=' . urlencode($user['fullname']);
-?>?>
+?>
 
 <main class="site-main bg-soft" style="min-height: calc(100vh - 76px); padding: 50px 0;">
     <div class="container">
@@ -9075,7 +9083,6 @@ $avatar = !empty($user['avatar'])
     ? BASE_URL . '/file/render?path=' . $user['avatar']
     : 'https://ui-avatars.com/api/?name=' . urlencode($fullname);
 ?>
-?>
 <!doctype html>
 <html lang="vi">
 
@@ -9891,7 +9898,7 @@ try {
   "require": {},
   "autoload": {
     "files": [
-      "app/Core/bootstrap.php"
+      "app/Core/Bootstrap.php"
     ]
   }
 }

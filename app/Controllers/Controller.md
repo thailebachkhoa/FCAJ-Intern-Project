@@ -880,6 +880,13 @@ class AdminController extends BaseController
 // Location: app/Controllers/AuthController.php
 class AuthController extends BaseController
 {
+    public function __construct()
+    {
+        // Chặn CSRF cho mọi request POST (đăng nhập, đăng ký)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::verify();
+        }
+    }
     public function index()
     {
         // If user is already logged in, redirect to dashboard
