@@ -33,7 +33,7 @@ Plantify Co là website giới thiệu và bán cây cảnh nội thất, hỗ t
 | Chi tiết sản phẩm | Thêm vào giỏ, sản phẩm liên quan |
 | Giỏ hàng | Tăng/giảm số lượng, xóa sản phẩm, đặt hàng qua modal |
 | Tin tức | Danh sách bài viết, tìm kiếm, xem chi tiết, bình luận |
-| FAQ | Tìm kiếm, lọc theo nhóm, tích hợp chatbot AI |
+| FAQ | Tìm kiếm, lọc theo nhóm |
 
 ### Thành viên (Dashboard)
 
