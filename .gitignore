@@ -9,4 +9,5 @@
 /storage/bin/ffmpeg.exe
 __pycache__/
 *.pyc
-claude_skills.txt
+hide.md
+
