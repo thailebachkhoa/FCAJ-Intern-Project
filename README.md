@@ -1,4 +1,4 @@
-# 🌿 Plantify Co
+# 🌿 Mô tả dự án
 
 Website thương mại điện tử và giới thiệu dịch vụ cây xanh nội thất, xây dựng trên PHP thuần theo mô hình MVC.
 
@@ -61,7 +61,6 @@ Plantify Co là website giới thiệu và bán cây cảnh nội thất, hỗ t
 |---|---|
 | Backend | PHP 8.x, PDO (MySQL), Session |
 | Frontend | Bootstrap 5.3, Font Awesome 6, AOS.js |
-| Video | HLS.js (phát `.m3u8`) |
 | Admin UI | SRTDash template, Chart.js, simple-datatables |
 | Database | MySQL / MariaDB |
 
