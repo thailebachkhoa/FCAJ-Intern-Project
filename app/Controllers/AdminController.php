@@ -764,6 +764,24 @@ class AdminController extends BaseController
             ['home.cta_title',          'Trang chủ', 'Tiêu đề CTA',                        'textarea', 'Sẵn sàng mang thiên nhiên vào nhà?'],
             ['home.cta_text',           'Trang chủ', 'Mô tả CTA',                          'textarea', 'Đừng ngần ngại liên hệ nếu bạn cần chuyên gia của Plantify tư vấn loại cây phù hợp với không gian và mệnh của mình.'],
             ['home.cta_button',         'Trang chủ', 'Nút CTA',                             'text',     'Bắt Đầu Mua Sắm'],
+
+            // ---- Mục "Quy trình" (About Process) ----
+            ['about.process_kicker',    'Trang chủ', 'Nhãn section quy trình',             'text',     'Quy trình'],
+            ['about.process_title',     'Trang chủ', 'Tiêu đề section quy trình',          'textarea', 'Rõ từng bước để khách hàng dễ theo dõi'],
+            ['about.process_text',      'Trang chủ', 'Mô tả section quy trình',            'textarea', 'Từ ảnh không gian ban đầu đến chăm sóc định kỳ, mỗi giai đoạn đều có đầu ra cụ thể để bạn duyệt nhanh và kiểm soát ngân sách.'],
+            ['about.process_1_title',   'Trang chủ', 'Bước 1 - Tiêu đề',                   'text',     'Tiếp nhận nhu cầu'],
+            ['about.process_1_text',    'Trang chủ', 'Bước 1 - Nội dung',                  'textarea', 'Nhận ảnh, mặt bằng, phong cách mong muốn và mức ngân sách dự kiến.'],
+            ['about.process_2_title',   'Trang chủ', 'Bước 2 - Tiêu đề',                   'text',     'Khảo sát điều kiện'],
+            ['about.process_2_text',    'Trang chủ', 'Bước 2 - Nội dung',                  'textarea', 'Đánh giá ánh sáng, gió, ổ cắm, lối đi, vị trí tưới và rủi ro bẩn sàn.'],
+            ['about.process_3_title',   'Trang chủ', 'Bước 3 - Tiêu đề',                   'text',     'Đề xuất phương án'],
+            ['about.process_3_text',    'Trang chủ', 'Bước 3 - Nội dung',                  'textarea', 'Gợi ý cây, chậu, bố cục, tần suất chăm sóc và phương án thay thế khi cần.'],
+            ['about.process_4_title',   'Trang chủ', 'Bước 4 - Tiêu đề',                   'text',     'Bàn giao và duy trì'],
+            ['about.process_4_text',    'Trang chủ', 'Bước 4 - Nội dung',                  'textarea', 'Lắp đặt gọn, hướng dẫn chăm sóc, theo dõi cây sau bàn giao và bảo dưỡng định kỳ.'],
+
+            // ---- Mục "Vị trí" (Map) ----
+            ['about.map_kicker',        'Trang chủ', 'Nhãn section bản đồ',                'text',     'Vị trí'],
+            ['about.map_title',         'Trang chủ', 'Tiêu đề section bản đồ',             'textarea', 'Ghé Plantify để chọn cây và chậu trực tiếp'],
+            ['about.map_iframe_title',  'Trang chủ', 'Tiêu đề iframe bản đồ (SEO/A11y)',   'text',     'Bản đồ Plantify Co'],
         ];
  
         $sections = [
@@ -772,6 +790,8 @@ class AdminController extends BaseController
             ['title' => 'Section "Về chúng tôi"',  'desc' => 'Tiêu đề, mô tả và danh sách điểm mạnh.',            'keys' => ['home.features_kicker','home.features_title','home.features_lead','home.feature_1','home.feature_2','home.feature_3','home.feature_4']],
             ['title' => 'Section Sản phẩm nổi bật','desc' => 'Nhãn và tiêu đề phần sản phẩm featured.',           'keys' => ['home.products_kicker','home.products_title']],
             ['title' => 'Câu chuyện thương hiệu',  'desc' => 'Đoạn nội dung kể về Plantify phía cuối trang.',     'keys' => ['home.story_kicker','home.story_title','home.story_p1','home.story_p2']],
+            ['title' => 'Quy trình làm việc',      'desc' => 'Nhãn, tiêu đề và 4 bước quy trình phục vụ khách hàng.', 'keys' => ['about.process_kicker','about.process_title','about.process_text','about.process_1_title','about.process_1_text','about.process_2_title','about.process_2_text','about.process_3_title','about.process_3_text','about.process_4_title','about.process_4_text']],
+            ['title' => 'Bản đồ / Vị trí',         'desc' => 'Nhãn và tiêu đề section bản đồ cửa hàng.',           'keys' => ['about.map_kicker','about.map_title','about.map_iframe_title']],
             ['title' => 'CTA cuối trang',           'desc' => 'Khối kêu gọi hành động.',                          'keys' => ['home.cta_title','home.cta_text','home.cta_button']],
         ];
  
