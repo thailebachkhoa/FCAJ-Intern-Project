@@ -511,7 +511,18 @@ class AdminController extends BaseController
             $productModel = new Product();
 
             // Xử lý upload ảnh
-            $imagePath = $this->handleProductImageUpload();
+            $uploadResult = $this->handleProductImageUpload();
+
+            if ($uploadResult['error']) {
+                $this->view('admin/product-form', [
+                    'user'      => Auth::user(),
+                    'pageTitle' => 'Thêm sản phẩm mới',
+                    'mode'      => 'create',
+                    'error'     => $uploadResult['error'],
+                    'product'   => $_POST, // giữ lại dữ liệu đã nhập để user khỏi gõ lại
+                ]);
+                return;
+            }
 
             $data = [
                 'name'        => $_POST['name'],
@@ -519,7 +530,7 @@ class AdminController extends BaseController
                 'price'       => (float)$_POST['price'],
                 'description' => $_POST['description'],
                 'is_featured' => isset($_POST['is_featured']) ? 1 : 0,
-                'image'       => $imagePath
+                'image'       => $uploadResult['path']
             ];
 
             if ($productModel->create($data)) {
@@ -545,7 +556,18 @@ class AdminController extends BaseController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $imagePath = $this->handleProductImageUpload($product['image']);
+            $uploadResult = $this->handleProductImageUpload($product['image']);
+
+            if ($uploadResult['error']) {
+                $this->view('admin/product-form', [
+                    'user'      => Auth::user(),
+                    'product'   => $product,
+                    'pageTitle' => 'Chỉnh sửa sản phẩm',
+                    'mode'      => 'edit',
+                    'error'     => $uploadResult['error'],
+                ]);
+                return;
+            }
 
             $data = [
                 'name'        => $_POST['name'],
@@ -553,7 +575,7 @@ class AdminController extends BaseController
                 'price'       => (float)$_POST['price'],
                 'description' => $_POST['description'],
                 'is_featured' => isset($_POST['is_featured']) ? 1 : 0,
-                'image'       => $imagePath
+                'image'       => $uploadResult['path']
             ];
 
             if ($productModel->update($id, $data)) {
@@ -602,25 +624,66 @@ class AdminController extends BaseController
 
     /**
      * Helper: Xử lý upload ảnh sản phẩm
+     * Trả về mảng ['error' => string|null, 'path' => string|null]
+     *   - error !== null  -> upload bị từ chối, $path sẽ là ảnh cũ (giữ nguyên)
+     *   - error === null  -> ok. Nếu không có file mới thì $path = $existingImage
      */
     private function handleProductImageUpload($existingImage = null)
     {
-        if (isset($_FILES['product_image']) && $_FILES['product_image']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = BASE_PATH . '/public/assets/uploads/products/';
-            if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-
-            $ext = pathinfo($_FILES['product_image']['name'], PATHINFO_EXTENSION);
-            $fileName = 'prod_' . time() . '_' . uniqid() . '.' . $ext;
-
-            if (move_uploaded_file($_FILES['product_image']['tmp_name'], $uploadDir . $fileName)) {
-                // Xóa ảnh cũ nếu có
-                if ($existingImage && file_exists(BASE_PATH . '/public/' . $existingImage)) {
-                    @unlink(BASE_PATH . '/public/' . $existingImage);
-                }
-                return 'assets/uploads/products/' . $fileName;
-            }
+        // Không upload file mới -> giữ nguyên ảnh cũ, không coi là lỗi
+        if (!isset($_FILES['product_image']) || $_FILES['product_image']['error'] === UPLOAD_ERR_NO_FILE) {
+            return ['error' => null, 'path' => $existingImage];
         }
-        return $existingImage; // Giữ nguyên ảnh cũ nếu không có upload mới
+
+        $file = $_FILES['product_image'];
+
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            return ['error' => 'Lỗi khi upload ảnh (code: ' . $file['error'] . ')!', 'path' => $existingImage];
+        }
+
+        // 1. Giới hạn dung lượng (2MB) — tránh DoS bằng file khổng lồ
+        if ($file['size'] > 2 * 1024 * 1024) {
+            return ['error' => 'Ảnh không được vượt quá 2MB!', 'path' => $existingImage];
+        }
+
+        // 2. Whitelist phần mở rộng theo tên file client gửi lên (lọc thô ban đầu)
+        $allowedExts = ['jpg', 'jpeg', 'png', 'webp'];
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        if (!in_array($ext, $allowedExts, true)) {
+            return ['error' => 'Chỉ chấp nhận file ảnh: JPG, JPEG, PNG, WEBP!', 'path' => $existingImage];
+        }
+
+        // 3. Kiểm tra NỘI DUNG file có thực sự là ảnh không (getimagesize đọc header ảnh thật,
+        //    không thể bị đánh lừa chỉ bằng cách đổi tên webshell.php -> anh.jpg)
+        $imageInfo = @getimagesize($file['tmp_name']);
+        $allowedMimes = [
+            'image/jpeg' => 'jpg',
+            'image/png'  => 'png',
+            'image/webp' => 'webp',
+        ];
+        if ($imageInfo === false || !isset($allowedMimes[$imageInfo['mime']])) {
+            return ['error' => 'File không phải là ảnh hợp lệ!', 'path' => $existingImage];
+        }
+
+        // 4. Luôn tự sinh phần mở rộng từ MIME thật đọc được (KHÔNG dùng tên/ext do client gửi)
+        //    -> loại bỏ hoàn toàn khả năng lưu file .php dưới danh nghĩa ảnh
+        $safeExt = $allowedMimes[$imageInfo['mime']];
+
+        $uploadDir = BASE_PATH . '/public/assets/uploads/products/';
+        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+
+        $fileName = 'prod_' . time() . '_' . bin2hex(random_bytes(4)) . '.' . $safeExt;
+
+        if (!move_uploaded_file($file['tmp_name'], $uploadDir . $fileName)) {
+            return ['error' => 'Không thể lưu file ảnh lên server!', 'path' => $existingImage];
+        }
+
+        // Xóa ảnh cũ nếu có
+        if ($existingImage && file_exists(BASE_PATH . '/public/' . $existingImage)) {
+            @unlink(BASE_PATH . '/public/' . $existingImage);
+        }
+
+        return ['error' => null, 'path' => 'assets/uploads/products/' . $fileName];
     }
 
     public function product_delete($id)

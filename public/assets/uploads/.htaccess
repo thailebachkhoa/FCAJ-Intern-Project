@@ -1,0 +1,31 @@
+# Thư mục này chỉ chứa file do người dùng/admin upload (ảnh sản phẩm, tin tức...).
+# Dù code đã validate định dạng file khi upload, vẫn chặn thêm ở tầng web server
+# để phòng trường hợp có lỗ hổng khác lọt qua (defense in depth):
+# -> Không cho PHP (hay bất kỳ script nào) trong thư mục này được THỰC THI,
+#    kể cả khi ai đó lỡ upload được 1 file .php vào đây, mở URL vào file đó
+#    cũng chỉ tải file thô về chứ không chạy được.
+
+# Apache 2.4+
+<IfModule mod_authz_core.c>
+    <FilesMatch "\.(php|php\d?|phtml|pht|phar|cgi|pl|py|sh|asp|aspx|exe)$">
+        Require all denied
+    </FilesMatch>
+</IfModule>
+
+# Apache 2.2 (fallback)
+<IfModule !mod_authz_core.c>
+    <FilesMatch "\.(php|php\d?|phtml|pht|phar|cgi|pl|py|sh|asp|aspx|exe)$">
+        Order allow,deny
+        Deny from all
+    </FilesMatch>
+</IfModule>
+
+# Đảm bảo PHP handler không được áp dụng lên thư mục này dù cấu hình global có sao
+<IfModule mod_php7.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+    php_flag engine off
+</IfModule>
+
+Options -Indexes -ExecCGI

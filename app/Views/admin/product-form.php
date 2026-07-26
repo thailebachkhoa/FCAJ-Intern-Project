@@ -7,6 +7,13 @@ admin_layout_start([
 $p = $product ?? [];
 ?>
 
+<?php if (!empty($error)): ?>
+<div class="alert alert-danger alert-dismissible fade show">
+    <i class="fa-solid fa-triangle-exclamation me-2"></i><?= htmlspecialchars($error) ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+<?php endif; ?>
+
 <div class="card shadow-sm border-0 rounded-4 mt-4">
     <div class="card-body p-4">
 
