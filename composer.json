@@ -2,7 +2,9 @@
   "name": "btl/plantify",
   "description": "Landscape and decorative plants for your home and garden",
   "type": "project",
-  "require": {},
+  "require": {
+    "firebase/php-jwt": "^6.10"
+  },
   "autoload": {
     "files": [
       "app/Core/Bootstrap.php"

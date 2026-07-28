@@ -120,6 +120,82 @@ class User
         $row = $this->db->single();
         return $row ? (int)$row['total'] : 0;
     }
+    // ==================== Cognito / Google login ====================
+
+    public function findByCognitoSub($sub)
+    {
+        $this->db->query("SELECT * FROM users WHERE cognito_sub = :sub LIMIT 1");
+        $this->db->bind(':sub', $sub);
+        return $this->db->single();
+    }
+
+    /**
+     * Gắn cognito_sub vào 1 tài khoản local đã có sẵn (trường hợp email
+     * trùng với tài khoản đăng ký kiểu cũ trước khi có Google login).
+     */
+    public function attachCognitoSub($id, $sub)
+    {
+        $this->db->query("UPDATE users SET cognito_sub = :sub WHERE id = :id");
+        $this->db->bind(':sub', $sub);
+        $this->db->bind(':id', $id);
+        return $this->db->execute();
+    }
+
+    /**
+     * Tạo user mới ngay lần đầu đăng nhập Google (JIT provisioning).
+     * password để NULL vì tài khoản này không có mật khẩu local.
+     */
+    public function createFromCognito($sub, $email, $fullname)
+    {
+        $this->db->query("INSERT INTO users (username, password, email, fullname, cognito_sub, role, status)
+                           VALUES (:username, NULL, :email, :fullname, :sub, 'member', 'active')");
+        $this->db->bind(':username', $this->makeUsernameFromEmail($email));
+        $this->db->bind(':email', $email);
+        $this->db->bind(':fullname', $fullname !== '' ? $fullname : $email);
+        $this->db->bind(':sub', $sub);
+        $this->db->execute();
+
+        return (int) $this->db->lastInsertId();
+    }
+
+    /** Sinh username duy nhất từ phần trước @ của email, tránh trùng cột UNIQUE username */
+    private function makeUsernameFromEmail($email)
+    {
+        $base = preg_replace('/[^a-zA-Z0-9_-]/', '', strstr($email, '@', true) ?: $email);
+        $base = $base !== '' ? $base : 'user';
+
+        $candidate = $base;
+        $i = 1;
+        while ($this->findByUsername($candidate)) {
+            $candidate = $base . $i;
+            $i++;
+        }
+        return $candidate;
+    }
+
+    /**
+     * Đồng bộ role local theo Cognito Group mỗi lần đăng nhập Google,
+     * để các đoạn code cũ dựa vào cột users.role (Auth::role(), check
+     * role=='admin' trong view...) vẫn chạy đúng mà không cần sửa lại.
+     */
+    public function syncRole($id, $isAdmin)
+    {
+        $this->db->query("UPDATE users SET role = :role WHERE id = :id");
+        $this->db->bind(':role', $isAdmin ? 'admin' : 'member');
+        $this->db->bind(':id', $id);
+        return $this->db->execute();
+    }
+
+    // ==================== TOTP (Google Authenticator cho Admin) ====================
+
+    public function setTotpSecret($id, $secret)
+    {
+        $this->db->query("UPDATE users SET totp_secret = :secret WHERE id = :id");
+        $this->db->bind(':secret', $secret);
+        $this->db->bind(':id', $id);
+        return $this->db->execute();
+    }
+
     public function create($data)
     {
         $this->db->query("INSERT INTO users (username, fullname, email, password, role, status) 

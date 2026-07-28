@@ -18,12 +18,14 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    cognito_sub VARCHAR(100) NULL UNIQUE,
     username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     fullname VARCHAR(100) NOT NULL,
     avatar VARCHAR(255) DEFAULT NULL,
     role ENUM('admin', 'member') DEFAULT 'member',
+    totp_secret VARCHAR(64) NULL,
     status ENUM('active', 'locked') DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

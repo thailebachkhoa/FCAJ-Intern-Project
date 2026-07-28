@@ -17,6 +17,15 @@ public function redirect($url) {
     }
 
     /**
+     * Redirect sang URL tuyệt đối bên ngoài site (VD: Cognito Hosted UI).
+     * Khác với redirect() ở chỗ KHÔNG gắn thêm BASE_URL vào trước.
+     */
+    public function redirectExternal($url) {
+        header("Location: " . $url);
+        exit();
+    }
+
+    /**
      * Chặn truy cập nếu không phải request POST.
      * Dùng cho các action chỉ nên gọi qua form (xóa, khóa, reset...),
      * không cho phép gọi trực tiếp bằng cách gõ URL / click link GET.
