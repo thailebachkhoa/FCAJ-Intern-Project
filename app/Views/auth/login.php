@@ -101,6 +101,16 @@ require BASE_PATH . '/app/Views/partials/header.php';
                                     </div>
                                 </form>
 
+                                <div class="d-flex align-items-center my-4">
+                                    <hr class="flex-grow-1">
+                                    <span class="mx-3 text-muted small">HOẶC</span>
+                                    <hr class="flex-grow-1">
+                                </div>
+
+                                <a href="<?= BASE_URL ?>/auth/google" class="btn btn-outline-dark btn-lg fw-bold d-flex align-items-center justify-content-center gap-2" style="height: 52px; border-radius: 12px;">
+                                    <i class="fa-brands fa-google"></i> Đăng nhập với Google
+                                </a>
+
                             </div>
                         </div>
 
