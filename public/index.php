@@ -147,7 +147,7 @@ try {
     call_user_func_array([$controller, $methodName], $params);
 } catch (Exception $e) {
     // ========== XỬ LÝ EXCEPTION ==========
-    error_log($e->getMessage());
+    error_log($e->getMessage() . ' | ' . $e->getFile() . ':' . $e->getLine() . "\n" . $e->getTraceAsString());
     http_response_code(500);
     echo "Lỗi 500: Đã xảy ra lỗi trên server. Vui lòng thử lại sau.";
     exit;

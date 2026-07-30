@@ -147,9 +147,13 @@ class User
      */
     public function createFromCognito($sub, $email, $fullname)
     {
+        // Tính username TRƯỚC, vì hàm này tự chạy 1 câu SQL khác (SELECT) bên trong -
+        // nếu để lồng ngay trong lúc bind() của câu INSERT, nó sẽ ghi đè mất prepared statement đang dùng.
+        $username = $this->makeUsernameFromEmail($email);
+
         $this->db->query("INSERT INTO users (username, password, email, fullname, cognito_sub, role, status)
                            VALUES (:username, NULL, :email, :fullname, :sub, 'member', 'active')");
-        $this->db->bind(':username', $this->makeUsernameFromEmail($email));
+        $this->db->bind(':username', $username);
         $this->db->bind(':email', $email);
         $this->db->bind(':fullname', $fullname !== '' ? $fullname : $email);
         $this->db->bind(':sub', $sub);
