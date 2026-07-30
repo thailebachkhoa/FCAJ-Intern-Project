@@ -15,7 +15,7 @@ require_once BASE_PATH . '/app/Views/partials/header.php';
 <!-- ===== HERO ===== -->
 <section class="page-hero faq-hero modern-hero">
     <div class="container">
-        <div class="row g-5 align-items-end">
+        <div class="row gy-5 gx-3 gx-lg-5 align-items-end">
 
             <div class="col-lg-8" data-aos="fade-up">
                 <span class="section-kicker">
@@ -47,7 +47,7 @@ require_once BASE_PATH . '/app/Views/partials/header.php';
 <!-- ===== NỘI DUNG CHÍNH ===== -->
 <section class="section-padding faq-modern-section">
     <div class="container">
-        <div class="row g-5">
+        <div class="row gy-5 gx-3 gx-lg-5">
 
             <!-- SIDEBAR -->
             <div class="col-lg-4" data-aos="fade-right">

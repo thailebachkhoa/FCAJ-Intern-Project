@@ -22,7 +22,7 @@ $steps = [
     <section class="page-hero modern-hero"
         style="background: linear-gradient(135deg, rgba(18, 56, 42, 0.86), rgba(31, 111, 77, 0.62)), url('<?= BASE_URL ?>/assets/images/hero_img.jpg') center/cover;">
         <div class="container position-relative" style="z-index: 1;">
-            <div class="row g-5 align-items-end">
+            <div class="row gy-5 gx-3 gx-lg-5 align-items-end">
 
                 <div class="col-lg-8" data-aos="fade-up">
                     <span class="section-kicker text-white opacity-75">
@@ -77,7 +77,7 @@ $steps = [
     <!-- ===== FEATURES / ABOUT SECTION ===== -->
     <section class="section-padding bg-soft">
         <div class="container">
-            <div class="row align-items-center g-5">
+            <div class="row align-items-center gy-5 gx-3 gx-lg-5">
 
                 <div class="col-lg-6" data-aos="fade-right">
                     <div class="about-image-stack position-relative">
@@ -210,7 +210,7 @@ $steps = [
     <!-- ===== STORY SECTION ===== -->
     <section class="section-padding about-story-section bg-soft">
         <div class="container">
-            <div class="row g-5 align-items-center">
+            <div class="row gy-5 gx-3 gx-lg-5 align-items-center">
 
                 <div class="col-lg-6" data-aos="fade-right">
                     <div class="about-image-stack">
@@ -250,7 +250,7 @@ $steps = [
     <!-- About Process -->
     <section class="section-padding">
         <div class="container">
-            <div class="row g-5 align-items-start">
+            <div class="row gy-5 gx-3 gx-lg-5 align-items-start">
                 <div class="col-lg-5" data-aos="fade-right">
                     <span class="section-kicker"><?php echo e(content_value('about.process_kicker', 'Quy trình')); ?></span>
                     <h2 class="section-title"><?php echo e(content_value('about.process_title', 'Rõ từng bước để khách hàng dễ theo dõi')); ?></h2>

@@ -20,7 +20,7 @@
             </ol>
         </nav>
 
-        <div class="row g-5">
+        <div class="row gy-5 gx-3 gx-lg-5">
             <!-- Cột Trái: Ảnh Sản Phẩm -->
             <div class="col-lg-6" data-aos="fade-right">
                 <div class="position-relative">
